@@ -12,7 +12,7 @@
     "web": "node scripts/serve.js",
     "web:offline": "node scripts/serve.js --offline",
     "start": "electron .",
-    "test": "node --test test/*.test.js",
+    "test": "node --test",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac",
@@ -55,7 +55,8 @@
       {
         "provider": "github",
         "owner": "ishaanman7898",
-        "repo": "Parallax"
+        "repo": "Parallax",
+        "releaseType": "release"
       }
     ]
   },
