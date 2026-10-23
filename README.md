@@ -128,3 +128,9 @@ The desktop window runs with context isolation and the sandbox on, and Node inte
 ## Contributing and license
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). Parallax is released under the [MIT License](LICENSE). VADER is used under its own license through the `vader-sentiment` package.
+
+## Updates
+
+The desktop app checks GitHub Releases on launch and every six hours, downloads a newer version in the background and asks you to restart. To ship one, raise `version` in `package.json`, commit, then push a matching tag such as `v2.1.1`. The workflow in `.github/workflows/release.yml` builds the Windows installer and publishes it with `latest.yml`, which the app reads. If the repository is private, set a `GH_TOKEN` environment variable with read access on the machine running the app.
+
+[electron-updater docs](https://www.electron.build/auto-update)

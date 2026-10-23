@@ -1,4 +1,5 @@
-const { app, BrowserWindow, shell } = require("electron");
+const { app, BrowserWindow, shell, dialog } = require("electron");
+const { autoUpdater } = require("electron-updater");
 const path = require("path");
 const { start } = require("../server");
 
@@ -38,8 +39,28 @@ async function createWindow() {
   });
 }
 
+// Checks GitHub Releases for a newer version, downloads it quietly and offers a restart.
+function checkForUpdates() {
+  if (!app.isPackaged) return;
+  autoUpdater.on("update-downloaded", async info => {
+    const { response } = await dialog.showMessageBox({
+      type: "info",
+      buttons: ["Restart now", "Later"],
+      defaultId: 0,
+      title: "Update ready",
+      message: `Parallax ${info.version} has been downloaded.`,
+      detail: "Restart to finish updating."
+    });
+    if (response === 0) autoUpdater.quitAndInstall();
+  });
+  autoUpdater.on("error", err => console.error("update check failed:", err.message));
+  autoUpdater.checkForUpdates().catch(() => {});
+  setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 6 * 60 * 60 * 1000);
+}
+
 app.whenReady().then(() => {
   createWindow();
+  checkForUpdates();
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
