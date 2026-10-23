@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:dcterms="http://purl.org/dc/terms/"
+		xmlns:media="http://search.yahoo.com/mrss/"
+	>
+
+<channel>
+	<title>New York Post</title>
+	<atom:link href="https://nypost.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://nypost.com</link>
+	<description>Your source for breaking news, news about New York, sports, business, entertainment, opinion, real estate, culture, fashion, and more.</description>
+	<lastBuildDate>Fri, 23 Oct 2026 00:44:59 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.8.11</generator>
+<site xmlns="com-wordpress:feed-additions:1">163456144</site>		<item>
+		<title>How LeBron James acted this time after national anthem — and Trump&#8217;s evisceration</title>
+		<comments>https://nypost.com/2026/10/22/sports/how-lebron-james-acted-this-time-after-national-anthem-and-trumps-evisceration/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:44:51 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:44:59-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/how-lebron-james-acted-this-time-after-national-anthem-and-trumps-evisceration/</link>
+			<dc:creator>Thomas Gamba-Ellis</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41474113</guid>
+												<description><![CDATA[LeBron James was as still as a statue during the national anthem before Thursday's game between the 76ers and Cavaliers.]]></description>
+			<content:encoded><![CDATA[LeBron James was as still as a statue during the national anthem before Thursday's game between the 76ers and Cavaliers.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnewspress-collage-bfl8rxyr5-1792714112118.jpg?quality%3D90%26strip%3Dall%261792699731"
+						type="image/jpeg"
+						length="158847"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41474113</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fgeneral-view-philadelphia-76ers-forward-146139314.jpg?w%3D1024" medium="image">
+			<media:title type="html">Philadelphia 76ers forward LeBron James stands with his hand on his chest during the anthem before a game against the Cleveland Cavaliers.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fpresident-donald-trump-speaks-reporters-146122029.jpg?w%3D1024" medium="image">
+			<media:title type="html">President Donald Trump speaks to reporters in Washington.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Halle Berry’s ex Olivier Martinez doubles down on abuse claims in court showdown</title>
+		<comments>https://pagesix.com/2026/10/22/celebrity-news/halle-berrys-ex-olivier-martinez-doubles-down-on-abuse-claims-in-court-showdown/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:40:49 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:41:01-04:00</dcterms:modified>
+						<link>https://pagesix.com/2026/10/22/celebrity-news/halle-berrys-ex-olivier-martinez-doubles-down-on-abuse-claims-in-court-showdown/</link>
+			<dc:creator>Sarah Jones, Nate Grant</dc:creator>
+		
+		<guid isPermaLink="false">https://pagesix.com/?post_type=article&#038;p=9257869</guid>
+												<description><![CDATA[The French actor was grilled by Berry’s attorney, Marina Beck, during cross-examination Thursday, marking the fourth consecutive day of proceedings in their ongoing custody dispute and domestic violence restraining order hearing.]]></description>
+			<content:encoded><![CDATA[The French actor was grilled by Berry’s attorney, Marina Beck, during cross-examination Thursday, marking the fourth consecutive day of proceedings in their ongoing custody dispute and domestic violence restraining order hearing.]]></content:encoded>
+								<enclosure url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2F146142330.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="1267424"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">9257869</post-id>
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fhalle-berry-seen-arrives-stanley-146087337.jpg" medium="image">
+			<media:title type="html">Halle Berry wearing a gray plaid pantsuit and sunglasses arriving at the Stanley Mosk courthouse.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fexclusive-los-angeles-ca-halle-146094162.jpg" medium="image">
+			<media:title type="html">Olivier Martinez arriving for a custody hearing.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fhalle-berry-seen-arrives-stanley-146087857.jpg" medium="image">
+			<media:title type="html">Halle Berry wearing a dark plaid suit, a white shirt, and sunglasses outside the courthouse.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fhalle-berry-seen-arrives-stanley-146087794.jpg" medium="image">
+			<media:title type="html">Halle Berry arrives at the Stanley Mosk courthouse.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fexclusive-los-angeles-ca-halle-146094169.jpg" medium="image">
+			<media:title type="html">Olivier Martinez and security personnel arrive for a custody hearing.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Folivier-martinez-seen-lawyer-arriving-145869685.jpg" medium="image">
+			<media:title type="html">Olivier Martinez and his lawyer walking together outdoors.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3722277_020_19e82e.jpg?w%3D683" medium="image">
+			<media:title type="html">Halle Berry arriving at court in a black pinstripe suit and sunglasses.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3722277_024_c143ba.jpg" medium="image">
+			<media:title type="html">Halle Berry arriving at court wearing a black pinstriped pantsuit and sunglasses, carrying a black handbag and coat.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fhalle-berry-seen-arrives-stanley-146087574.jpg" medium="image">
+			<media:title type="html">Halle Berry arrives at the Stanley Mosk courthouse.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3722285_003_8a8ed3.jpg" medium="image">
+			<media:title type="html">Olivier Martinez walking outside with a man in a suit carrying luggage.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3716410_001.jpg" medium="image">
+			<media:title type="html">Olivier Martinez with his son Maceo near a car.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3706686_098-1-copy.jpg" medium="image">
+			<media:title type="html">Halle Berry walking in a parking lot with her son Maceo.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Factress-halle-berry-r-actor-143349464_6b3352.jpg" medium="image">
+			<media:title type="html">Halle Berry and Olivier Martinez arrive at the premiere of &#034;Cloud Atlas&#034;.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Factors-halle-berry-olivier-martinez-143349454_3995cc.jpg" medium="image">
+			<media:title type="html">Actors Halle Berry and Olivier Martinez stand together, smiling at an event.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Halle Berry’s ex Olivier Martinez doubles down on abuse claims in court showdown</title>
+		<comments>https://pagesix.com/2026/10/22/celebrity-news/halle-berrys-ex-olivier-martinez-doubles-down-on-abuse-claims-in-court-showdown/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:40:49 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:40:49-04:00</dcterms:modified>
+						<link>https://pagesix.com/2026/10/22/celebrity-news/halle-berrys-ex-olivier-martinez-doubles-down-on-abuse-claims-in-court-showdown/</link>
+			<dc:creator>mliss1578</dc:creator>
+		
+		<guid isPermaLink="false">https://pagesix.com/2026/10/22/celebrity-news/halle-berrys-ex-olivier-martinez-doubles-down-on-abuse-claims-in-court-showdown/</guid>
+												<description><![CDATA[The French actor was grilled by Berry’s attorney, Marina Beck, during cross-examination Thursday, marking the fourth consecutive day of proceedings in their ongoing custody dispute and domestic violence restraining order hearing.]]></description>
+			<content:encoded><![CDATA[The French actor was grilled by Berry’s attorney, Marina Beck, during cross-examination Thursday, marking the fourth consecutive day of proceedings in their ongoing custody dispute and domestic violence restraining order hearing.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F146142330.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="1267424"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41474831</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F146142330.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F146142330.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">146142330</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fhalle-berry-seen-arrives-stanley-146087337.jpg" medium="image">
+			<media:title type="html">Halle Berry wearing a gray plaid pantsuit and sunglasses arriving at the Stanley Mosk courthouse.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fexclusive-los-angeles-ca-halle-146094162.jpg" medium="image">
+			<media:title type="html">Olivier Martinez arriving for a custody hearing.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fmeghan-markle-dad.jpg?w%3D171%26" medium="image" />
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fkristin.jpg?w%3D171%26" medium="image" />
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2F146087881.jpg?w%3D171%26" medium="image" />
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fhalle-berry-seen-arrives-stanley-146087857.jpg" medium="image">
+			<media:title type="html">Halle Berry wearing a dark plaid suit, a white shirt, and sunglasses outside the courthouse.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fhalle-berry-seen-arrives-stanley-146087794.jpg" medium="image">
+			<media:title type="html">Halle Berry arrives at the Stanley Mosk courthouse.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fexclusive-los-angeles-ca-halle-146094169.jpg" medium="image">
+			<media:title type="html">Olivier Martinez and security personnel arrive for a custody hearing.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Folivier-martinez-seen-lawyer-arriving-145869685.jpg" medium="image">
+			<media:title type="html">Olivier Martinez and his lawyer walking together outdoors.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3722277_020_19e82e.jpg?w%3D683" medium="image">
+			<media:title type="html">Halle Berry arriving at court in a black pinstripe suit and sunglasses.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3722277_024_c143ba.jpg" medium="image">
+			<media:title type="html">Halle Berry arriving at court wearing a black pinstriped pantsuit and sunglasses, carrying a black handbag and coat.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fhalle-berry-seen-arrives-stanley-146087574.jpg" medium="image">
+			<media:title type="html">Halle Berry arrives at the Stanley Mosk courthouse.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3722285_003_8a8ed3.jpg" medium="image">
+			<media:title type="html">Olivier Martinez walking outside with a man in a suit carrying luggage.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3716410_001.jpg" medium="image">
+			<media:title type="html">Olivier Martinez with his son Maceo near a car.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2FBGUS_3706686_098-1-copy.jpg" medium="image">
+			<media:title type="html">Halle Berry walking in a parking lot with her son Maceo.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Factress-halle-berry-r-actor-143349464_6b3352.jpg" medium="image">
+			<media:title type="html">Halle Berry and Olivier Martinez arrive at the premiere of &#034;Cloud Atlas&#034;.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Factors-halle-berry-olivier-martinez-143349454_3995cc.jpg" medium="image">
+			<media:title type="html">Actors Halle Berry and Olivier Martinez stand together, smiling at an event.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Forget market size — Brewers-Rays World Series is must-see TV</title>
+		<comments>https://nypost.com/2026/10/22/sports/forget-market-size-brewers-rays-world-series-is-must-see-tv/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:37:38 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:37:42-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/forget-market-size-brewers-rays-world-series-is-must-see-tv/</link>
+			<dc:creator>Jon Heyman</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41474354</guid>
+												<description><![CDATA[This country may need a nudge since ratings are expected to be brutal with the Yankees, Dodgers and all the most marquee teams home now. ]]></description>
+			<content:encoded><![CDATA[This country may need a nudge since ratings are expected to be brutal with the Yankees, Dodgers and all the most marquee teams home now. ]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnewspress-collage-04uts0rjh-1792714235083.jpg?quality%3D90%26strip%3Dall%261792699862"
+						type="image/jpeg"
+						length="367178"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41474354</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fmilwaukee-brewers-celebrate-game-4-145230612.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fmilwaukee-brewers-celebrate-game-4-145230612.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">NLCS Brewers Dodgers Baseball</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F13-freddy-peralta-51-tampa-145792959.jpg?w%3D1024" medium="image">
+			<media:title type="html">Junior Caminero and Freddy Peralta of the Tampa Bay Rays celebrate their American League Championship Series victory.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Ftampa-bay-rays-junior-caminero-145784716.jpg?w%3D1024" medium="image">
+			<media:title type="html">Tampa Bay Rays&#039; Junior Caminero celebrates a home run.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>This is Cam Skattebo&#8217;s time for Giants redemption — expect him to seize it</title>
+		<comments>https://nypost.com/2026/10/22/sports/this-is-cam-skattebos-time-for-giants-redemption/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:34:54 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:34:58-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/this-is-cam-skattebos-time-for-giants-redemption/</link>
+			<dc:creator>Mark Cannizzaro</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41474289</guid>
+												<description><![CDATA[Cam Skattebo didn’t mince his words Thursday, three days ahead of the Giants’ pivotal matchup against the surging Texans on Sunday in Houston. ]]></description>
+			<content:encoded><![CDATA[Cam Skattebo didn’t mince his words Thursday, three days ahead of the Giants’ pivotal matchup against the surging Texans on Sunday in Houston. ]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnewspress-collage-g2679xten-1792714874114.jpg?quality%3D90%26strip%3Dall%261792700504"
+						type="image/jpeg"
+						length="377488"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41474289</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F102226Giants02CW.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F102226Giants02CW.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">10/22/26 - New York Giants practice at the New York Giants training facility in East Rutherford, New Jersey</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F101826Giants1328_93d5bb.jpg?w%3D1024" medium="image">
+			<media:title type="html">A dejected New York Giants player, wearing jersey number 44, walks off the field holding his helmet at MetLife Stadium.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F44-new-york-giants-runs-143791371.jpg?w%3D1024" medium="image">
+			<media:title type="html">New York Giants running back Cam Skattebo runs with the ball while an Arizona Cardinals defender attempts a tackle.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F18-hands-off-ball-new-146104467.jpg?w%3D1024" medium="image">
+			<media:title type="html">New York Giants quarterback J.J. McCarthy (18) hands off the ball to running back Cam Skattebo (44) during practice at the team&#039;s training facility.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Lakers key piece expected to make season debut vs. Clippers</title>
+		<comments>https://nypost.com/2026/10/22/sports/lakers-collin-sexton-making-season-debut-vs-clippers/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:34:42 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:34:51-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/lakers-collin-sexton-making-season-debut-vs-clippers/</link>
+			<dc:creator>Khobi Price</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41474685</guid>
+												<description><![CDATA[The Lakers’ backcourt is about to get a lot healthier.]]></description>
+			<content:encoded><![CDATA[The Lakers’ backcourt is about to get a lot healthier.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnewspress-collage-hcfuo1xoc-1792715228026.jpg?quality%3D90%26strip%3Dall%261792700882"
+						type="image/jpeg"
+						length="289233"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41474685</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Flos-angeles-lakers-player-collin-142937706_8198c8.jpg?w%3D1024" medium="image">
+			<media:title type="html">Los Angeles Lakers player Collin Sexton speaks into a microphone during media day.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fuser-expressly-acknowledges-agrees-downloading-144942027_861157.jpg?w%3D683" medium="image">
+			<media:title type="html">Collin Sexton arrives at the arena wearing a white t-shirt, blue jeans, and checkered sneakers.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Pilot, wife and dogs survive dramatic tree-top crash landing after plane suffers engine failure: &#8216;Just pray&#8217;</title>
+		<comments>https://nypost.com/2026/10/22/us-news/pilot-wife-and-dogs-survive-dramatic-tree-top-crash-landing-after-plane-suffers-engine-failure-just-pray/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:32:57 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:33:05-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/us-news/pilot-wife-and-dogs-survive-dramatic-tree-top-crash-landing-after-plane-suffers-engine-failure-just-pray/</link>
+			<dc:creator>Daniel Cody</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41471294</guid>
+												<description><![CDATA[Autumn Davis asked what she could do — and her husband gave her the only option left: “I said, ‘Babe, just pray, just pray.'"]]></description>
+			<content:encoded><![CDATA[Autumn Davis asked what she could do — and her husband gave her the only option left: “I said, ‘Babe, just pray, just pray.'"]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2FUntitled-1-18.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="1931494"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41471294</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fdustin-autumn-davis-nc-pilot-146130213.jpg?w%3D768" medium="image">
+			<media:title type="html">A small white airplane crashed and wedged vertically among tall trees in a dense forest.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fdustin-autumn-davis-nc-pilot-146130210.jpg?w%3D1024" medium="image">
+			<media:title type="html">Dustin and Autumn Davis sitting in an airplane with their two dogs.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fdustin-autumn-davis-nc-pilot-146130212.jpg?w%3D768" medium="image">
+			<media:title type="html">A small airplane crashed and wedged vertically between trees in a dense forest.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Thomas Markle&#8217;s daughter Samantha claims brother &#8216;wants revenge,&#8217; calls child porn accusations &#8216;lies&#8217; over money</title>
+		<comments>https://pagesix.com/2026/10/22/royal-family/samantha-markle-defends-dad-thomas-sr-amid-child-porn-investigation/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:20:23 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:45:01-04:00</dcterms:modified>
+						<link>https://pagesix.com/2026/10/22/royal-family/samantha-markle-defends-dad-thomas-sr-amid-child-porn-investigation/</link>
+			<dc:creator>Wendy Geller</dc:creator>
+		
+		<guid isPermaLink="false">https://pagesix.com/?post_type=article&#038;p=9261260</guid>
+												<description><![CDATA["There is no proof my dad downloaded any images," she says, claiming her brother was upset about being cut off from family funds.]]></description>
+			<content:encoded><![CDATA["There is no proof my dad downloaded any images," she says, claiming her brother was upset about being cut off from family funds.]]></content:encoded>
+								<enclosure url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2F146139252.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="1433196"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">9261260</post-id>
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2F2016-samantha-markle-aka-samantha-146139166.jpg?w%3D1024" medium="image">
+			<media:title type="html">Samantha Markle sitting in a carved wooden chair outside her home in Ocala, Florida.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fsplashnews-com-splash-news-pictures-146139167.jpg?w%3D827" medium="image">
+			<media:title type="html">Samantha Markle in a wheelchair, smiling while shopping.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2F500-month-high-end-accommodation-146135461.jpg?w%3D642" medium="image">
+			<media:title type="html">Thomas Markle and his son, Tom Markle Junior, walking together outside.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fnottingham-united-kingdom-prince-harry-145175506_80bf44.jpg?w%3D683" medium="image">
+			<media:title type="html">Meghan Markle, Duchess of Sussex, visiting Nottingham, UK.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fstory-aired-channel-5-uk-146134731.jpg?w%3D1024" medium="image">
+			<media:title type="html">Thomas Markle and his daughter, Duchess Meghan Markle, posing outdoors.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fthomas-markle-joins-celebrity-photographer-146129965_333a5c.jpg?w%3D795" medium="image">
+			<media:title type="html">Thomas Markle outside a convenience store.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Samantha Markle claims brother ‘wants revenge’ as she defends dad Thomas Sr. amid child porn investigation</title>
+		<comments>https://pagesix.com/2026/10/22/royal-family/samantha-markle-defends-dad-thomas-sr-amid-child-porn-investigation/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:20:23 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:20:23-04:00</dcterms:modified>
+						<link>https://pagesix.com/2026/10/22/royal-family/samantha-markle-defends-dad-thomas-sr-amid-child-porn-investigation/</link>
+			<dc:creator>mliss1578</dc:creator>
+		
+		<guid isPermaLink="false">https://pagesix.com/2026/10/22/royal-family/samantha-markle-defends-dad-thomas-sr-amid-child-porn-investigation/</guid>
+												<description><![CDATA["There is no proof my dad downloaded any images," she says, claiming her brother was upset about being cut off from family funds.]]></description>
+			<content:encoded><![CDATA["There is no proof my dad downloaded any images," she says, claiming her brother was upset about being cut off from family funds.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F146139252.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="1433196"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41474682</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F146139252.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F146139252.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">146139252</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2F2016-samantha-markle-aka-samantha-146139166.jpg?w%3D1024" medium="image">
+			<media:title type="html">Samantha Markle sitting in a carved wooden chair outside her home in Ocala, Florida.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fsplashnews-com-splash-news-pictures-146139167.jpg?w%3D827" medium="image">
+			<media:title type="html">Samantha Markle in a wheelchair, smiling while shopping.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fmeghan-markle-dad.jpg?w%3D171%26" medium="image" />
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fkristin.jpg?w%3D171%26" medium="image" />
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2F146087881.jpg?w%3D171%26" medium="image" />
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2F500-month-high-end-accommodation-146135461.jpg?w%3D642" medium="image">
+			<media:title type="html">Thomas Markle and his son, Tom Markle Junior, walking together outside.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fnottingham-united-kingdom-prince-harry-145175506_80bf44.jpg?w%3D683" medium="image">
+			<media:title type="html">Meghan Markle, Duchess of Sussex, visiting Nottingham, UK.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fstory-aired-channel-5-uk-146134731.jpg?w%3D1024" medium="image">
+			<media:title type="html">Thomas Markle and his daughter, Duchess Meghan Markle, posing outdoors.</media:title>
+		</media:content>
+
+		<media:content url="https://pagesix.com/wp-content%2Fuploads%2Fsites%2F3%2F2026%2F10%2Fthomas-markle-joins-celebrity-photographer-146129965_333a5c.jpg?w%3D795" medium="image">
+			<media:title type="html">Thomas Markle outside a convenience store.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Brewers owner takes jab at Dodgers in latest response to Tarik Skubal trade</title>
+		<comments>https://nypost.com/2026/10/22/sports/brewers-owner-takes-jab-at-dodgers-over-tarik-skubal-trade/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:13:43 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:13:51-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/brewers-owner-takes-jab-at-dodgers-over-tarik-skubal-trade/</link>
+			<dc:creator>Valentina Martinez</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41473287</guid>
+												<description><![CDATA[The Dodgers won the trade deadline with the acquisition of Tarik Skubal — but that doesn&#8217;t mean they ultimately prevailed. The Brewers were reportedly in the mix to land Skubal in a blockbuster trade, but Milwaukee managed to sweep the Dodgers despite losing out on the two-time American League Cy Young Award winner. Brewers owner...]]></description>
+			<content:encoded><![CDATA[The Dodgers won the trade deadline with the acquisition of Tarik Skubal — but that doesn&#8217;t mean they ultimately prevailed. The Brewers were reportedly in the mix to land Skubal in a blockbuster trade, but Milwaukee managed to sweep the Dodgers despite losing out on the two-time American League Cy Young Award winner. Brewers owner...]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnewspress-collage-lw1tzrfvs-1792713909403.jpg?quality%3D90%26strip%3Dall%261792699538"
+						type="image/jpeg"
+						length="284815"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41473287</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Flos-angeles-dodgers-pitcher-tarik-144708163.jpg?w%3D1024" medium="image">
+			<media:title type="html">Los Angeles Dodgers pitcher Tarik Skubal reacts on the field.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fmilwaukee-brewers-chairman-principal-owner-146130309.jpg?w%3D1024" medium="image">
+			<media:title type="html">Milwaukee Brewers Chairman and Principal Owner Mark Attanasio speaks at a press conference before a workout session.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fmilwaukee-brewers-players-react-winning-145238791.jpg?w%3D1024" medium="image">
+			<media:title type="html">Milwaukee Brewers players celebrate winning NLCS Game 4 against the Los Angeles Dodgers.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Karl-Anthony Towns&#8217; continued foul trouble no laughing matter for Knicks</title>
+		<comments>https://nypost.com/2026/10/22/sports/karl-anthony-towns-continued-foul-trouble-no-laughing-matter-for-knicks/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:11:37 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:11:46-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/karl-anthony-towns-continued-foul-trouble-no-laughing-matter-for-knicks/</link>
+			<dc:creator>Jared Schwartz</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41473588</guid>
+												<description><![CDATA[Karl-Anthony Towns provided a reminder of one of comedy’s greatest lessons. ]]></description>
+			<content:encoded><![CDATA[Karl-Anthony Towns provided a reminder of one of comedy’s greatest lessons. ]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fcrop-41473947.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="1058563"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41473588</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnew-york-knicks-center-karl-145900154_3d6897.jpg?w%3D1024" medium="image">
+			<media:title type="html">New York Knicks center Karl-Anthony Towns (32) reacts after being called for a foul during a game against the Philadelphia 76ers.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F2026-madison-square-garden-new-145896675.jpg?w%3D1024" medium="image">
+			<media:title type="html">Karl-Anthony Towns of the New York Knicks handles the ball during a game against the Philadelphia 76ers.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>McDonald&#8217;s brings back cult-favorite BBQ sandwich — and Los Angeles is on the menu</title>
+		<comments>https://nypost.com/2026/10/22/lifestyle/mcdonalds-brings-back-cult-favorite-mcrib-sandwich/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:10:50 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:11:01-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/lifestyle/mcdonalds-brings-back-cult-favorite-mcrib-sandwich/</link>
+			<dc:creator>Brian Gallagher</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41469924</guid>
+												<description><![CDATA[Fast food aficionados will rejoice with the return of a beloved sandwich later this month — but it will only be for consumers in select cities.]]></description>
+			<content:encoded><![CDATA[Fast food aficionados will rejoice with the return of a beloved sandwich later this month — but it will only be for consumers in select cities.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F146126157.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="702819"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41469924</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fcounter-area-kitchen-menus-visible-146126271.jpg?w%3D1024" medium="image">
+			<media:title type="html">Wide-angle view of the counter area and kitchen inside a McDonald&#039;s restaurant, with menus displayed above.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F2010-san-francisco-california-sandwich-146125887.jpg?w%3D1024" medium="image">
+			<media:title type="html">A McRib sandwich rests on a red tray liner, featuring a boneless pork patty coated in barbecue sauce, topped with sliced onions and pickles, all inside an elongated roll dusted with cornmeal.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fphoto-ian-west-pa-images-146125888.jpg?w%3D1024" medium="image">
+			<media:title type="html">A McDonald&#039;s restaurant in Los Angeles, featuring a large drive-thru sign in the foreground and the city&#039;s hills in the background.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Faerial-view-fast-food-restaurants-146125910.jpg?w%3D1024" medium="image">
+			<media:title type="html">Aerial view of Crenshaw Boulevard in south Los Angeles, showing fast food restaurants including McDonald&#039;s, Taco Bell, and surrounding urban landscape.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Todd Benzinger, Reds World Series champ, dead at 63</title>
+		<comments>https://nypost.com/2026/10/22/sports/todd-benzinger-reds-world-series-champ-dead-at-63/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:04:21 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:04:30-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/todd-benzinger-reds-world-series-champ-dead-at-63/</link>
+			<dc:creator>Thomas Gamba-Ellis</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41473603</guid>
+												<description><![CDATA[The first baseman's cause of death has yet to be announced, but Hall of Fame shortstop Barry Larkin, a Reds teammate of Benzinger, said that his death came as a “shock.”]]></description>
+			<content:encoded><![CDATA[The first baseman's cause of death has yet to be announced, but Hall of Fame shortstop Barry Larkin, a Reds teammate of Benzinger, said that his death came as a “shock.”]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fcrop-41474232.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="2706465"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41473603</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2FGettyImages-459762875.jpg?w%3D1024" medium="image">
+			<media:title type="html">A Cincinnati Reds player in uniform is crouched in a ready position on the field during the World Series.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Foakland-athletics-jose-canseco-off-146101037.jpg?w%3D1024" medium="image">
+			<media:title type="html">Oakland Athletics&#039; Jose Canseco is almost picked off by Boston Red Sox first baseman Todd Benzinger during a game.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>USMNT&#8217;s Concacaf Nations League road quarterfinal shifts from Jamaica to Miami</title>
+		<comments>https://nypost.com/2026/10/22/sports/usmnts-concacaf-nations-league-road-quarterfinal-shifts-to-miami/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:03:07 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:03:20-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/usmnts-concacaf-nations-league-road-quarterfinal-shifts-to-miami/</link>
+			<dc:creator>Christian Arnold</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41473441</guid>
+												<description><![CDATA[The U.S. men’s national team will play the first leg of their Concacaf Nations League quarterfinal against Haiti in South Florida.]]></description>
+			<content:encoded><![CDATA[The U.S. men’s national team will play the first leg of their Concacaf Nations League quarterfinal against Haiti in South Florida.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fcrop-41473803.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="4217677"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41473441</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2FGettyImages-2298380730.jpg?w%3D1024" medium="image">
+			<media:title type="html">USA soccer player battles for the ball against a Canada player.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2FGettyImages-2298387418.jpg?w%3D1024" medium="image">
+			<media:title type="html">USA and Canada soccer players competing for the ball.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Lefty LA Council blasted over plan to study city-owned bank: ‘We can’t even manage our own damn finances’</title>
+		<comments>https://nypost.com/2026/10/22/us-news/la-votes-to-fund-public-bank-study-despite-100m-budget-gap/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 20:00:47 -0400</pubDate>
+		<dcterms:modified>2026-10-22T20:00:50-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/us-news/la-votes-to-fund-public-bank-study-despite-100m-budget-gap/</link>
+			<dc:creator>Daniel Farr</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41472978</guid>
+												<description><![CDATA[The council voted 11-3 Wednesday to spend $460,000 for a feasibility study on creating a city-owned bank.]]></description>
+			<content:encoded><![CDATA[The council voted 11-3 Wednesday to spend $460,000 for a feasibility study on creating a city-owned bank.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnewspress-collage-vbb5urypf-1792713408300.jpg?quality%3D90%26strip%3Dall%261792699085"
+						type="image/jpeg"
+						length="292916"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41472978</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fofficials-los-angeles-county-medical-134543504.jpg?w%3D1024" medium="image">
+			<media:title type="html">Los Angeles City Hall.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fboyle-heights-ca-june-25-132298625_eccbdf.jpg?w%3D787" medium="image">
+			<media:title type="html">Councilmember Ysabel Jurado speaks at a press conference regarding a warehouse fire in Boyle Heights.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fcity-council-member-eunisses-hernandez-127138993_ed96bd.jpg?w%3D1024" medium="image">
+			<media:title type="html">City Council member Eunisses Hernandez speaks at a Los Angeles City Council meeting.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fcouncil-member-hugo-soto-mart-144036087.jpg?w%3D1024" medium="image">
+			<media:title type="html">Council member Hugo Soto-Martínez speaks at a committee meeting at City Hall in Los Angeles.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fcouncil-member-traci-park-fellow-144036075.jpg?w%3D1024" medium="image">
+			<media:title type="html">Council member Traci Park at City Hall in Los Angeles.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnithya-ramen-fellow-city-council-144036090.jpg?w%3D1024" medium="image">
+			<media:title type="html">Nithya Raman speaks at a City Council meeting in Los Angeles.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Iran pushes hard on its nuclear rebuild — daring Trump to strike again</title>
+		<comments>https://nypost.com/2026/10/22/opinion/iran-pushes-its-nuclear-rebuild-daring-trump-to-strike-again/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 19:51:49 -0400</pubDate>
+		<dcterms:modified>2026-10-22T19:52:02-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/opinion/iran-pushes-its-nuclear-rebuild-daring-trump-to-strike-again/</link>
+			<dc:creator>Andrea Stricker</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41469359</guid>
+												<description><![CDATA[Washington and Jerusalem are seriously weighing fresh strikes on Iran — largely to disrupt a nuclear rebuild that Tehran is now openly admitting.]]></description>
+			<content:encoded><![CDATA[Washington and Jerusalem are seriously weighing fresh strikes on Iran — largely to disrupt a nuclear rebuild that Tehran is now openly admitting.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fmotorbikes-drive-past-iranian-missiles-143028669.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="9654446"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41469359</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fmotorbikes-drive-past-iranian-missiles-143028669.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fmotorbikes-drive-past-iranian-missiles-143028669.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">APTOPIX Iran War</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>The truth about MLB&#8217;s payroll disparity problem — and how to potentially fix it</title>
+		<comments>https://nypost.com/2026/10/22/sports/the-truth-about-mlbs-payroll-disparity-problem-and-how-to-potentially-fix-it/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 19:48:10 -0400</pubDate>
+		<dcterms:modified>2026-10-22T19:48:13-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/the-truth-about-mlbs-payroll-disparity-problem-and-how-to-potentially-fix-it/</link>
+			<dc:creator>Joel Sherman</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41468945</guid>
+												<description><![CDATA[The Dodgers were never the bogeyman.]]></description>
+			<content:encoded><![CDATA[The Dodgers were never the bogeyman.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnewspress-collage-smtq8xtt2-1792701174751.jpg?quality%3D90%26strip%3Dall%261792686823"
+						type="image/jpeg"
+						length="301964"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41468945</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Flos-angeles-dodgers-pitcher-tarik-144706302.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Flos-angeles-dodgers-pitcher-tarik-144706302.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">MLB: NLCS-Los Angeles Dodgers at Milwaukee Brewers</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Ftampa-bay-rays-players-celebrate-145790989.jpg?w%3D1024" medium="image">
+			<media:title type="html">Tampa Bay Rays players celebrate winning the American League Championship Series.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Flos-angeles-dodgers-pitcher-tyler-145221820.jpg?w%3D1024" medium="image">
+			<media:title type="html">Los Angeles Dodgers pitcher Tyler Glasnow reacts on the field.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Why you should be VERY suspicious of Ilhan Omar&#8217;s latest plea for cash</title>
+		<comments>https://nypost.com/2026/10/22/opinion/be-very-suspicious-of-ilhan-omars-latest-plea-for-cash/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 19:48:10 -0400</pubDate>
+		<dcterms:modified>2026-10-22T19:48:18-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/opinion/be-very-suspicious-of-ilhan-omars-latest-plea-for-cash/</link>
+			<dc:creator>Post Editorial Board</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41473195</guid>
+												<description><![CDATA[Wow: After a week of silence about the FBI raid on her DC home, Rep. Ilhan Omar surfaced . . . to ask for cash.]]></description>
+			<content:encoded><![CDATA[Wow: After a week of silence about the FBI raid on her DC home, Rep. Ilhan Omar surfaced . . . to ask for cash.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Filhan-omar-begs-for-cash.jpg?quality%3D90%26strip%3Dall%261792698464"
+						type="image/jpeg"
+						length="211791"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41473195</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Filhan-omar-begs-for-cash.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Filhan-omar-begs-for-cash.jpg?quality%3D90%26strip%3Dall%261792698464%261792698464" medium="image">
+			<media:title type="html">ilhan-omar-begs-for-cash</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>The WNBA&#8217;s national anthem buffoonery sends a clear and ignorant message</title>
+		<comments>https://nypost.com/2026/10/22/sports/the-wnbas-national-anthem-buffoonery-sends-a-clear-message/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 19:46:11 -0400</pubDate>
+		<dcterms:modified>2026-10-22T19:46:14-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/sports/the-wnbas-national-anthem-buffoonery-sends-a-clear-message/</link>
+			<dc:creator>Phil Mushnick</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41464341</guid>
+												<description><![CDATA[The WNBA has set its course on self-ruin as it rots from the inside out.]]></description>
+			<content:encoded><![CDATA[The WNBA has set its course on self-ruin as it rots from the inside out.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnewspress-collage-551p81a5i-1792691729161.jpg?quality%3D90%26strip%3Dall%261792677367"
+						type="image/jpeg"
+						length="231467"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41464341</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fuser-expressly-acknowledges-agrees-downloading-146016021.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fuser-expressly-acknowledges-agrees-downloading-146016021.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">2026 WNBA Finals - Game Three</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fatlanta-dream-forward-angel-reese-146036945.jpg?w%3D1024" medium="image">
+			<media:title type="html">Atlanta Dream forward Angel Reese reacts after a foul during the WNBA Finals.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fuser-expressly-acknowledges-agrees-downloading-143356521.jpg?w%3D1024" medium="image">
+			<media:title type="html">Caitlin Clark and Sophie Cunningham of the Indiana Fever stand for the national anthem before a playoff game against the Las Vegas Aces.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Ftampa-bay-rays-junior-caminero-145161641.jpg?w%3D1024" medium="image">
+			<media:title type="html">Tampa Bay Rays&#039; Junior Caminero reacts after striking out against the Cleveland Guardians during a game.</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Hypocrite Democrats shriek at Ilhan Omar probe — while vowing lawfare on the GOP</title>
+		<comments>https://nypost.com/2026/10/22/opinion/hypocrite-democrats-shriek-at-ilhan-omar-probe-and-vow-lawfare-on-the-gop/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 19:40:50 -0400</pubDate>
+		<dcterms:modified>2026-10-22T19:41:00-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/opinion/hypocrite-democrats-shriek-at-ilhan-omar-probe-and-vow-lawfare-on-the-gop/</link>
+			<dc:creator>Josh Hammer</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41470900</guid>
+												<description><![CDATA[Sen. Elissa Slotkin's promise of an explicit witch hunt against anyone serving in a Republican administration reveals Democrats’ dystopian view of the rule of law.]]></description>
+			<content:encoded><![CDATA[Sen. Elissa Slotkin's promise of an explicit witch hunt against anyone serving in a Republican administration reveals Democrats’ dystopian view of the rule of law.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F2026-minneapolis-minn-day-man-146138728-e1792711936645.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="313492"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41470900</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F2026-minneapolis-minn-day-man-146138728-e1792711936645.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F2026-minneapolis-minn-day-man-146138728-e1792711936645.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">Ilhan Omar Faces Renewed Questions Over Immigration and Citizenship Records</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Why alleged GWB shooter was hit with lesser charge in road-rage death of beloved Con Ed worker</title>
+		<comments>https://nypost.com/2026/10/22/us-news/why-alleged-gwb-shooter-was-hit-with-lesser-charge-in-road-rage-death/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 19:32:37 -0400</pubDate>
+		<dcterms:modified>2026-10-22T19:44:20-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/us-news/why-alleged-gwb-shooter-was-hit-with-lesser-charge-in-road-rage-death/</link>
+			<dc:creator>Priscilla DeGregory</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41470904</guid>
+												<description><![CDATA[Legal experts explain why the retired cop who allegedly shot dead a utility worker in a road rage incident was surprisingly charged with manslaughter instead of murder.]]></description>
+			<content:encoded><![CDATA[Legal experts explain why the retired cop who allegedly shot dead a utility worker in a road rage incident was surprisingly charged with manslaughter instead of murder.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2F146129042.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="1631942"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41470904</post-id>
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fshooting-victim-koran-irvine-seen-145952295_bea28a.jpg?w%3D591" medium="image">
+			<media:title type="html">Koran Irvine</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fpre3ss-conference-vics-family-victo-146103096_16dbc9.jpg?w%3D1024" medium="image">
+			<media:title type="html">Irvine&#039;s family members attend a court hearing for  Romero.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fvictim-doa-scene-george-washington-145917425_d78407.jpg?w%3D1024" medium="image">
+			<media:title type="html">A victim is dead on the scene following a fatal shooting on the eastbound George Washington Bridge on Tuesday, Oct. 20, 2026.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fmichael-concentrates-practice-white-collar-146128163_5b7e40.jpg?w%3D350" medium="image">
+			<media:title type="html">Michael Bachner.</media:title>
+		</media:content>
+
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Frobert-gottlieb-defense-atturney-anthony-20702569.jpg?w%3D1024" medium="image">
+			<media:title type="html">Robert Gottlieb</media:title>
+		</media:content>
+	</item>
+				<item>
+		<title>Highly-paid absentee pols are taking NY taxpayers for a free ride</title>
+		<comments>https://nypost.com/2026/10/22/opinion/highly-paid-absentee-pols-are-taking-ny-taxpayers-for-a-free-ride/#respond</comments>
+		<pubDate>Thu, 22 Oct 2026 19:30:45 -0400</pubDate>
+		<dcterms:modified>2026-10-22T19:30:53-04:00</dcterms:modified>
+						<link>https://nypost.com/2026/10/22/opinion/highly-paid-absentee-pols-are-taking-ny-taxpayers-for-a-free-ride/</link>
+			<dc:creator>Post Editorial Board</dc:creator>
+		
+		<guid isPermaLink="false">https://nypost.com/?post_type=article&#038;p=41442044</guid>
+												<description><![CDATA[State lawmakers and City Council members scored massive pay hikes in recent years on the promise of being “full time” public servants — which makes their routine no-shows all the more infuriating.]]></description>
+			<content:encoded><![CDATA[State lawmakers and City Council members scored massive pay hikes in recent years on the promise of being “full time” public servants — which makes their routine no-shows all the more infuriating.]]></content:encoded>
+								<enclosure url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnew-york-city-council-member-142552065-e1792614985120.jpg?quality%3D90%26strip%3Dall"
+						type="image/jpeg"
+						length="346268"
+					/>
+							<slash:comments>0</slash:comments>
+			<post-id xmlns="com-wordpress:feed-additions:1">41442044</post-id>
+		<media:thumbnail url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnew-york-city-council-member-142552065-e1792614985120.jpg?quality%3D90%26" />
+		<media:content url="https://nypost.com/wp-content%2Fuploads%2Fsites%2F2%2F2026%2F10%2Fnew-york-city-council-member-142552065-e1792614985120.jpg?quality%3D90%26strip%3Dall" medium="image">
+			<media:title type="html">NY: Protesters ?Call to Arrest Netanyahu Near United Nations, New York, United States - 24 Sep 2026</media:title>
+		</media:content>
+	</item>
+			</channel>
+</rss>
+
