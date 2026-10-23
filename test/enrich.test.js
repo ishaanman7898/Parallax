@@ -132,9 +132,46 @@ test("old profiles gain the new display settings", () => {
   const p = Prefs.load(storage);
   assert.deepEqual(p.topics, ["topic:World"]);
   assert.equal(p.splash, true);
-  assert.equal(p.refreshMins, 5);
+  assert.equal(p.startPage, "home");
   p.textSize = "large";
   Prefs.resetDisplay(p);
   assert.equal(p.textSize, "default");
   assert.equal(p.reads, 3);
+});
+
+test("settings save to the data folder and only through a JSON PUT", async () => {
+  const { createServer } = require("../server");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "parallax-"));
+  const server = createServer({ getNews: async () => ({}), getMarkets: async () => ({}), dataDir: dir });
+  await new Promise((r) => server.listen(0, "127.0.0.1", r));
+  const url = `http://127.0.0.1:${server.address().port}/api/prefs`;
+  try {
+    assert.equal((await fetch(url)).status, 204, "nothing saved yet");
+    const put = (body, type = "application/json") => fetch(url, { method: "PUT", headers: { "Content-Type": type }, body });
+    assert.equal((await put(JSON.stringify({ v: 1, textSize: "large" }))).status, 204);
+    assert.deepEqual(await (await fetch(url)).json(), { v: 1, textSize: "large" });
+    assert.ok(fs.existsSync(path.join(dir, "prefs.json")));
+    assert.equal((await put("{}", "text/plain")).status, 405, "simple requests from other sites are refused");
+    assert.equal((await put("[1,2]")).status, 400);
+    assert.equal((await put("not json")).status, 400);
+    fs.writeFileSync(path.join(dir, "prefs.json"), "{broken");
+    assert.equal((await fetch(url)).status, 204, "a corrupt file is ignored rather than crashing the server");
+  } finally {
+    server.close();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("live news answers from cache and announces each new edition", async () => {
+  const { createNewsService, fixtureFetcher } = require("../server/news");
+  const getNews = createNewsService({ fetcher: fixtureFetcher(path.join(__dirname, "fixtures")), images: null, live: false, ttl: 0 });
+  const editions = [];
+  getNews.onUpdate((n) => editions.push(n));
+  const first = await getNews();
+  assert.equal(editions.length, 1);
+  assert.equal(getNews.progress().phase, "ready");
+  const second = await getNews();
+  assert.equal(second, first, "a stale cache is served at once while it rebuilds");
+  await new Promise((r) => setTimeout(r, 300));
+  assert.equal(editions.length, 2, "the background rebuild announced a new edition");
 });

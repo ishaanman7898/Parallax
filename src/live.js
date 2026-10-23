@@ -34,17 +34,34 @@
   const loadProgress = () => getJson("api/progress").catch(() => null);
   const loadInfo = () => getJson("api/info").catch(() => null);
 
-  // Live Yahoo Finance prices relayed by the Parallax server as server-sent events.
-  function streamQuotes(onQuote) {
+  // Settings saved by the server in its data folder. Null when the server does not keep them,
+  // as with the plain website, where the browser's local storage is used instead.
+  async function loadPrefs() {
+    try {
+      const res = await fetch("api/prefs", { cache: "no-store" });
+      return res.status === 200 ? await res.json() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  const savePrefs = (prefs) =>
+    fetch("api/prefs", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(prefs) }).catch(() => {});
+
+  // Server-sent events from the Parallax server: unnamed events are live Yahoo Finance
+  // prices, "news" events announce a new news edition.
+  function openStream({ onQuote, onNews }) {
     if (!("EventSource" in window)) return;
     const source = new EventSource("api/stream");
-    source.onmessage = (event) => {
+    const parse = (fn) => (event) => {
       try {
-        onQuote(JSON.parse(event.data));
+        fn(JSON.parse(event.data));
       } catch {
         // Ignore malformed events.
       }
     };
+    source.onmessage = parse(onQuote);
+    source.addEventListener("news", parse(onNews));
   }
 
   const coins = new Map();
@@ -140,7 +157,9 @@
     loadMarkets,
     loadProgress,
     loadInfo,
-    streamQuotes,
+    loadPrefs,
+    savePrefs,
+    openStream,
     hyperliquid: { load: loadHyperliquid, list, candles, connect, watchCandles, onUpdate: (fn) => listeners.add(fn) }
   };
 })();

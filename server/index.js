@@ -17,6 +17,51 @@ const TYPES = {
   ".json": "application/json"
 };
 
+// Settings saved as a file in the data folder (the desktop app's user data folder), so they
+// survive restarts even though the desktop page origin uses a new port every launch.
+// Only PUT with a JSON body is accepted, which browsers always preflight, so other sites
+// cannot write here.
+const MAX_PREFS = 512 * 1024;
+
+function prefsHandler(dataDir) {
+  const file = path.join(dataDir, "prefs.json");
+  return (req, res) => {
+    if (req.method === "GET") {
+      return fs.readFile(file, "utf8", (err, text) => {
+        let prefs = null;
+        try {
+          prefs = err ? null : JSON.parse(text);
+        } catch {
+          prefs = null;
+        }
+        return prefs ? sendJson(res, 200, prefs) : res.writeHead(204).end();
+      });
+    }
+    if (req.method !== "PUT" || !/^application\/json/.test(req.headers["content-type"] || "")) return res.writeHead(405).end();
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk;
+      if (body.length > MAX_PREFS) req.destroy();
+    });
+    req.on("end", () => {
+      let prefs;
+      try {
+        prefs = JSON.parse(body);
+      } catch {
+        return res.writeHead(400).end();
+      }
+      if (!prefs || typeof prefs !== "object" || Array.isArray(prefs)) return res.writeHead(400).end();
+      // Write then rename, so a crash mid write never leaves a half written file.
+      fs.mkdir(dataDir, { recursive: true }, () => {
+        fs.writeFile(file + ".tmp", JSON.stringify(prefs), (err) => {
+          if (err) return res.writeHead(500).end();
+          fs.rename(file + ".tmp", file, (err2) => res.writeHead(err2 ? 500 : 204).end());
+        });
+      });
+    });
+  };
+}
+
 function sendJson(res, status, body) {
   res.writeHead(status, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" });
   res.end(JSON.stringify(body));
@@ -37,8 +82,11 @@ function serveStatic(req, res) {
 function createServer(options = {}) {
   const getNews = options.getNews || createNewsService({ dataDir: options.dataDir });
   const getMarkets = options.getMarkets || createMarketsService();
-  // The live price stream is created on first use, and never in offline fixture mode.
+  // The live stream is created on first use, and never in offline fixture mode. It carries
+  // prices and a "news" event whenever a new news edition is ready.
   let stream = options.stream || null;
+  getNews.onUpdate?.((news) => stream?.send("news", { updated: news.updated, articleCount: news.articleCount }));
+  const prefs = options.dataDir ? prefsHandler(options.dataDir) : null;
   const api = {
     "/api/news": getNews,
     "/api/markets": getMarkets,
@@ -53,6 +101,7 @@ function createServer(options = {}) {
       stream ||= createQuoteStream(SYMBOLS.map((s) => s.symbol));
       return stream.handle(req, res);
     }
+    if (pathname === "/api/prefs") return prefs ? prefs(req, res) : res.writeHead(204).end();
     const route = api[pathname];
     if (!route) return serveStatic(req, res);
     try {

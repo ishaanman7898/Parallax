@@ -156,31 +156,48 @@ async function buildNews(fetcher, now = Date.now(), { images = null, leanModel =
   return news;
 }
 
+// Live mode rebuilds in the background on a timer and tells listeners about each new edition.
+// Requests are always answered from the cache once there is one, so pages never wait on a rebuild.
+const LIVE_EVERY = 3 * 60 * 1000;
+
 function createNewsService({
   fetcher = process.env.PARALLAX_FIXTURES ? fixtureFetcher(process.env.PARALLAX_FIXTURES) : fetchText,
   images = process.env.PARALLAX_FIXTURES ? null : createImageFinder(),
   dataDir = process.env.PARALLAX_DATA || null,
-  ttl = TTL
+  ttl = TTL,
+  live = !process.env.PARALLAX_FIXTURES,
+  liveEvery = LIVE_EVERY
 } = {}) {
   const leanModel = createLeanModel({ dataDir });
+  const listeners = new Set();
   let cache = null;
   let pending = null;
+  let timer = null;
   let progress = { phase: "idle", done: 0, total: 0 };
-  async function getNews() {
-    if (cache && Date.now() - cache.at < ttl) return cache.data;
-    if (!pending) {
-      pending = buildNews(fetcher, Date.now(), { images, leanModel, onProgress: (p) => (progress = p) })
-        .then((data) => {
-          // Keep serving the last good result when every feed fails.
-          if (data.articleCount || !cache) cache = { data, at: Date.now() };
-          return cache.data;
-        })
-        .finally(() => (pending = null));
-    }
+
+  function rebuild() {
+    pending ||= buildNews(fetcher, Date.now(), { images, leanModel, onProgress: (p) => (progress = p) })
+      .then((data) => {
+        // Keep serving the last good result when every feed fails.
+        if (data.articleCount || !cache) {
+          cache = { data, at: Date.now() };
+          listeners.forEach((fn) => fn(data));
+        }
+        return cache.data;
+      })
+      .finally(() => (pending = null));
     return pending;
   }
+
+  async function getNews() {
+    if (live && !timer) timer = setInterval(() => rebuild().catch(() => {}), liveEvery).unref?.() || true;
+    if (!cache) return rebuild();
+    if (Date.now() - cache.at >= ttl) rebuild().catch(() => {});
+    return cache.data;
+  }
   // Load progress for the startup screen. Once a result is cached it reports ready.
-  getNews.progress = () => (cache && !pending ? { phase: "ready", done: 1, total: 1, sources: SOURCES.length } : { ...progress, sources: SOURCES.length });
+  getNews.progress = () => (cache ? { phase: "ready", done: 1, total: 1, sources: SOURCES.length } : { ...progress, sources: SOURCES.length });
+  getNews.onUpdate = (fn) => listeners.add(fn);
   return getNews;
 }
 

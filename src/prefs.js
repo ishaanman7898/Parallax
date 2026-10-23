@@ -23,7 +23,6 @@
     thumbs: true,
     splash: true,
     startPage: "home",
-    refreshMins: 5,
     seed: Math.floor(Math.random() * 2 ** 31),
     reads: 0,
     weights: { topic: {}, source: {}, word: {} },
@@ -142,10 +141,10 @@
   // Restores display settings to their defaults but keeps topics and reading history.
   function resetDisplay(p) {
     const base = fresh();
-    for (const k of ["barStyle", "textSize", "ticker", "thumbs", "splash", "startPage", "refreshMins"]) p[k] = base[k];
+    for (const k of ["barStyle", "textSize", "ticker", "thumbs", "splash", "startPage"]) p[k] = base[k];
   }
 
-  const api = { TOPICS, REGIONS, START_PAGES, DEFAULT_TOPICS, fresh, resetDisplay, load, save, keywords, rand, recordRead, rank, forYou, insights, toggleTopic, resetHistory, topicLabel, topicMatches };
+  const api = { TOPICS, REGIONS, START_PAGES, DEFAULT_TOPICS, fresh, normalize, resetDisplay, load, save, keywords, rand, recordRead, rank, forYou, insights, toggleTopic, resetHistory, topicLabel, topicMatches };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.ParallaxPrefs = api;
 })(typeof window !== "undefined" ? window : globalThis);

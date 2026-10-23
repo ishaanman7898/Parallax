@@ -1,4 +1,5 @@
 // Live prices from the Yahoo Finance streamer, relayed to browsers as server-sent events.
+// The same event stream also carries named events such as "news" when a new edition is ready.
 // The streamer is a public websocket that sends base64 protobuf PricingData messages, one per
 // trade, while a market is open. Outside trading hours it is quiet and the page keeps the
 // last price from the chart API.
@@ -104,7 +105,13 @@ function createQuoteStream(symbols, { connect = (url) => new WebSocketImpl(url) 
     }
   }
 
-  return { handle, latest: () => [...latest.values()] };
+  // Named events for other live updates, such as a new news edition.
+  function send(event, data) {
+    const line = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+    for (const res of clients) res.write(line);
+  }
+
+  return { handle, send, latest: () => [...latest.values()] };
 }
 
 module.exports = { createQuoteStream, decodePricing };

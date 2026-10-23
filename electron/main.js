@@ -114,7 +114,8 @@ function setupUpdates() {
   setInterval(checkForUpdates, 6 * 60 * 60 * 1000);
 }
 
-ipcMain.handle("app:info", () => ({ version: app.getVersion(), packaged: app.isPackaged, platform: process.platform, settings, update }));
+ipcMain.handle("app:info", () => ({ version: app.getVersion(), packaged: app.isPackaged, platform: process.platform, dataDir: app.getPath("userData"), settings, update }));
+ipcMain.handle("app:open-data", () => shell.openPath(app.getPath("userData")));
 ipcMain.handle("app:set", (e, key, value) => {
   if (!(key in DEFAULTS)) return settings;
   settings[key] = value;

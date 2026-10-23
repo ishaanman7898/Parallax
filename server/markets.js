@@ -42,7 +42,10 @@ function parseChart(json, label) {
   const r = json?.chart?.result?.[0];
   if (!r) throw new Error("no chart data");
   const q = r.indicators?.quote?.[0] || {};
-  const series = (q.close || []).filter((x) => x != null);
+  // Closes and their timestamps (ms), skipping empty bars, so the chart can label each point.
+  const points = (q.close || []).map((c, i) => [c, (r.timestamp?.[i] || 0) * 1000]).filter(([c]) => c != null);
+  const series = points.map(([c]) => c);
+  const times = points.map(([, t]) => t);
   const price = r.meta.regularMarketPrice ?? series[series.length - 1];
   const prev = r.meta.previousClose ?? r.meta.chartPreviousClose;
   const open = (q.open || []).find((x) => x != null) ?? prev;
@@ -55,6 +58,7 @@ function parseChart(json, label) {
     change: price - prev,
     changePct: prev ? ((price - prev) / prev) * 100 : 0,
     series,
+    times,
     time: r.meta.regularMarketTime ? new Date(r.meta.regularMarketTime * 1000).toISOString() : null
   };
 }

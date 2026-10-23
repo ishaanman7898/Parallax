@@ -1,12 +1,23 @@
 (function () {
-  const { loadNews, loadMarkets, loadProgress, loadInfo, streamQuotes, hyperliquid } = window.ParallaxData;
+  const { loadNews, loadMarkets, loadProgress, loadInfo, loadPrefs, savePrefs, openStream, hyperliquid } = window.ParallaxData;
   const Prefs = window.ParallaxPrefs;
   const { esc, compact, fmt, pct, signed, dir, plural, side, sourceSide, toneClass, ago, icons, sentimentBar, coverageBar, toneMix, sourceRow, media, articleLink, meta, feedItem } = window.ParallaxUI;
   const app = document.getElementById("app");
   const desktop = window.parallaxDesktop || null;
   const profile = Prefs.load();
+
+  // Settings save to this browser's local storage and, when the server keeps a data folder
+  // (the desktop app always does), to prefs.json there as well. The desktop page gets a new
+  // origin each launch, so the file is what makes its settings stick.
+  let prefsTimer = null;
+  function saveProfile() {
+    Prefs.save(profile);
+    clearTimeout(prefsTimer);
+    prefsTimer = setTimeout(() => savePrefs(profile), 300);
+  }
   const state = {
-    news: null, markets: null, articles: [], byId: new Map(), coins: [], coinMap: new Map(), btc: null,
+    news: null, markets: null, articles: [], byId: new Map(), coins: [], coinMap: new Map(), candles: new Map(),
+    radarSlide: 0, chart: null, chartHover: false,
     pulse: "spx", asideSide: "all", side: "all", region: "All", pageN: 1,
     info: null, desktop: null, update: null, toastFor: null
   };
@@ -115,10 +126,24 @@
   }
 
   function refreshPulse() {
+    // Leave the chart alone while someone is hovering it, so the tooltip does not vanish.
+    if (state.chartHover) return;
     pulseAt = Date.now();
     const el = document.querySelector(".pulse");
     if (el) el.outerHTML = pulseCard();
+    fitPulseChips();
   }
+
+  // Keeps the chosen instrument chip in view after a re-render, and drops the edge fade once
+  // the row is scrolled to its end.
+  function fitPulseChips(scroll = true) {
+    const row = document.querySelector(".pulse-chips");
+    if (!row) return;
+    const active = row.querySelector('[aria-pressed="true"]');
+    if (scroll && active) row.scrollLeft = active.offsetLeft - row.offsetLeft - (row.clientWidth - active.offsetWidth) / 2;
+    row.classList.toggle("at-end", row.scrollLeft + row.clientWidth >= row.scrollWidth - 2);
+  }
+  document.addEventListener("scroll", (e) => e.target.classList?.contains("pulse-chips") && fitPulseChips(false), true);
 
   function onQuote(q) {
     const target = !state.markets?.sample && state.markets?.quotes?.find((x) => x.symbol === q.id);
@@ -183,54 +208,165 @@
       : `<p class="empty">No stories match.</p>`;
   }
 
-  function pulseCard() {
-    const spx = quote("^GSPC");
-    const opts = [];
-    if (spx?.series?.length) opts.push("spx");
-    if (state.btc?.length) opts.push("btc");
-    const head = panelTitle("#/markets", "Market pulse");
-    if (!opts.length) return `<section class="panel pulse">${head}<p class="empty">Market data unavailable.</p></section>`;
-    const key = opts.includes(state.pulse) ? state.pulse : opts[0];
-    let price, change, changePct, series, open, label, note, radar, liveKey;
-    if (key === "spx") {
-      ({ price, change, changePct, series, open } = spx);
-      label = "S&P 500";
-      liveKey = "^GSPC";
-      note = state.markets.sample ? "Illustrative snapshot · not live" : `Intraday · 5 min bars · ${ago(spx.time).toLowerCase() || "today"}`;
-      radar = ["NVDA", "TSLA", "MSFT"].map(quote).filter(Boolean).map((q) => ({ key: q.symbol, sym: q.label, price: q.price, change: q.changePct }));
-    } else {
-      const c = state.coinMap.get("BTC");
-      series = state.btc.map((r) => r.close);
-      open = state.btc[0].open;
-      price = c?.price ?? series[series.length - 1];
-      series[series.length - 1] = price;
-      change = c ? c.price - c.prev : price - open;
-      changePct = c ? coinChange(c) : (change / open) * 100;
-      label = "BTC perp";
-      liveKey = "hl-BTC";
-      note = "Hyperliquid · live · 24h of 15 min bars";
-      radar = ["ETH", "SOL", "HYPE"].map((s) => state.coinMap.get(s)).filter(Boolean).map((x) => ({ key: "hl-" + x.coin, sym: x.coin, price: x.price, change: coinChange(x) }));
+  // Instruments the pulse chart can show. Yahoo ones use the server's 5 minute intraday bars,
+  // Hyperliquid ones use 15 minute candles over the last day, streamed live.
+  const PULSE = [
+    { key: "spx", label: "S&P 500", yahoo: "^GSPC" },
+    { key: "ndx", label: "NASDAQ", yahoo: "^IXIC" },
+    { key: "dow", label: "DOW", yahoo: "^DJI" },
+    { key: "gold", label: "Gold", yahoo: "GC=F" },
+    { key: "oil", label: "Oil", yahoo: "CL=F" },
+    { key: "btc", label: "BTC perp", coin: "BTC" },
+    { key: "eth", label: "ETH perp", coin: "ETH" },
+    { key: "sol", label: "SOL perp", coin: "SOL" },
+    { key: "hype", label: "HYPE perp", coin: "HYPE" }
+  ];
+  const PULSE_COINS = PULSE.filter((p) => p.coin).map((p) => p.coin);
+  const MAX_BARS = 60;
+
+  // Chart data for one instrument: values, their times, and the live price key.
+  function pulseData(p) {
+    if (p.yahoo) {
+      const q = quote(p.yahoo);
+      if (!q?.series?.length) return null;
+      return {
+        values: q.series, times: q.times || [], open: q.open, price: q.price, change: q.change, changePct: q.changePct, liveKey: q.symbol,
+        note: state.markets.sample ? "Illustrative snapshot · not live" : `Intraday · 5 min bars · ${ago(q.time).toLowerCase() || "today"}`
+      };
     }
-    const bars = series.slice(-36);
-    const min = Math.min(...bars);
-    const max = Math.max(...bars);
-    const barHtml = bars.map((v) => `<span style="height:${max === min ? 50 : 12 + ((v - min) / (max - min)) * 88}%"></span>`).join("");
-    const chips = opts.length > 1 ? `<div class="chips">${opts.map((k) => chip("pulse", k, k === "spx" ? "S&amp;P 500" : "BTC perp", k === key)).join("")}</div>` : "";
+    const rows = state.candles.get(p.coin);
+    if (!rows?.length) return null;
+    const c = state.coinMap.get(p.coin);
+    const values = rows.map((r) => r.close);
+    const price = c?.price ?? values[values.length - 1];
+    values[values.length - 1] = price;
+    const open = rows[0].open;
+    return {
+      values, times: rows.map((r) => r.t), open, price, liveKey: "hl-" + p.coin,
+      change: c ? c.price - c.prev : price - open, changePct: c ? coinChange(c) : ((price - open) / open) * 100,
+      note: "Hyperliquid · live · 24h of 15 min bars"
+    };
+  }
+
+  // Evenly samples a long series down to at most n points, always keeping the latest one.
+  function sample(values, times, n) {
+    if (values.length <= n) return { values, times };
+    const idx = Array.from({ length: n }, (_, i) => Math.round((i * (values.length - 1)) / (n - 1)));
+    return { values: idx.map((i) => values[i]), times: idx.map((i) => times[i]) };
+  }
+
+  // "On the radar" slides: a fixed set of groups plus the day's biggest movers.
+  function radarSlides() {
+    const item = (key) => {
+      const v = liveValue(key);
+      if (!v || v.price == null) return null;
+      const label = key.startsWith("hl-") ? key.slice(3) : quote(key)?.label || key;
+      return { key, label, price: v.price, change: v.changePct };
+    };
+    const group = (title, keys) => ({ title, items: keys.map(item).filter(Boolean) });
+    const quotes = (state.markets?.quotes || []).filter((q) => q.changePct != null);
+    const movers = [...quotes].sort((a, b) => Math.abs(b.changePct) - Math.abs(a.changePct)).slice(0, 4).map((q) => q.symbol);
+    return [
+      group("Biggest movers", movers),
+      group("Big tech", ["NVDA", "AAPL", "MSFT", "GOOGL"]),
+      group("More stocks", ["TSLA", "AMZN", "META"]),
+      group("Rates and commodities", ["^TNX", "^VIX", "GC=F", "CL=F"]),
+      group("Crypto perps", ["hl-ETH", "hl-SOL", "hl-HYPE", "hl-XRP"])
+    ].filter((s) => s.items.length);
+  }
+
+  function radarCard() {
+    const slides = radarSlides();
+    if (!slides.length) return "";
+    state.radarSlide %= slides.length;
+    const row = (r) => `<div class="radar-row ${r.change < 0 ? "down" : ""}" data-live="${esc(r.key)}" data-p="${r.price}"><span class="sym">${esc(r.label)}</span><span class="lv-price">${fmt(r.price)}</span><span class="chg lv-pct">${pct(r.change)}</span></div>`;
+    return `
+      <div class="radar" data-slides="${slides.length}">
+        <div class="radar-head"><span class="muted small">On the radar · <span class="radar-title">${esc(slides[state.radarSlide].title)}</span></span>
+          <span class="radar-dots">${slides.map((s, i) => `<button class="radar-dot" data-radar="${i}" data-title="${esc(s.title)}" aria-label="${esc(s.title)}" aria-current="${i === state.radarSlide}"></button>`).join("")}</span></div>
+        <div class="radar-window"><div class="radar-track" style="transform:translateX(-${state.radarSlide * 100}%)">
+          ${slides.map((s) => `<div class="radar-slide">${s.items.map(row).join("")}</div>`).join("")}
+        </div></div>
+      </div>`;
+  }
+
+  // Moves the slideshow without re-rendering the card, so prices keep streaming in place.
+  function showRadarSlide(i) {
+    const radar = document.querySelector(".radar");
+    if (!radar) return;
+    const n = Number(radar.dataset.slides);
+    state.radarSlide = ((i % n) + n) % n;
+    radar.querySelector(".radar-track").style.transform = `translateX(-${state.radarSlide * 100}%)`;
+    radar.querySelectorAll(".radar-dot").forEach((d, j) => {
+      d.setAttribute("aria-current", j === state.radarSlide);
+      if (j === state.radarSlide) radar.querySelector(".radar-title").textContent = d.dataset.title;
+    });
+  }
+
+  function pulseCard() {
+    const head = panelTitle("#/markets", "Market pulse");
+    const available = PULSE.filter((p) => pulseData(p));
+    if (!available.length) return `<section class="panel pulse">${head}<p class="empty">Market data unavailable.</p></section>`;
+    const p = available.find((x) => x.key === state.pulse) || available[0];
+    const d = pulseData(p);
+    const { values, times } = sample(d.values, d.times, MAX_BARS);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    state.chart = { values, times, open: d.open, label: p.label, crypto: !!p.coin };
+    const barHtml = values.map((v) => `<span style="height:${max === min ? 50 : 12 + ((v - min) / (max - min)) * 88}%"></span>`).join("");
+    const chips = available.length > 1 ? `<div class="chips pulse-chips">${available.map((x) => chip("pulse", x.key, esc(x.label), x === p)).join("")}</div>` : "";
     return `
       <section class="panel pulse">
         ${head}
         ${chips}
         <div class="pulse-body">
-          <div class="muted small">${esc(note)}</div>
-          <div class="pulse-live" data-live="${esc(liveKey)}" data-p="${price}">
-            <div class="pulse-price lv-price">${fmt(price)}</div>
-            <div class="pulse-change lv-dir ${dir(change)}">${esc(label)} <span class="lv-chg">${signed(change)}</span> (<span class="lv-pct">${pct(changePct)}</span>)</div>
+          <div class="muted small">${esc(d.note)}</div>
+          <div class="pulse-live" data-live="${esc(d.liveKey)}" data-p="${d.price}">
+            <div class="pulse-price lv-price">${fmt(d.price)}</div>
+            <div class="pulse-change lv-dir ${dir(d.change)}">${esc(p.label)} <span class="lv-chg">${signed(d.change)}</span> (<span class="lv-pct">${pct(d.changePct)}</span>)</div>
           </div>
-          <div class="bars ${dir(change)}" aria-hidden="true">${barHtml}</div>
-          <div class="oc"><span>OPEN<b>${fmt(open)}</b></span><span class="close">LAST<b>${fmt(price)}</b></span></div>
+          <div class="chart" data-chart>
+            <div class="bars ${dir(d.change)}" aria-hidden="true">${barHtml}</div>
+            <div class="chart-tip" hidden></div>
+          </div>
+          <div class="oc"><span>OPEN<b>${fmt(d.open)}</b></span><span class="close">LAST<b>${fmt(d.price)}</b></span></div>
         </div>
-        ${radar.length ? `<div class="radar"><div class="muted small">On the radar</div>${radar.map((r) => `<div class="radar-row ${r.change < 0 ? "down" : ""}" data-live="${esc(r.key)}" data-p="${r.price}"><span class="sym">${esc(r.sym)}</span><span class="lv-price">${fmt(r.price)}</span><span class="chg lv-pct">${pct(r.change)}</span></div>`).join("")}</div>` : ""}
+        ${radarCard()}
       </section>`;
+  }
+
+  // Hovering the chart highlights a bar and shows its price, time and move from the open.
+  function chartTime(t, crypto) {
+    if (!t) return "";
+    const d = new Date(t);
+    const time = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    return crypto || d.toDateString() !== new Date().toDateString() ? `${d.toLocaleDateString([], { month: "short", day: "numeric" })}, ${time}` : time;
+  }
+
+  function onChartMove(e) {
+    const chart = e.target.closest("[data-chart]");
+    const c = state.chart;
+    if (!chart || !c) return;
+    const bars = chart.querySelectorAll(".bars span");
+    const rect = chart.getBoundingClientRect();
+    const i = Math.max(0, Math.min(bars.length - 1, Math.floor(((e.clientX - rect.left) / rect.width) * bars.length)));
+    bars.forEach((b, j) => b.classList.toggle("hot", j === i));
+    const v = c.values[i];
+    const move = c.open ? ((v - c.open) / c.open) * 100 : 0;
+    const tip = chart.querySelector(".chart-tip");
+    tip.innerHTML = `<b>${fmt(v)}</b><span>${esc(chartTime(c.times[i], c.crypto))}</span><span class="${dir(move)}">${pct(move)} from open</span>`;
+    tip.hidden = false;
+    const x = ((i + 0.5) / bars.length) * rect.width;
+    tip.style.left = `${Math.max(tip.offsetWidth / 2, Math.min(rect.width - tip.offsetWidth / 2, x))}px`;
+    state.chartHover = true;
+  }
+
+  function onChartLeave(e) {
+    const chart = e.target.closest?.("[data-chart]");
+    if (!chart || chart.contains(e.relatedTarget)) return;
+    chart.querySelectorAll(".bars span.hot").forEach((b) => b.classList.remove("hot"));
+    chart.querySelector(".chart-tip").hidden = true;
+    state.chartHover = false;
   }
 
   const SIDES = [["all", "All"], ["left", "Left"], ["center", "Center"], ["right", "Right"], ["unrated", "Unrated"]];
@@ -599,6 +735,10 @@
         <h2>Desktop app</h2>
         <p class="muted">Parallax ${esc(d.version)}. Press F11 to toggle full screen at any time.</p>
         ${pickRow("Window on launch", "How the window opens next time. Changes apply now too.", choiceChips("window-mode", d.settings.windowMode, [["maximized", "Maximized"], ["fullscreen", "Full screen"], ["windowed", "Windowed"]]))}
+        <div class="setting-row">
+          <div><b>Settings folder</b><div class="muted small">${esc(d.dataDir || "")}</div><div class="muted small">Your settings, reading history and lean evidence are saved here.</div></div>
+          <button class="outline-btn" data-action="open-data">Open folder</button>
+        </div>
         <h3 class="group-label">Updates</h3>
         ${switchRow("Download updates automatically", "New releases download in the background and install when you restart.", "auto-update", "", d.settings.autoUpdate)}
         ${updateBlock()}
@@ -614,7 +754,7 @@
     return `
       <section class="panel settings-block">
         <h2>Sources</h2>
-        <p class="muted">Feeds refresh automatically. Updated ${ago(n.updated).toLowerCase()}.</p>
+        <p class="muted">Updated ${ago(n.updated).toLowerCase()}.</p>
         <div class="kv">
           <div><b>${count((s) => s.ok)} / ${n.sources.length}</b><span>Outlets online</span></div>
           <div><b>${n.articleCount.toLocaleString()}</b><span>Articles in this cycle</span></div>
@@ -623,7 +763,7 @@
           <div><b>${count((s) => s.estimated)}</b><span>Estimated by the model</span></div>
           <div><b>${count((s) => s.nonpolitical)}</b><span>Nonpolitical beats</span></div>
         </div>
-        ${pickRow("Refresh news every", "", choiceChips("refresh-mins", profile.refreshMins, [[2, "2 min"], [5, "5 min"], [15, "15 min"], [30, "30 min"]]))}
+        <div class="setting-row"><div><b><span class="dot live"></span> Live updates</b><div class="muted small">The server checks every outlet every few minutes and new stories appear as soon as they are in.</div></div></div>
         <div class="btn-row">
           <button class="outline-btn" data-action="refresh-now">Refresh now</button>
           <a class="outline-btn" href="#/bias">See every outlet and rating</a>
@@ -713,6 +853,11 @@
   };
 
   function render() {
+    renderRoute();
+    fitPulseChips();
+  }
+
+  function renderRoute() {
     const [name, param] = parseHash();
     const active = name === "topic" ? `topic/${param}` : name || "home";
     document.querySelectorAll(".tabs a").forEach((a) => (a.dataset.route === active ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
@@ -730,7 +875,7 @@
 
   const setPref = (key, value) => {
     profile[key] = value;
-    Prefs.save(profile);
+    saveProfile();
     applyPrefs();
   };
   const setDesktop = (key, value) => desktop?.set(key, value).then((s) => ((state.desktop.settings = s), rerender()));
@@ -741,32 +886,41 @@
     side: (v) => ((state.side = v), (state.pageN = 1)),
     region: (v) => ((state.region = v), (state.pageN = 1)),
     more: () => state.pageN++,
-    "toggle-topic": (v) => (Prefs.toggleTopic(profile, v), Prefs.save(profile)),
-    "bar-style": (v) => ((profile.barStyle = v), Prefs.save(profile)),
-    learn: () => ((profile.learn = !profile.learn), Prefs.save(profile)),
+    "toggle-topic": (v) => (Prefs.toggleTopic(profile, v), saveProfile()),
+    "bar-style": (v) => ((profile.barStyle = v), saveProfile()),
+    learn: () => ((profile.learn = !profile.learn), saveProfile()),
     "reset-history": () => {
       if (!confirm("Clear your reading history? For you goes back to a shuffle.")) return;
       Prefs.resetHistory(profile);
-      Prefs.save(profile);
+      saveProfile();
     },
     "text-size": (v) => setPref("textSize", v),
     "start-page": (v) => setPref("startPage", v),
     "toggle-pref": (v) => setPref(v, !profile[v]),
-    "refresh-mins": (v) => (setPref("refreshMins", Number(v)), scheduleNews()),
     "refresh-now": () => (refreshNews(), refreshMarkets()),
     "reset-display": () => {
       if (!confirm("Reset text size, start page, ticker, images and the startup animation to their defaults?")) return;
       Prefs.resetDisplay(profile);
-      Prefs.save(profile);
+      saveProfile();
       applyPrefs();
-      scheduleNews();
     },
     "window-mode": (v) => setDesktop("windowMode", v),
     "auto-update": () => setDesktop("autoUpdate", !state.desktop.settings.autoUpdate),
     "check-update": () => desktop?.checkForUpdates(),
     "download-update": () => desktop?.downloadUpdate(),
-    "install-update": () => desktop?.installUpdate()
+    "install-update": () => desktop?.installUpdate(),
+    "open-data": () => desktop?.openDataFolder()
   };
+
+  app.addEventListener("mousemove", onChartMove);
+  app.addEventListener("mouseout", onChartLeave);
+
+  // Radar dots jump to a slide. The slideshow advances on its own unless the pointer is on it.
+  app.addEventListener("click", (e) => {
+    const dot = e.target.closest("[data-radar]");
+    if (dot) showRadarSlide(Number(dot.dataset.radar));
+  });
+  setInterval(() => !document.querySelector(".radar:hover") && showRadarSlide(state.radarSlide + 1), 5000);
 
   app.addEventListener("click", (e) => {
     const el = e.target.closest("[data-action]");
@@ -779,7 +933,7 @@
   const learn = (e) => {
     const el = e.target.closest("[data-aid]");
     const a = el && state.byId.get(el.dataset.aid);
-    if (a && Prefs.recordRead(profile, a)) Prefs.save(profile);
+    if (a && Prefs.recordRead(profile, a)) saveProfile();
   };
   document.addEventListener("click", learn, true);
   document.addEventListener("auxclick", learn, true);
@@ -812,18 +966,39 @@
   // The server keeps finding article images after its first response, so while some are
   // still pending the news is fetched again shortly to pick them up.
   let imageTimer = null;
-  async function refreshNews() {
-    state.news = await loadNews();
-    indexNews(state.news);
+  function applyNews(news) {
+    state.news = news;
+    indexNews(news);
     updateStatus();
     rerender();
-    if (state.news.imagesPending > 0 && !imageTimer) imageTimer = setTimeout(() => ((imageTimer = null), refreshNews()), 10000);
+    document.querySelector(".news-pill")?.remove();
+    if (news.imagesPending > 0 && !imageTimer) imageTimer = setTimeout(() => ((imageTimer = null), refreshNews()), 10000);
   }
 
-  let newsTimer = null;
-  function scheduleNews() {
-    clearInterval(newsTimer);
-    newsTimer = setInterval(refreshNews, (profile.refreshMins || 5) * 60 * 1000);
+  async function refreshNews() {
+    applyNews(await loadNews());
+  }
+
+  // A new edition arrived from the server. Near the top of the page it swaps in straight away.
+  // Further down, a pill offers the new stories instead of moving the page under the reader.
+  async function onNews() {
+    const before = new Set(clusters().map((c) => c.id));
+    const news = await loadNews();
+    if (news.sample) return;
+    const fresh = news.clusters.filter((c) => !before.has(c.id)).length;
+    if (window.scrollY < 400 || !fresh) return applyNews(news);
+    let pill = document.querySelector(".news-pill");
+    if (!pill) {
+      pill = document.createElement("button");
+      pill.className = "news-pill";
+      pill.addEventListener("click", () => {
+        applyNews(pill.news);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      document.body.appendChild(pill);
+    }
+    pill.news = news;
+    pill.textContent = `↑ ${fresh} new ${fresh === 1 ? "story" : "stories"}`;
   }
 
   async function refreshMarkets() {
@@ -841,24 +1016,27 @@
   async function startHyperliquid() {
     try {
       setCoins(await hyperliquid.load());
-      state.btc = await hyperliquid.candles("BTC").catch(() => null);
+      const rows = await Promise.all(PULSE_COINS.map((coin) => hyperliquid.candles(coin).catch(() => null)));
+      PULSE_COINS.forEach((coin, i) => rows[i]?.length && state.candles.set(coin, rows[i]));
       renderTicker();
       rerender();
       hyperliquid.onUpdate((coins) => {
         setCoins(coins);
         scheduleLive();
       });
-      // Keeps the BTC chart's latest bar moving and adds a bar every 15 minutes.
-      hyperliquid.watchCandles("BTC", (c) => {
-        if (!state.btc?.length) return;
-        const last = state.btc[state.btc.length - 1];
+      // Keeps each coin chart's latest bar moving and adds a bar every 15 minutes.
+      const onCandle = (c) => {
+        const list = state.candles.get(c.coin);
+        if (!list?.length) return;
+        const last = list[list.length - 1];
         if (last.t === c.t) Object.assign(last, c);
         else if (c.t > last.t) {
-          state.btc.push(c);
-          if (state.btc.length > 96) state.btc.shift();
+          list.push(c);
+          if (list.length > 96) list.shift();
         }
         scheduleLive();
-      });
+      };
+      PULSE_COINS.forEach((coin) => hyperliquid.watchCandles(coin, onCandle));
       hyperliquid.connect();
       // Funding, open interest, volume and the 24 hour reference price change slowly.
       setInterval(() => hyperliquid.load().then((coins) => {
@@ -932,25 +1110,37 @@
     }, Math.max(0, 1700 - (performance.now() - splashStart)));
   }
 
-  applyPrefs();
-  if (profile.splash) {
-    document.body.classList.add("loading");
-    watchProgress();
-    setTimeout(finishSplash, 45000);
-  } else {
-    splash.classList.add("off");
-  }
-  if (!location.hash && profile.startPage !== "home" && Prefs.START_PAGES.includes(profile.startPage)) history.replaceState(null, "", `#/${profile.startPage}`);
+  async function start() {
+    // Saved settings from the data folder win over this browser's copy.
+    const saved = await loadPrefs();
+    if (saved) {
+      Object.assign(profile, Prefs.normalize(saved));
+      Prefs.save(profile);
+    }
+    applyPrefs();
+    splashDone = !profile.splash;
+    if (profile.splash) {
+      document.body.classList.add("loading");
+      watchProgress();
+      setTimeout(finishSplash, 45000);
+    } else {
+      splash.classList.add("off");
+    }
+    if (!location.hash && profile.startPage !== "home" && Prefs.START_PAGES.includes(profile.startPage)) history.replaceState(null, "", `#/${profile.startPage}`);
 
-  updateStatus();
-  render();
-  refreshNews().finally(finishSplash);
-  refreshMarkets().then(() => {
-    if (state.markets && !state.markets.sample) streamQuotes(onQuote);
-    startHyperliquid();
-  });
-  loadInfo().then((info) => (state.info = info));
-  startDesktop();
-  scheduleNews();
-  setInterval(refreshMarkets, 60 * 1000);
+    updateStatus();
+    render();
+    refreshNews().finally(finishSplash);
+    refreshMarkets().then(() => {
+      if (state.markets && !state.markets.sample) openStream({ onQuote, onNews });
+      startHyperliquid();
+    });
+    loadInfo().then((info) => (state.info = info));
+    startDesktop();
+    // Live news arrives over the event stream. This slow poll is only a fallback.
+    setInterval(refreshNews, 10 * 60 * 1000);
+    setInterval(refreshMarkets, 60 * 1000);
+  }
+
+  start();
 })();
