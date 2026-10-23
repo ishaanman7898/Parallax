@@ -79,7 +79,7 @@ npm run dist:mac     # macOS disk image
 npm run dist:linux   # Linux AppImage
 ```
 
-macOS builds need to run on a Mac. The app icon lives in `build/icon.png`.
+macOS builds need to run on a Mac. The app icon lives in `build/icon.png`, a 1024 pixel render of the logo in `src/assets/icon.svg`. The logo shows two overlapping lenses, left in blue and right in red, with the shared story where they meet. The same file is the site favicon and header mark.
 
 [Electron docs](https://www.electronjs.org/docs/latest) and [electron-builder docs](https://www.electron.build)
 
