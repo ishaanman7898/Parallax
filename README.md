@@ -6,7 +6,7 @@ Lean and tone are automated estimates, not fact checks. Nothing here is financia
 
 ## Features
 
-The layout follows Google News on a black background. A short startup animation plays while the first feeds load, with a progress bar showing how many feeds have arrived, then opens the news. A tab row links every section and topic, the live market ticker runs under it, all three stay pinned to the top as you scroll, and the search bar in the header searches every story as you type. The question mark icon in the header opens the page that explains how bias is measured.
+The layout follows Google News on a black background. A short startup animation plays over falling streaks of light while the first feeds load, with a progress bar showing how many feeds have arrived, then opens the news. A tab row links every section and topic, the live market ticker runs under it, all three stay pinned to the top as you scroll, and the search bar in the header searches every story as you type. The question mark icon in the header opens the page that explains how bias is measured.
 
 The home page opens with Top stories. Each story shows its lead article with a photo and up to three other outlets, picked so the other sides of the spectrum show up first. A summary row gives the left, center and right coverage split and the story's tone mix, and a button opens the full comparison. Every article across the site has a sentiment bar under it that shows its tone from −1 to +1. The right column has Market pulse, a chart you can switch between the S&P 500, NASDAQ, DOW, gold, oil and the BTC, ETH, SOL and HYPE perps, with a tooltip that shows the price, time and move from the open as you hover over it. Under it, On the radar is a slideshow that cycles through the biggest movers, big tech, more stocks, rates and commodities, and crypto. The column also has a Latest feed you can filter by lean, and average tone by topic. Below that come For you and Your topics.
 
@@ -122,6 +122,7 @@ src/
   styles.css    theme and layout
   live.js       API client, sample fallback, price stream and Hyperliquid
   app.js        routing, rendering, live prices and settings
+  lightfall.js  WebGL light streaks behind the startup screen
   data.js       sample data used without a server
 electron/       desktop main process and preload bridge
 scripts/        server launcher
