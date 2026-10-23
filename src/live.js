@@ -30,8 +30,27 @@
     }
   }
 
+  // Feed loading progress for the startup screen, and app info. Both are null without a server.
+  const loadProgress = () => getJson("api/progress").catch(() => null);
+  const loadInfo = () => getJson("api/info").catch(() => null);
+
+  // Live Yahoo Finance prices relayed by the Parallax server as server-sent events.
+  function streamQuotes(onQuote) {
+    if (!("EventSource" in window)) return;
+    const source = new EventSource("api/stream");
+    source.onmessage = (event) => {
+      try {
+        onQuote(JSON.parse(event.data));
+      } catch {
+        // Ignore malformed events.
+      }
+    };
+  }
+
   const coins = new Map();
   const listeners = new Set();
+  const candleListeners = new Set();
+  const candleCoins = new Set();
   let socket = null;
   let retry = 1000;
   let notifyTimer = null;
@@ -59,16 +78,16 @@
   async function candles(coin, hours = 24) {
     const endTime = Date.now();
     const rows = await hlPost({ type: "candleSnapshot", req: { coin, interval: "15m", startTime: endTime - hours * 36e5, endTime } });
-    return rows.map((r) => ({ open: Number(r.o), close: Number(r.c) }));
+    return rows.map((r) => ({ t: r.t, open: Number(r.o), close: Number(r.c) }));
   }
 
-  // Batches websocket ticks into at most one UI update per second.
+  // Batches websocket ticks into at most two UI updates per second.
   function notify() {
     if (notifyTimer) return;
     notifyTimer = setTimeout(() => {
       notifyTimer = null;
       listeners.forEach((fn) => fn(list()));
-    }, 1000);
+    }, 500);
   }
 
   function connect() {
@@ -78,6 +97,7 @@
     socket.onopen = () => {
       retry = 1000;
       socket.send(JSON.stringify({ method: "subscribe", subscription: { type: "allMids" } }));
+      candleCoins.forEach((coin) => socket.send(JSON.stringify({ method: "subscribe", subscription: { type: "candle", coin, interval: "15m" } })));
       ping = setInterval(() => socket.readyState === 1 && socket.send(JSON.stringify({ method: "ping" })), 50000);
     };
     socket.onmessage = (event) => {
@@ -85,6 +105,11 @@
       try {
         msg = JSON.parse(event.data);
       } catch {
+        return;
+      }
+      if (msg.channel === "candle") {
+        const c = msg.data;
+        candleListeners.forEach((fn) => fn({ coin: c.s, t: c.t, open: Number(c.o), close: Number(c.c) }));
         return;
       }
       if (msg.channel !== "allMids") return;
@@ -103,9 +128,19 @@
     socket.onerror = () => socket && socket.close();
   }
 
+  // Streams 15 minute candles for a coin over the same socket.
+  function watchCandles(coin, fn) {
+    candleCoins.add(coin);
+    candleListeners.add(fn);
+    if (socket?.readyState === 1) socket.send(JSON.stringify({ method: "subscribe", subscription: { type: "candle", coin, interval: "15m" } }));
+  }
+
   window.ParallaxData = {
     loadNews,
     loadMarkets,
-    hyperliquid: { load: loadHyperliquid, list, candles, connect, onUpdate: (fn) => listeners.add(fn) }
+    loadProgress,
+    loadInfo,
+    streamQuotes,
+    hyperliquid: { load: loadHyperliquid, list, candles, connect, watchCandles, onUpdate: (fn) => listeners.add(fn) }
   };
 })();

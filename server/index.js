@@ -2,7 +2,10 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const { createNewsService } = require("./news");
-const { createMarketsService } = require("./markets");
+const { createMarketsService, SYMBOLS } = require("./markets");
+const { createQuoteStream } = require("./stream");
+const { SOURCES } = require("./sources");
+const { version } = require("../package.json");
 
 const root = path.join(__dirname, "..", "src");
 const TYPES = {
@@ -32,12 +35,25 @@ function serveStatic(req, res) {
 
 // Serves the static site plus the JSON API used by both the website and the desktop app.
 function createServer(options = {}) {
-  const getNews = options.getNews || createNewsService();
+  const getNews = options.getNews || createNewsService({ dataDir: options.dataDir });
   const getMarkets = options.getMarkets || createMarketsService();
-  const api = { "/api/news": getNews, "/api/markets": getMarkets };
+  // The live price stream is created on first use, and never in offline fixture mode.
+  let stream = options.stream || null;
+  const api = {
+    "/api/news": getNews,
+    "/api/markets": getMarkets,
+    "/api/progress": async () => (getNews.progress ? getNews.progress() : { phase: "ready" }),
+    "/api/info": async () => ({ version, sources: SOURCES.length, desktop: !!options.desktop })
+  };
 
   return http.createServer(async (req, res) => {
-    const route = api[req.url.split("?")[0]];
+    const pathname = req.url.split("?")[0];
+    if (pathname === "/api/stream") {
+      if (process.env.PARALLAX_FIXTURES && !options.stream) return res.writeHead(204).end();
+      stream ||= createQuoteStream(SYMBOLS.map((s) => s.symbol));
+      return stream.handle(req, res);
+    }
+    const route = api[pathname];
     if (!route) return serveStatic(req, res);
     try {
       sendJson(res, 200, await route());

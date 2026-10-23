@@ -6,7 +6,8 @@
   const MAX_WORDS = 400;
   const MAX_READ = 300;
   const TOPICS = ["Politics", "World", "Markets", "Business", "Technology", "Health", "Climate", "Sports", "Culture"];
-  const REGIONS = ["US", "UK", "Europe", "Canada", "Asia-Pacific", "Middle East"];
+  const REGIONS = ["US", "UK", "Europe", "Canada", "Asia-Pacific", "South Asia", "Middle East", "Africa", "Latin America"];
+  const START_PAGES = ["home", "foryou", "latest", "world", "markets"];
   const DEFAULT_TOPICS = ["region:US", "topic:World", "topic:Markets"];
   const STOP = new Set(
     "about after again also amid back been before being could does down during from have here into just keep last like made make many more most much must news next only other over said says should some still than that their them then there these they this those through under until upon very want were what when where which while will with would year years your".split(" ")
@@ -17,6 +18,12 @@
     topics: DEFAULT_TOPICS.slice(),
     barStyle: "diverging",
     learn: true,
+    textSize: "default",
+    ticker: true,
+    thumbs: true,
+    splash: true,
+    startPage: "home",
+    refreshMins: 5,
     seed: Math.floor(Math.random() * 2 ** 31),
     reads: 0,
     weights: { topic: {}, source: {}, word: {} },
@@ -132,7 +139,13 @@
     return kind === "region" ? a.source?.region === value : a.topic === value;
   };
 
-  const api = { TOPICS, REGIONS, DEFAULT_TOPICS, fresh, load, save, keywords, rand, recordRead, rank, forYou, insights, toggleTopic, resetHistory, topicLabel, topicMatches };
+  // Restores display settings to their defaults but keeps topics and reading history.
+  function resetDisplay(p) {
+    const base = fresh();
+    for (const k of ["barStyle", "textSize", "ticker", "thumbs", "splash", "startPage", "refreshMins"]) p[k] = base[k];
+  }
+
+  const api = { TOPICS, REGIONS, START_PAGES, DEFAULT_TOPICS, fresh, resetDisplay, load, save, keywords, rand, recordRead, rank, forYou, insights, toggleTopic, resetHistory, topicLabel, topicMatches };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.ParallaxPrefs = api;
 })(typeof window !== "undefined" ? window : globalThis);

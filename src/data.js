@@ -13,7 +13,7 @@ window.PARALLAX_SAMPLE = (function () {
   const toneLabel = (c) => (c >= 0.05 ? "positive" : c <= -0.05 ? "negative" : "neutral");
   const sourceOf = (id) => {
     const [name, lean, region, kind = "news"] = outlets[id];
-    return { id, name, lean, label: lean == null ? "Unrated" : labels[lean], region, kind };
+    return { id, name, lean, rated: lean != null, ratedBy: lean == null ? null : "AllSides", estimated: false, label: lean == null ? "Unrated" : labels[lean], region, kind };
   };
 
   // [cluster id, topic, summary, image, [[outlet, headline, tone], ...]]

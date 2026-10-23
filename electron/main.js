@@ -1,14 +1,43 @@
-const { app, BrowserWindow, shell, dialog } = require("electron");
+const { app, BrowserWindow, shell, ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
+const fs = require("fs");
 const path = require("path");
 const { start } = require("../server");
 
 let origin = null;
 
+// Desktop only settings, kept next to the app's other data. Everything else lives in the page.
+const settingsFile = () => path.join(app.getPath("userData"), "settings.json");
+const DEFAULTS = { windowMode: "maximized", autoUpdate: true };
+let settings = { ...DEFAULTS };
+
+function loadSettings() {
+  try {
+    settings = { ...DEFAULTS, ...JSON.parse(fs.readFileSync(settingsFile(), "utf8")) };
+  } catch {
+    settings = { ...DEFAULTS };
+  }
+}
+
+function saveSettings() {
+  try {
+    fs.writeFileSync(settingsFile(), JSON.stringify(settings, null, 2));
+  } catch (err) {
+    console.error("could not save settings:", err.message);
+  }
+}
+
+function applyWindowMode(win, mode) {
+  if (mode === "fullscreen") return win.setFullScreen(true);
+  if (win.isFullScreen()) win.setFullScreen(false);
+  if (mode === "maximized") win.maximize();
+  else win.unmaximize();
+}
+
 // Runs the same server as the website on a random local port, then loads it.
 async function createWindow() {
   if (!origin) {
-    const { port } = await start(0, "127.0.0.1");
+    const { port } = await start(0, "127.0.0.1", { dataDir: app.getPath("userData"), desktop: true });
     origin = `http://127.0.0.1:${port}`;
   }
 
@@ -17,13 +46,19 @@ async function createWindow() {
     height: 860,
     minWidth: 420,
     minHeight: 600,
-    backgroundColor: "#1b1c1d",
+    show: false,
+    backgroundColor: "#000000",
     title: "Parallax",
     icon: path.join(__dirname, "..", "build", "icon.png"),
     autoHideMenuBar: true,
-    webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true }
+    webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true, preload: path.join(__dirname, "preload.js") }
   });
 
+  // Shows the window at its launch size straight away, so the startup animation plays full size.
+  win.once("ready-to-show", () => {
+    applyWindowMode(win, settings.windowMode);
+    win.show();
+  });
   win.loadURL(origin + "/");
 
   // Article links open in the system browser instead of a new app window.
@@ -37,30 +72,68 @@ async function createWindow() {
       if (/^https?:/.test(url)) shell.openExternal(url);
     }
   });
+  // F11 toggles full screen, Escape leaves it.
+  win.webContents.on("before-input-event", (e, input) => {
+    if (input.type !== "keyDown") return;
+    if (input.key === "F11") {
+      win.setFullScreen(!win.isFullScreen());
+      e.preventDefault();
+    } else if (input.key === "Escape" && win.isFullScreen()) {
+      win.setFullScreen(false);
+    }
+  });
 }
 
-// Checks GitHub Releases for a newer version, downloads it quietly and offers a restart.
-function checkForUpdates() {
-  if (!app.isPackaged) return;
-  autoUpdater.on("update-downloaded", async info => {
-    const { response } = await dialog.showMessageBox({
-      type: "info",
-      buttons: ["Restart now", "Later"],
-      defaultId: 0,
-      title: "Update ready",
-      message: `Parallax ${info.version} has been downloaded.`,
-      detail: "Restart to finish updating."
-    });
-    if (response === 0) autoUpdater.quitAndInstall();
-  });
-  autoUpdater.on("error", err => console.error("update check failed:", err.message));
-  autoUpdater.checkForUpdates().catch(() => {});
-  setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 6 * 60 * 60 * 1000);
+// ---------- over the air updates from GitHub Releases ----------
+let update = { status: "idle", version: null, progress: 0, error: null, checkedAt: null };
+
+function setUpdate(patch) {
+  update = { ...update, ...patch };
+  for (const w of BrowserWindow.getAllWindows()) w.webContents.send("update:state", update);
 }
+
+async function checkForUpdates() {
+  if (!app.isPackaged) return setUpdate({ status: "dev" });
+  try {
+    await autoUpdater.checkForUpdates();
+  } catch (err) {
+    setUpdate({ status: "error", error: err.message });
+  }
+}
+
+function setupUpdates() {
+  autoUpdater.autoDownload = settings.autoUpdate;
+  autoUpdater.autoInstallOnAppQuit = true;
+  autoUpdater.on("checking-for-update", () => setUpdate({ status: "checking", error: null }));
+  autoUpdater.on("update-available", (info) => setUpdate({ status: autoUpdater.autoDownload ? "downloading" : "available", version: info.version, progress: 0 }));
+  autoUpdater.on("update-not-available", () => setUpdate({ status: "current", checkedAt: new Date().toISOString() }));
+  autoUpdater.on("download-progress", (p) => setUpdate({ status: "downloading", progress: Math.round(p.percent) }));
+  autoUpdater.on("update-downloaded", (info) => setUpdate({ status: "ready", version: info.version, progress: 100, checkedAt: new Date().toISOString() }));
+  autoUpdater.on("error", (err) => setUpdate({ status: "error", error: err.message }));
+  checkForUpdates();
+  setInterval(checkForUpdates, 6 * 60 * 60 * 1000);
+}
+
+ipcMain.handle("app:info", () => ({ version: app.getVersion(), packaged: app.isPackaged, platform: process.platform, settings, update }));
+ipcMain.handle("app:set", (e, key, value) => {
+  if (!(key in DEFAULTS)) return settings;
+  settings[key] = value;
+  saveSettings();
+  if (key === "autoUpdate") autoUpdater.autoDownload = !!value;
+  if (key === "windowMode") {
+    const win = BrowserWindow.fromWebContents(e.sender);
+    if (win) applyWindowMode(win, value);
+  }
+  return settings;
+});
+ipcMain.handle("update:check", () => checkForUpdates());
+ipcMain.handle("update:download", () => autoUpdater.downloadUpdate().catch((err) => setUpdate({ status: "error", error: err.message })));
+ipcMain.handle("update:install", () => autoUpdater.quitAndInstall());
 
 app.whenReady().then(() => {
+  loadSettings();
   createWindow();
-  checkForUpdates();
+  setupUpdates();
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });

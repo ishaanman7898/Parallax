@@ -4,16 +4,22 @@ const path = require("path");
 // Free, keyless sources: Yahoo Finance chart API for equities and rates,
 // alternative.me for the Crypto Fear and Greed Index. Crypto prices come from
 // Hyperliquid directly in the browser so they also work on static hosting.
+// Live ticks between chart refreshes come from the Yahoo streamer in stream.js.
 const SYMBOLS = [
   { symbol: "^GSPC", label: "S&P 500" },
   { symbol: "^IXIC", label: "NASDAQ" },
   { symbol: "^DJI", label: "DOW" },
   { symbol: "^TNX", label: "US 10Y" },
+  { symbol: "^VIX", label: "VIX" },
+  { symbol: "GC=F", label: "GOLD" },
+  { symbol: "CL=F", label: "OIL" },
   { symbol: "AAPL", label: "AAPL" },
   { symbol: "NVDA", label: "NVDA" },
   { symbol: "MSFT", label: "MSFT" },
   { symbol: "TSLA", label: "TSLA" },
-  { symbol: "AMZN", label: "AMZN" }
+  { symbol: "AMZN", label: "AMZN" },
+  { symbol: "GOOGL", label: "GOOGL" },
+  { symbol: "META", label: "META" }
 ];
 
 const TTL = 60 * 1000;

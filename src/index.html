@@ -12,8 +12,30 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="splash" id="splash" role="status" aria-live="polite">
+    <div class="splash-inner">
+      <svg class="splash-logo" viewBox="0 0 1024 1024" aria-hidden="true">
+        <defs>
+          <clipPath id="sp-left"><circle cx="404" cy="512" r="236"/></clipPath>
+          <clipPath id="sp-right"><circle cx="620" cy="512" r="236"/></clipPath>
+        </defs>
+        <circle class="sp-ring" cx="512" cy="512" r="330"/>
+        <circle class="sp-circle sp-l" cx="404" cy="512" r="236" fill="#8ab4f8"/>
+        <circle class="sp-circle sp-r" cx="620" cy="512" r="236" fill="#f28b82"/>
+        <g class="sp-lens">
+          <circle cx="620" cy="512" r="236" fill="#e3e3e3" clip-path="url(#sp-left)"/>
+          <circle cx="404" cy="512" r="236" fill="none" stroke="#000" stroke-width="28" clip-path="url(#sp-right)"/>
+          <circle cx="620" cy="512" r="236" fill="none" stroke="#000" stroke-width="28" clip-path="url(#sp-left)"/>
+        </g>
+      </svg>
+      <div class="splash-word" aria-label="Parallax"><span>P</span><span>a</span><span>r</span><span>a</span><span>l</span><span>l</span><span>a</span><span>x</span></div>
+      <div class="splash-bar"><i id="splash-progress"></i></div>
+      <div class="splash-status" id="splash-status">Connecting to live feeds</div>
+    </div>
+  </div>
+
   <header class="topbar">
-    <a class="logo" href="#/"><img src="assets/icon.svg" alt="" width="32" height="32">Parallax <span>News</span></a>
+    <a class="logo" href="#/"><img src="assets/icon.svg" alt="" width="32" height="32">Parallax</a>
     <form class="searchbar" id="search-form" role="search">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
       <input id="search" type="search" placeholder="Search headlines, outlets and topics" aria-label="Search headlines" autocomplete="off">
@@ -34,7 +56,6 @@
     <a href="#/latest" data-route="latest">Latest</a>
     <a href="#/world" data-route="world">World</a>
     <a href="#/markets" data-route="markets">Markets</a>
-    <a href="#/bias" data-route="bias">Understanding bias</a>
     <span class="tab-sep" aria-hidden="true"></span>
     <a href="#/topic/Politics" data-route="topic/Politics">Politics</a>
     <a href="#/topic/Business" data-route="topic/Business">Business</a>
@@ -54,7 +75,7 @@
   <footer class="footer">
     <span class="footer-logo">Parallax</span>
     <span id="feed-status"></span>
-    <span>Headlines link to their publishers. Lean and tone are automated estimates. Market data from Yahoo Finance, Hyperliquid and alternative.me. Not financial advice.</span>
+    <span>Headlines link to their publishers. Outlet ratings from AllSides and Media Bias/Fact Check, tone is an automated estimate. Market data from Yahoo Finance, Hyperliquid and alternative.me. Not financial advice.</span>
   </footer>
 
   <script src="data.js"></script>

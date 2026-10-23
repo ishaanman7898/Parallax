@@ -66,11 +66,14 @@
   }
 
   const sourceRow = (source) =>
-    `<div class="src"><span class="src-badge" aria-hidden="true">${esc(source.name.replace(/^The /, "")[0])}</span><span>${esc(source.name)}</span></div>`;
+    `<div class="src"><span class="src-badge" aria-hidden="true">${esc(initial(source.name))}</span><span>${esc(source.name)}</span></div>`;
 
-  // The fallback tile shows when there is no image or the image fails to load.
-  const media = (image, label, cls) =>
-    `<div class="${cls}">${image ? `<img src="${esc(image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}<span class="media-fallback">${esc(label)}</span></div>`;
+  const initial = (name) => String(name || "?").replace(/^The /, "")[0];
+
+  // The fallback tile, tinted by topic with the outlet's initial, shows when there is no
+  // image or the image fails to load.
+  const media = (image, topic, cls, sourceName) =>
+    `<div class="${cls}" data-topic="${esc(topic)}">${image ? `<img src="${esc(image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}<span class="media-fallback">${sourceName ? `<b>${esc(initial(sourceName))}</b>` : ""}${esc(topic)}</span></div>`;
 
   // Opens the publisher's page when there is a link, otherwise the story comparison.
   function articleLink(a, text) {
@@ -80,7 +83,8 @@
     return `<a href="${esc(href)}"${ext} data-aid="${esc(a.id)}">${text}</a>`;
   }
 
-  const meta = (a) => `<div class="meta">${ago(a.published)} · <span class="lean-${sourceSide(a.source.lean)}">${esc(a.source.label)}</span></div>`;
+  const ratedTitle = (s) => (s.nonpolitical ? "Covers a nonpolitical beat, so it has no left-right rating" : s.ratedBy ? `Outlet rating from ${s.ratedBy}` : "No published rating for this outlet");
+  const meta = (a) => `<div class="meta">${ago(a.published)} · <span class="lean-${sourceSide(a.source.lean)}" title="${esc(ratedTitle(a.source))}">${esc(a.source.label)}</span></div>`;
 
   function compareButton(a) {
     const n = a.cluster?.articles.length || 1;
@@ -99,7 +103,7 @@
           ${sentimentBar(a.sentiment.compound, style)}
         </div>
         <div class="item-side">
-          ${thumb ? media(a.image, a.topic, "thumb") : ""}
+          ${thumb ? media(a.image, a.topic, "thumb", a.source.name) : ""}
           ${compare ? compareButton(a) : ""}
         </div>
       </article>`;
@@ -107,6 +111,6 @@
 
   window.ParallaxUI = {
     esc, safeUrl, compact, fmt, pct, signed, dir, plural, side, sourceSide, toneWord, toneClass, ago, icons,
-    sentimentBar, coverageBar, toneMix, sourceRow, media, articleLink, meta, compareButton, feedItem
+    sentimentBar, coverageBar, toneMix, sourceRow, media, articleLink, meta, ratedTitle, compareButton, feedItem
   };
 })();

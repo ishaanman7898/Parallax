@@ -59,7 +59,9 @@ test("builds clustered news from fixtures", async () => {
   }
   const dw = news.clusters.flatMap((c) => c.articles).filter((a) => a.source.id === "dw");
   assert.equal(dw.length, 3);
-  assert.ok(dw.every((a) => a.source.label === "Unrated" && a.source.region === "Europe"));
+  assert.ok(dw.every((a) => a.source.label === "Lean left" && a.source.ratedBy === "MBFC" && a.source.region === "Europe"));
+  const fox = news.clusters.flatMap((c) => c.articles).find((a) => a.source.id === "fox");
+  assert.equal(fox.source.ratedBy, "AllSides");
 });
 
 test("a dead feed is reported without breaking the rest", async () => {

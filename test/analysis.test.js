@@ -42,7 +42,7 @@ test("framing phrases shift a center source", () => {
 });
 
 test("unrated outlets only get a lean from phrases", () => {
-  assert.deepEqual(analyzeBias("Council meets on Tuesday", null), { score: null, label: "Unrated", framing: { score: 0, left: [], right: [] } });
+  assert.deepEqual(analyzeBias("Council meets on Tuesday", null), { score: null, label: "Unrated", framing: { score: 0, left: [], right: [] }, method: null });
   assert.equal(analyzeBias("Thousands demand abortion rights", null).label, "Unrated");
   const r = analyzeBias("The radical left wants open borders", null);
   assert.equal(r.label, "Lean right");

@@ -41,7 +41,8 @@ function cosine(a, b) {
 }
 
 const avg = (xs) => (xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : 0);
-const bucket = (lean) => (lean == null ? "unrated" : lean <= -1 ? "left" : lean >= 1 ? "right" : "center");
+// Estimated leans are fractional, so the cut points sit between center (0) and lean left or right (±1).
+const bucket = (lean) => (lean == null ? "unrated" : lean <= -0.4 ? "left" : lean >= 0.4 ? "right" : "center");
 const byScore = (a, b) => (a.bias.score ?? Infinity) - (b.bias.score ?? Infinity);
 const mode = (xs) => Object.entries(xs.reduce((m, x) => ((m[x] = (m[x] || 0) + 1), m), {})).sort((a, b) => b[1] - a[1])[0]?.[0];
 
