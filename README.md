@@ -6,7 +6,19 @@ Lean and tone are automated estimates, not fact checks. Nothing here is financia
 
 ## Features
 
-The home page leads with the story covered by the most outlets, followed by a grid of story clusters you can search or filter by topic. Each cluster shows how many left, center, right and unrated sources covered it, its average tone and a coverage lean estimate. Opening a story puts every outlet's version side by side in left, center and right columns, with international and unrated outlets below, and shows the framing phrases and loaded words found in each. It also flags blindspots where one side is missing. Latest news lists every article by time with a lean filter. World collects international coverage with region filters. Markets has equities and rates, a live Hyperliquid perps table with funding and open interest, the Crypto Fear and Greed Index, market headlines with their tone, and a chart of news tone by topic. Understanding bias explains the method and shows which feeds are online.
+The layout follows Google News in a dark theme. A tab row links every section and topic, the market ticker runs under it, and the search bar in the header searches every story as you type.
+
+The home page opens with Top stories. Each story shows its lead article with a photo and up to three other outlets, picked so the other sides of the spectrum show up first. A summary row gives the left, center and right coverage split and the story's tone mix, and a button opens the full comparison. Every article across the site has a sentiment bar under it that shows its tone from −1 to +1. The right column has Market pulse with S&P 500 and BTC charts, a Latest feed you can filter by lean, and average tone by topic. Below that come For you and Your topics.
+
+Opening a story puts every outlet's version side by side in left, center and right columns, with international and unrated outlets below, and shows the framing phrases and loaded words found in each. It also flags blindspots where one side is missing. Latest lists every article by time with a lean filter. World collects international coverage with region filters, and each topic tab lists its stories. Markets has equities and rates, a live Hyperliquid perps table with funding and open interest, the Crypto Fear and Greed Index, market headlines with their tone, and a chart of news tone by topic. Understanding bias explains the method and shows which feeds are online.
+
+## For you and settings
+
+For you starts as a shuffle that changes once a day. Every article or story you open is recorded in a reading profile, which adds weight to that article's topic, its outlet and the words in its headline. Older reads fade a little each time you read something new, so the feed follows what you read lately. Ranking adds those weights to a freshness score, pushes articles you already opened to the bottom and shows at most one article per story and two per outlet. The code is in `src/prefs.js` and the tests are in `test/prefs.test.js`.
+
+The settings page, opened from the gear icon, lets you pick the topics and regions that get a column under Your topics, switch the sentiment bar between a diverging bar and a spectrum, pause learning, see your top topics and outlets, and reset your history. The profile is saved in your browser's local storage and never leaves your device. Clearing site data or switching browsers starts a new profile.
+
+[MDN localStorage docs](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 
 ## Getting started
 

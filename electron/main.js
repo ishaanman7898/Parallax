@@ -16,7 +16,7 @@ async function createWindow() {
     height: 860,
     minWidth: 420,
     minHeight: 600,
-    backgroundColor: "#050505",
+    backgroundColor: "#1b1c1d",
     title: "Parallax",
     icon: path.join(__dirname, "..", "build", "icon.png"),
     autoHideMenuBar: true,
