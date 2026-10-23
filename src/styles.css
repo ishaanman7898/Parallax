@@ -9,15 +9,16 @@
   --green: #6ee7a8;
   --red: #f47c7c;
   --blue: #6aa8f5;
-  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --serif: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --mono: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --radius: 4px;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body {
+  font-variant-numeric: tabular-nums;
   background: var(--bg);
   color: var(--text);
   font: 14px/1.5 var(--sans);
@@ -52,7 +53,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; margin: 0; letter-spac
 .page { max-width: 1240px; width: 100%; margin: 0 auto; padding: 28px 24px 40px; flex: 1; }
 .page-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
 .page-head h1 { font-size: 30px; }
-.search { background: #111a15; border: 1px solid var(--line); color: var(--text); border-radius: var(--radius); padding: 9px 12px; font: inherit; font-size: 13px; width: 190px; }
+.search { background: #111a15; border: 1px solid var(--line); color: var(--text); border-radius: var(--radius); padding: 10px 14px; font: inherit; font-size: 14px; width: 420px; max-width: 100%; }
 .search:focus { outline: 1px solid var(--green); }
 .section-label { font-size: 13px; font-weight: 600; margin: 32px 0 14px; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
@@ -62,12 +63,12 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; margin: 0; letter-spac
 
 /* hero */
 .top { display: grid; grid-template-columns: minmax(0, 1fr) 216px; gap: 16px; }
-.hero { overflow: hidden; display: flex; flex-direction: column; transition: background 0.15s; }
+.hero { overflow: hidden; display: flex; flex-direction: row; align-items: center; gap: 16px; padding: 14px; transition: background 0.15s; }
 .hero:hover { background: var(--card-hover); }
-.hero img { width: 100%; height: 0; flex: 1; min-height: 230px; object-fit: cover; display: block; }
-.hero-body { padding: 24px 16px 22px; }
+.hero img { width: 150px; height: 110px; flex: none; object-fit: cover; display: block; border-radius: var(--radius); }
+.hero-body { padding: 0; min-width: 0; }
 .hero .eyebrow { color: var(--green); font-weight: 600; }
-.hero h2 { font-size: 26px; line-height: 1.2; margin: 10px 0; }
+.hero h2 { font-size: 20px; line-height: 1.2; margin: 10px 0; }
 .hero p { color: var(--muted); margin: 0 0 12px; font-size: 13px; }
 
 /* market pulse */
@@ -157,8 +158,8 @@ a.more, .prose a, .explainer a, .small a, .empty a { color: var(--green); }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: #f2c46d; display: inline-block; flex: none; }
 .dot.live { background: var(--green); box-shadow: 0 0 0 3px rgba(110, 231, 168, 0.18); }
 img.broken { display: none; }
-.hero-fallback { flex: 1; min-height: 230px; display: flex; align-items: flex-end; padding: 16px; background: linear-gradient(135deg, #2c4437, #12201a 60%, #0b1410); }
-.hero-fallback span { font: 600 44px var(--serif); color: rgba(255, 255, 255, 0.12); }
+.hero-fallback { width: 150px; height: 110px; flex: none; border-radius: var(--radius); display: flex; align-items: flex-end; padding: 10px; background: linear-gradient(135deg, #2c4437, #12201a 60%, #0b1410); }
+.hero-fallback span { font: 600 20px var(--serif); color: rgba(255, 255, 255, 0.12); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-bottom: 12px; }
 .chips .lean { margin: 0; }
 .tone { font-size: 10px; font-weight: 600; color: var(--muted); }
@@ -256,7 +257,6 @@ code { font-family: var(--mono); font-size: 0.9em; color: var(--text); }
 .unrated-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; }
 .topic-chip i { font-style: normal; color: var(--dim); margin-left: 2px; }
 .world-top { grid-template-columns: 1fr; }
-.world-top .hero img, .world-top .hero-fallback { min-height: 260px; }
 .tag { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); border: 1px solid var(--line); border-radius: 3px; padding: 1px 4px; margin-left: 4px; }
 .two-col.reverse { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
 .tone-scale { background: linear-gradient(90deg, var(--red), #5b6b62, var(--green)); }
