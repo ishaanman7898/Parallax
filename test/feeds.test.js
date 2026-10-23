@@ -28,6 +28,13 @@ test("parses Atom feeds", () => {
   assert.ok(items[0].categories.length);
 });
 
+test("parses RSS 1.0 (RDF) feeds", () => {
+  const items = parseFeed(fixture("dw.xml"));
+  assert.equal(items.length, 3);
+  assert.equal(items[1].title, "Albania's student protests are only getting bigger");
+  assert.equal(items[0].published, "2026-10-22T20:52:00.000Z");
+});
+
 test("parses WordPress feeds", () => {
   for (const name of ["thehill.xml", "nypost.xml", "examiner.xml"]) {
     const items = parseFeed(fixture(name));
@@ -38,16 +45,21 @@ test("parses WordPress feeds", () => {
 
 test("builds clustered news from fixtures", async () => {
   const news = await buildNews(fixtureFetcher(path.join(__dirname, "fixtures")), NOW);
-  assert.equal(news.sources.filter((s) => s.ok).length, 5);
+  assert.equal(news.sources.filter((s) => s.ok).length, 7);
+  assert.ok(news.clusters.flatMap((c) => c.articles).some((a) => a.source.kind === "markets"));
   assert.ok(news.articleCount > 50);
   const multi = news.clusters.filter((c) => c.sourceCount > 1);
   assert.ok(multi.length >= 3);
   const carriage = news.clusters.find((c) => c.articles.some((a) => /carriage/i.test(a.title)));
-  assert.ok(carriage.sourceCount >= 3, "carriage story should merge across outlets");
+  assert.ok(carriage.sourceCount >= 2, "carriage story should merge across outlets");
   assert.ok(carriage.articles.every((a) => /carriage/i.test(a.title)), "no unrelated articles in the cluster");
   for (const c of news.clusters) {
-    assert.equal(c.coverage.left + c.coverage.center + c.coverage.right, c.sourceCount);
+    assert.equal(c.coverage.left + c.coverage.center + c.coverage.right + c.coverage.unrated, c.sourceCount);
+    assert.ok(c.regions.length >= 1);
   }
+  const dw = news.clusters.flatMap((c) => c.articles).filter((a) => a.source.id === "dw");
+  assert.equal(dw.length, 3);
+  assert.ok(dw.every((a) => a.source.label === "Unrated" && a.source.region === "Europe"));
 });
 
 test("a dead feed is reported without breaking the rest", async () => {

@@ -41,24 +41,28 @@ function cosine(a, b) {
 }
 
 const avg = (xs) => (xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : 0);
-const bucket = (score) => (score <= -0.2 ? "left" : score >= 0.2 ? "right" : "center");
+const bucket = (lean) => (lean == null ? "unrated" : lean <= -1 ? "left" : lean >= 1 ? "right" : "center");
+const byScore = (a, b) => (a.bias.score ?? Infinity) - (b.bias.score ?? Infinity);
 const mode = (xs) => Object.entries(xs.reduce((m, x) => ((m[x] = (m[x] || 0) + 1), m), {})).sort((a, b) => b[1] - a[1])[0]?.[0];
 
 function summarize(members, now) {
-  const articles = members.map((m) => m.article).sort((a, b) => a.bias.score - b.bias.score);
-  const coverage = { left: 0, center: 0, right: 0 };
+  const articles = members.map((m) => m.article).sort(byScore);
+  const coverage = { left: 0, center: 0, right: 0, unrated: 0 };
   const sources = new Set();
   for (const a of articles) {
-    if (!sources.has(a.source.id)) coverage[bucket(a.source.lean / 2)]++;
+    if (!sources.has(a.source.id)) coverage[bucket(a.source.lean)]++;
     sources.add(a.source.id);
   }
-  // Lead with the article closest to center that has an image.
-  const lead = [...articles].sort((a, b) => !!b.image - !!a.image || Math.abs(a.source.lean) - Math.abs(b.source.lean))[0];
+  // Lead with an article that has an image, preferring rated outlets closest to center.
+  const distance = (a) => (a.source.lean == null ? 1.5 : Math.abs(a.source.lean));
+  const lead = [...articles].sort((a, b) => !!b.image - !!a.image || distance(a) - distance(b))[0];
   const latest = articles.reduce((t, a) => (a.published > t ? a.published : t), "");
-  const lean = avg(articles.map((a) => a.bias.score));
+  const scored = articles.filter((a) => a.bias.score != null);
+  const lean = scored.length ? avg(scored.map((a) => a.bias.score)) : null;
   const hours = latest ? (now - Date.parse(latest)) / 36e5 : 48;
+  const rated = coverage.left + coverage.center + coverage.right;
   let blindspot = null;
-  if (sources.size >= 3 && (coverage.left === 0) !== (coverage.right === 0)) {
+  if (rated >= 3 && (coverage.left === 0) !== (coverage.right === 0)) {
     blindspot = coverage.left === 0 ? "Little coverage from left leaning sources" : "Little coverage from right leaning sources";
   }
   return {
@@ -69,9 +73,10 @@ function summarize(members, now) {
     topic: mode(articles.map((a) => a.topic)),
     published: latest,
     sourceCount: sources.size,
+    regions: [...new Set(articles.map((a) => a.source.region))],
     coverage,
     blindspot,
-    lean: { score: Math.round(lean * 100) / 100, label: leanLabel(lean) },
+    lean: lean == null ? { score: null, label: "Unrated" } : { score: Math.round(lean * 100) / 100, label: leanLabel(lean) },
     sentiment: Math.round(avg(articles.map((a) => a.sentiment.compound)) * 1000) / 1000,
     rank: sources.size * 3 + articles.length + Math.max(0, 24 - hours) / 6,
     articles

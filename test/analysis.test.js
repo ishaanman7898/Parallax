@@ -17,6 +17,10 @@ test("news lexicon respects negation", () => {
   assert.ok(negated > plain);
 });
 
+test("hyphenated compounds are scored word by word", () => {
+  assert.equal(analyzeSentiment("Shares slide on a weaker-than-expected forecast").label, "negative");
+});
+
 test("loaded language finds sensational words", () => {
   const r = analyzeLoaded("Senator SLAMS bombshell report in heated hearing!");
   assert.deepEqual(r.words.sort(), ["bombshell", "heated", "slams"]);
@@ -37,6 +41,14 @@ test("framing phrases shift a center source", () => {
   assert.ok(left.score < -0.2, left.score);
 });
 
+test("unrated outlets only get a lean from phrases", () => {
+  assert.deepEqual(analyzeBias("Council meets on Tuesday", null), { score: null, label: "Unrated", framing: { score: 0, left: [], right: [] } });
+  assert.equal(analyzeBias("Thousands demand abortion rights", null).label, "Unrated");
+  const r = analyzeBias("The radical left wants open borders", null);
+  assert.equal(r.label, "Lean right");
+  assert.ok(r.score <= 0.5);
+});
+
 test("phrase matching ignores partial words and handles hyphens", () => {
   assert.deepEqual(analyzeBias("The wokeness debate", 0).framing.right, []);
   assert.deepEqual(analyzeBias("A pro-life rally", 0).framing.right, ["pro life"]);
@@ -47,4 +59,5 @@ test("topic classifier", () => {
   assert.equal(classify("Senate Republicans unveil election plan"), "Politics");
   assert.equal(classify("Brewers and Rays meet in the World Series"), "Sports");
   assert.equal(classify("A quiet afternoon"), "General");
+  assert.notEqual(classify("A wind farm in New Mexico"), "World");
 });
