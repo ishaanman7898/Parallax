@@ -1082,6 +1082,23 @@
   const splash = document.getElementById("splash");
   const splashStart = performance.now();
   let splashDone = !profile.splash;
+  // Falling light in the logo's blue and red, white-hot at the tips. It starts with the page,
+  // before saved settings load, so it is already arriving when the logo slides in.
+  let splashLight = window.ParallaxLightfall?.mount(document.getElementById("splash-light"), {
+    colors: ["#8ab4f8", "#a8c7fa", "#f28b82", "#ffffff"],
+    backgroundColor: "#a8c7fa",
+    streakCount: 3,
+    backgroundGlow: 0.12,
+    glow: 0.8,
+    mouseInteraction: true,
+    holdToWarp: true,
+    intro: true
+  });
+
+  function stopSplashLight() {
+    splashLight?.destroy();
+    splashLight = null;
+  }
 
   function setSplash(fraction, text) {
     document.getElementById("splash-progress").style.width = `${Math.round(Math.max(0.04, Math.min(1, fraction)) * 100)}%`;
@@ -1106,8 +1123,11 @@
     setTimeout(() => {
       splash.classList.add("done");
       document.body.classList.remove("loading");
-      setTimeout(() => splash.classList.add("off"), 1000);
-    }, Math.max(0, 1700 - (performance.now() - splashStart)));
+      setTimeout(() => {
+        splash.classList.add("off");
+        stopSplashLight();
+      }, 1000);
+    }, Math.max(0, 2800 - (performance.now() - splashStart)));
   }
 
   async function start() {
@@ -1125,6 +1145,7 @@
       setTimeout(finishSplash, 45000);
     } else {
       splash.classList.add("off");
+      stopSplashLight();
     }
     if (!location.hash && profile.startPage !== "home" && Prefs.START_PAGES.includes(profile.startPage)) history.replaceState(null, "", `#/${profile.startPage}`);
 
