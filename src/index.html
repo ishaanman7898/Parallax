@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'">
+  <title>Parallax</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="logo" href="#/">parallax</a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#/" data-route="home">Top stories</a>
+        <a href="#/latest" data-route="latest">Latest news</a>
+        <a href="#/markets" data-route="markets">Markets</a>
+        <a href="#/bias" data-route="bias">Understanding bias</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="ticker" aria-label="Sample market prices">
+    <div class="ticker-track" id="ticker"></div>
+  </div>
+
+  <main class="page" id="app"></main>
+
+  <footer class="footer">
+    <span class="footer-logo">parallax /</span>
+    <span>Sample news, prices and perspective labels. Not financial advice.</span>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
