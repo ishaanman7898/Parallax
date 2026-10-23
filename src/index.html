@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; connect-src 'self' https://api.hyperliquid.xyz wss://api.hyperliquid.xyz">
   <title>Parallax</title>
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
     </div>
   </header>
 
-  <div class="ticker" aria-label="Sample market prices">
+  <div class="ticker" aria-label="Market prices">
     <div class="ticker-track" id="ticker"></div>
   </div>
 
@@ -32,10 +32,11 @@
 
   <footer class="footer">
     <span class="footer-logo">parallax /</span>
-    <span>Sample news, prices and perspective labels. Not financial advice.</span>
+    <span>Headlines link to their publishers. Lean and tone are automated estimates. Market data from Yahoo Finance, Hyperliquid and alternative.me. Not financial advice.</span>
   </footer>
 
   <script src="data.js"></script>
+  <script src="live.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

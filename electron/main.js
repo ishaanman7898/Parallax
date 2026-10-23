@@ -1,8 +1,16 @@
 const { app, BrowserWindow, shell } = require("electron");
 const path = require("path");
+const { start } = require("../server");
 
-// Loads the same static site used on the web, with Node access turned off in the page.
-function createWindow() {
+let origin = null;
+
+// Runs the same server as the website on a random local port, then loads it.
+async function createWindow() {
+  if (!origin) {
+    const { port } = await start(0, "127.0.0.1");
+    origin = `http://127.0.0.1:${port}`;
+  }
+
   const win = new BrowserWindow({
     width: 1280,
     height: 860,
@@ -15,15 +23,15 @@ function createWindow() {
     webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
 
-  win.loadFile(path.join(__dirname, "..", "src", "index.html"));
+  win.loadURL(origin + "/");
 
-  // External links open in the system browser instead of a new app window.
+  // Article links open in the system browser instead of a new app window.
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (/^https?:/.test(url)) shell.openExternal(url);
     return { action: "deny" };
   });
   win.webContents.on("will-navigate", (e, url) => {
-    if (!url.startsWith("file://")) {
+    if (!url.startsWith(origin)) {
       e.preventDefault();
       if (/^https?:/.test(url)) shell.openExternal(url);
     }
