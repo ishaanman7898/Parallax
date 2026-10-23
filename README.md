@@ -1,12 +1,12 @@
 # Parallax
 
-Parallax is a news reader that shows how the same story is covered across the political spectrum. It pulls live headlines from nine outlets, groups articles about the same event, and scores each one for lean, tone and loaded language. A live market panel tracks stocks and indices from Yahoo Finance and crypto perpetuals streamed from Hyperliquid. The same code runs as a website and as an Electron desktop app.
+Parallax is a news reader that shows how the same story is covered across the political spectrum and around the world. It pulls live headlines from 38 outlets in the US, UK, Europe, Canada, Asia-Pacific and the Middle East, groups articles about the same event, and scores each one for lean, tone and loaded language. A live market panel tracks stocks and indices from Yahoo Finance and crypto perpetuals streamed from Hyperliquid. The same code runs as a website and as an Electron desktop app.
 
 Lean and tone are automated estimates, not fact checks. Nothing here is financial advice.
 
 ## Features
 
-The home page leads with the story covered by the most outlets, followed by a grid of story clusters you can search or filter by topic. Each cluster shows how many left, center and right rated sources covered it, its average tone and a coverage lean estimate. Opening a story puts every outlet's version side by side in left, center and right columns with the framing phrases and loaded words found in each, and flags blindspots where one side is missing. Latest news lists every article by time with a lean filter. Markets has equities and rates, a live Hyperliquid perps table with funding and open interest, the Crypto Fear and Greed Index and a chart of news tone by topic. Understanding bias explains the method and shows which feeds are online.
+The home page leads with the story covered by the most outlets, followed by a grid of story clusters you can search or filter by topic. Each cluster shows how many left, center, right and unrated sources covered it, its average tone and a coverage lean estimate. Opening a story puts every outlet's version side by side in left, center and right columns, with international and unrated outlets below, and shows the framing phrases and loaded words found in each. It also flags blindspots where one side is missing. Latest news lists every article by time with a lean filter. World collects international coverage with region filters. Markets has equities and rates, a live Hyperliquid perps table with funding and open interest, the Crypto Fear and Greed Index, market headlines with their tone, and a chart of news tone by topic. Understanding bias explains the method and shows which feeds are online.
 
 ## Getting started
 
@@ -30,18 +30,22 @@ All sources are free and need no API keys.
 
 | Data | Source | Fetched by |
 | --- | --- | --- |
-| Headlines | RSS and Atom feeds from NPR, The New York Times, Vox, BBC News, The Hill, Christian Science Monitor, Fox News, New York Post and Washington Examiner | Server, every 5 minutes |
+| US headlines | NPR, The New York Times, Vox, NBC News, Los Angeles Times, Politico, The Hill, Christian Science Monitor, Fox News, New York Post, Washington Examiner, UPI | Server, every 5 minutes |
+| International headlines | BBC News, Al Jazeera, DW, France 24, Euronews, RFI, Sky News, The Guardian, The Independent, Financial Times, Le Monde, Euractiv, EUobserver, Balkan Insight, CBC News, The Globe and Mail, Global News, National Post, South China Morning Post, The Sydney Morning Herald, SBS News, Asia Times, The Japan Times | Server, every 5 minutes |
+| Market headlines | MarketWatch, CNBC, Investing.com | Server, every 5 minutes |
 | Stocks, indices, 10 year yield | Yahoo Finance chart API, delayed | Server, every minute |
 | Crypto Fear and Greed | alternative.me | Server, every minute |
 | Crypto perpetuals | Hyperliquid public info API and websocket | Browser, streaming |
 
-Feeds and outlet ratings live in `server/sources.js`. If a feed fails, the rest keep working and the Understanding bias page marks it offline. Yahoo's chart endpoint is unofficial and can change without notice.
+Feeds, regions and outlet ratings live in `server/sources.js`, and the parser reads RSS 2.0, RSS 1.0 and Atom. The server fetches eight feeds at a time and keeps the newest 25 items per feed from the last 72 hours. If a feed fails, the rest keep working and the Understanding bias page marks it offline. Yahoo's chart endpoint is unofficial and can change without notice. The international list started from the Feedspot world news feed directory, and English language feeds were kept because the tone model only reads English.
 
-[Hyperliquid API docs](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api) and [alternative.me Fear and Greed API](https://alternative.me/crypto/fear-and-greed-index/)
+[Feedspot world news RSS feeds](https://rss.feedspot.com/world_news_rss_feeds/), [Hyperliquid API docs](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api) and [alternative.me Fear and Greed API](https://alternative.me/crypto/fear-and-greed-index/)
 
 ## How the analysis works
 
-**Lean.** Each outlet starts from a five point rating that follows the AllSides Media Bias Chart at the time it was added. The server then scans each headline, summary and available article text for about seventy partisan coded phrases, such as "undocumented immigrants" against "illegal aliens". Phrase matches can move an article up to halfway from its outlet's rating. The phrase lists are in `server/bias.js`.
+**Lean.** Each rated outlet starts from a five point rating that follows the AllSides Media Bias Chart at the time it was added. The server then scans each headline, summary and available article text for about seventy partisan coded phrases, such as "undocumented immigrants" against "illegal aliens". Phrase matches can move an article up to halfway from its outlet's rating. The phrase lists are in `server/bias.js`.
+
+**Unrated outlets.** Outlets without a rating we could confirm are marked unrated, which covers most international outlets because the US left to right scale maps poorly onto politics elsewhere. They still count as coverage. They only get a lean estimate when their text carries strong partisan phrases, a combined phrase weight of at least 2, so one weak phrase never implies a rating.
 
 **Tone.** Sentiment uses VADER, a model built for short text. VADER misses market vocabulary, so `server/sentiment.js` adds terms like "rally", "plunge" and "recession", skipping any word VADER already scores. Their weights are folded into VADER's raw score before its normal scaling. Scores run from −1 to +1.
 
@@ -80,7 +84,7 @@ The `src` folder also works as a plain static site on GitHub Pages or Netlify. I
 ```
 server/
   index.js      HTTP server for the site and the JSON API
-  sources.js    outlets, feeds and ratings
+  sources.js    outlets, regions, feeds and ratings
   rss.js        RSS and Atom parsing
   sentiment.js  VADER tone plus news lexicon, loaded language
   bias.js       framing phrase lists and lean scoring

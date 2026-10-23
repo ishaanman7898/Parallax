@@ -52,11 +52,11 @@ function atomLink(link) {
   return decode(alt ? alt["@href"] || text(alt) : "");
 }
 
-// Parses RSS 2.0 or Atom into a flat list of items.
+// Parses RSS 2.0, RSS 1.0 (RDF) or Atom into a flat list of items.
 function parseFeed(xml) {
   const doc = parser.parse(xml);
   const isAtom = !!doc.feed;
-  const raw = isAtom ? toArray(doc.feed.entry) : toArray(doc.rss?.channel?.item);
+  const raw = isAtom ? toArray(doc.feed.entry) : toArray(doc.rss?.channel?.item ?? doc["rdf:RDF"]?.item);
   return raw
     .map((item) => {
       const body = item["content:encoded"] ?? item.content;

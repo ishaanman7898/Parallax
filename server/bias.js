@@ -41,6 +41,8 @@ function leanLabel(score) {
 }
 
 // Blends the outlet's rating (-2..2) with phrase evidence. Phrases can shift at most half the score.
+// Unrated outlets (null) get a score only from phrases, and only when the phrase weight is at
+// least 2, so a single weak phrase never implies a rating the outlet does not have.
 function analyzeBias(input, sourceLean) {
   const text = normalize(input);
   const left = matches(text, LEFT);
@@ -48,8 +50,14 @@ function analyzeBias(input, sourceLean) {
   const total = left.weight + right.weight;
   const framing = total ? (right.weight - left.weight) / total : 0;
   const influence = Math.min(1, total / 4) * 0.5;
+  const phrases = { score: Math.round(framing * 100) / 100, left: left.found, right: right.found };
+  if (sourceLean == null) {
+    if (total < 2) return { score: null, label: "Unrated", framing: phrases };
+    const score = Math.round(framing * influence * 100) / 100;
+    return { score, label: leanLabel(score), framing: phrases };
+  }
   const score = Math.round(((sourceLean / 2) * (1 - influence) + framing * influence) * 100) / 100;
-  return { score, label: leanLabel(score), framing: { score: Math.round(framing * 100) / 100, left: left.found, right: right.found } };
+  return { score, label: leanLabel(score), framing: phrases };
 }
 
 module.exports = { analyzeBias, leanLabel, LEFT, RIGHT };

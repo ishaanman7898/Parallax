@@ -1,7 +1,7 @@
 const fs = require("fs/promises");
 const path = require("path");
 const crypto = require("crypto");
-const { SOURCES, LEAN_LABELS } = require("./sources");
+const { SOURCES, leanLabelFor } = require("./sources");
 const { parseFeed } = require("./rss");
 const { analyzeSentiment, analyzeLoaded } = require("./sentiment");
 const { analyzeBias } = require("./bias");
@@ -10,7 +10,8 @@ const { clusterArticles } = require("./cluster");
 
 const TTL = 5 * 60 * 1000;
 const MAX_AGE = 72 * 36e5;
-const PER_FEED = 30;
+const PER_FEED = 25;
+const CONCURRENCY = 8;
 const UA = "Mozilla/5.0 (compatible; ParallaxReader/2.0)";
 
 async function fetchText(url) {
@@ -33,7 +34,7 @@ function analyze(item, source) {
   const fullText = `${text} ${item.body}`;
   return {
     id: crypto.createHash("sha1").update(item.link).digest("hex").slice(0, 12),
-    source: { id: source.id, name: source.name, lean: source.lean, label: LEAN_LABELS[source.lean] },
+    source: { id: source.id, name: source.name, lean: source.lean, label: leanLabelFor(source.lean), region: source.region, kind: source.kind },
     title: item.title,
     summary: item.summary,
     link: item.link,
@@ -46,35 +47,42 @@ function analyze(item, source) {
   };
 }
 
+// Runs async jobs with at most `limit` in flight.
+async function pool(jobs, limit) {
+  let next = 0;
+  const worker = async () => {
+    while (next < jobs.length) await jobs[next++]();
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, jobs.length) }, worker));
+}
+
 async function buildNews(fetcher, now = Date.now()) {
-  const status = [];
   const seen = new Set();
   const articles = [];
-  await Promise.all(
-    SOURCES.map(async (source) => {
-      let count = 0;
-      const errors = [];
-      await Promise.all(
-        source.feeds.map(async (url) => {
-          try {
-            const items = parseFeed(await fetcher(url))
-              .filter((i) => !i.published || now - Date.parse(i.published) < MAX_AGE)
-              .slice(0, PER_FEED);
-            for (const item of items) {
-              if (seen.has(item.link)) continue;
-              seen.add(item.link);
-              articles.push(analyze(item, source));
-              count++;
-            }
-          } catch (err) {
-            errors.push(err.message);
-          }
-        })
-      );
-      status.push({ id: source.id, name: source.name, lean: source.lean, label: LEAN_LABELS[source.lean], ok: count > 0, count, error: count ? null : errors[0] || "empty feed" });
+  const tally = new Map(SOURCES.map((s) => [s.id, { count: 0, errors: [] }]));
+  const jobs = SOURCES.flatMap((source) =>
+    source.feeds.map((url) => async () => {
+      const t = tally.get(source.id);
+      try {
+        const items = parseFeed(await fetcher(url))
+          .filter((i) => !i.published || now - Date.parse(i.published) < MAX_AGE)
+          .slice(0, PER_FEED);
+        for (const item of items) {
+          if (seen.has(item.link)) continue;
+          seen.add(item.link);
+          articles.push(analyze(item, source));
+          t.count++;
+        }
+      } catch (err) {
+        t.errors.push(err.message);
+      }
     })
   );
-  status.sort((a, b) => a.lean - b.lean);
+  await pool(jobs, CONCURRENCY);
+  const status = SOURCES.map((s) => {
+    const { count, errors } = tally.get(s.id);
+    return { id: s.id, name: s.name, lean: s.lean, label: leanLabelFor(s.lean), region: s.region, kind: s.kind, ok: count > 0, count, error: count ? null : errors[0] || "empty feed" };
+  });
   return { updated: new Date(now).toISOString(), sample: false, sources: status, articleCount: articles.length, clusters: clusterArticles(articles, now) };
 }
 

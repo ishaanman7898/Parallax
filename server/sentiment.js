@@ -6,14 +6,15 @@ const vader = require("vader-sentiment");
 const NEWS_LEXICON = {
   rally: 1.8, rallies: 1.8, rallied: 1.8, surge: 1.6, surges: 1.6, surged: 1.6, soar: 2, soars: 2, soared: 2,
   jump: 1, jumps: 1, jumped: 1, climb: 1, climbs: 1, climbed: 1, rebound: 1.5, rebounds: 1.5, rebounded: 1.5,
-  outperform: 1.8, outperforms: 1.8, upgrade: 1.5, upgrades: 1.5, upgraded: 1.5, bullish: 2, boom: 1.5, booming: 1.8,
+  outperform: 1.8, outperforms: 1.8, upgrade: 1.5, upgrades: 1.5, upgraded: 1.5, bullish: 2, boom: 0.8, booming: 1.2,
   cools: 0.6, eases: 0.8, easing: 0.6, beats: 0.4, ceasefire: 1.5, breakthrough: 2,
   plunge: -2, plunges: -2, plunged: -2, plummet: -2.2, plummets: -2.2, plummeted: -2.2, tumble: -1.8, tumbles: -1.8,
   tumbled: -1.8, slump: -1.8, slumps: -1.8, slumped: -1.8, sink: -1.2, sinks: -1.2, sank: -1.2, slide: -1, slides: -1,
   slid: -1, drop: -1, drops: -1, dropped: -1, fell: -1, falls: -1, selloff: -2, downgrade: -1.5, downgrades: -1.5,
   downgraded: -1.5, bearish: -2, recession: -2.2, layoffs: -2, layoff: -2, bankruptcy: -2.5, shutdown: -1.5,
   volatility: -0.8, underperform: -1.5, tariffs: -0.6, deficit: -1, strikes: -1.2, airstrike: -2.5,
-  airstrikes: -2.5, riots: -2.2, shooting: -2.5, earthquake: -2, flooding: -1.8, outbreak: -2
+  airstrikes: -2.5, riots: -2.2, shooting: -2.5, earthquake: -2, flooding: -1.8, outbreak: -2,
+  spooked: -1.5, rattled: -1.5, whiplash: -1, squeeze: -0.8, selloffs: -2
 };
 
 const NEGATIONS = new Set(["not", "no", "never", "isn't", "aren't", "wasn't", "weren't", "don't", "doesn't", "didn't", "won't", "can't", "cannot", "without", "nor"]);
@@ -34,7 +35,9 @@ const VADER_WORDS = new Set(
   fs.readFileSync(lexiconPath, "utf8").split("\n").map((line) => line.split("\t")[0]).filter(Boolean)
 );
 
-const tokenize = (t) => t.toLowerCase().replace(/[‘’]/g, "'").match(/[a-z][a-z'-]*/g) || [];
+const tokenize = (t) => t.toLowerCase().replace(/[‘’]/g, "'").match(/[a-z][a-z']*/g) || [];
+// Splits hyphenated compounds like "weaker-than-expected" so each word is scored.
+const splitHyphens = (t) => t.replace(/([A-Za-z])-(?=[A-Za-z])/g, "$1 ");
 const round = (n) => Math.round(n * 1000) / 1000;
 
 // Recovers VADER's raw valence sum from its normalized compound score.
@@ -43,7 +46,8 @@ function rawSum(compound) {
   return c * Math.sqrt(15 / (1 - c * c));
 }
 
-function analyzeSentiment(input) {
+function analyzeSentiment(raw) {
+  const input = splitHyphens(raw);
   const v = vader.SentimentIntensityAnalyzer.polarity_scores(input);
   const tokens = tokenize(input);
   let sum = rawSum(v.compound);

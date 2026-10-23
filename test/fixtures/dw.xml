@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <channel rdf:about="https://rss.dw.com/syndication/feeds/rss-en-top.1022.rdf">
+  <description>Deutsche Welle: DW.com - Top Stories</description>
+  <link>https://www.dw.com/english/?maca=en-rss-en-top-1022-rdf</link>
+  <title>Deutsche Welle: DW.com - Top Stories</title>
+  <dc:date>2026-10-23T00:58:20Z</dc:date>
+ </channel>
+ <item rdf:about="https://www.dw.com/en/poland-thousands-protest-for-more-abortion-rights/a-79737572?maca=en-rss-en-top-1022-rdf">
+  <title>Poland: Thousands protest for more abortion rights</title>
+  <link>https://www.dw.com/en/poland-thousands-protest-for-more-abortion-rights/a-79737572?maca=en-rss-en-top-1022-rdf</link>
+  <description>Thousands rallied across Poland to demand abortion rights six years after a landmark court ruling tightened restrictions. The country has one of the strictest abortion rules in all of Europe.</description>
+  <dc:date>2026-10-22T20:52:00Z</dc:date>
+  <dc:subject>News</dc:subject>
+ </item>
+ <item rdf:about="https://www.dw.com/en/albania-s-student-protests-are-only-getting-bigger/a-79735213?maca=en-rss-en-top-1022-rdf">
+  <title>Albania&apos;s student protests are only getting bigger</title>
+  <link>https://www.dw.com/en/albania-s-student-protests-are-only-getting-bigger/a-79735213?maca=en-rss-en-top-1022-rdf</link>
+  <description>As police try to suppress anti-corruption protests by young Albanians, Prime Minister Edi Rama is claiming that &quot;antifa&quot; is behind the unrest. Few are buying that explanation.</description>
+  <dc:date>2026-10-22T19:18:00Z</dc:date>
+  <dc:subject>World</dc:subject>
+ </item>
+ <item rdf:about="https://www.dw.com/en/germany-arrests-ukrainian-man-suspected-of-spying-for-russia/a-79732373?maca=en-rss-en-top-1022-rdf">
+  <title>Germany arrests Ukrainian man suspected of spying for Russia</title>
+  <link>https://www.dw.com/en/germany-arrests-ukrainian-man-suspected-of-spying-for-russia/a-79732373?maca=en-rss-en-top-1022-rdf</link>
+  <description>The suspect is thought to have gathered defense-related information on the production of tanks and munitions, as well as details about NATO&apos;s eastern flank.</description>
+  <dc:date>2026-10-22T11:43:00Z</dc:date>
+  <dc:subject>News</dc:subject>
+ </item>
+</rdf:RDF>

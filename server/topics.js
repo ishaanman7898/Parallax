@@ -14,7 +14,8 @@ const TOPICS = {
 const ENTRIES = Object.entries(TOPICS).map(([topic, words]) => [topic, words.map((w) => new RegExp(`\\b${w.replace(/[&]/g, "\\$&")}\\b`, "i"))]);
 
 function classify(text, categories = []) {
-  const haystack = text + " " + categories.join(" ");
+  // "New Mexico" is a US state, not a World story.
+  const haystack = (text + " " + categories.join(" ")).replace(/new mexico/gi, "nm");
   let best = "General";
   let bestScore = 0;
   for (const [topic, patterns] of ENTRIES) {

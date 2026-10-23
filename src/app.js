@@ -1,7 +1,7 @@
 (function () {
   const { loadNews, loadMarkets, hyperliquid } = window.ParallaxData;
   const app = document.getElementById("app");
-  const state = { news: null, markets: null, coins: [], btc: null, query: "", topic: "All", side: "all", gridLimit: 12, latestLimit: 40 };
+  const state = { news: null, markets: null, coins: [], btc: null, query: "", topic: "All", side: "all", region: "All", gridLimit: 12, worldLimit: 24, latestLimit: 40 };
 
   // ---------- helpers ----------
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -15,7 +15,8 @@
   const pct = (n) => (n == null || isNaN(n) ? "—" : (n >= 0 ? "+" : "−") + Math.abs(n).toFixed(2) + "%");
   const signed = (n, d = 2) => (n >= 0 ? "+" : "−") + Math.abs(n).toFixed(d);
   const dir = (n) => (n < 0 ? "down" : "up");
-  const side = (score) => (score <= -0.2 ? "left" : score >= 0.2 ? "right" : "center");
+  const side = (score) => (score == null ? "unrated" : score <= -0.2 ? "left" : score >= 0.2 ? "right" : "center");
+  const sourceSide = (lean) => (lean == null ? "unrated" : side(lean / 2));
   const toneWord = (c) => (c >= 0.05 ? "Positive" : c <= -0.05 ? "Negative" : "Neutral");
   const toneClass = (c) => (c >= 0.05 ? "pos" : c <= -0.05 ? "neg" : "neu");
   const coinChange = (c) => (c.prev ? ((c.price - c.prev) / c.prev) * 100 : 0);
@@ -38,18 +39,20 @@
   const toneTag = (c) => `<span class="tone tone-${toneClass(c)}">${toneWord(c)} tone ${signed(c)}</span>`;
 
   function coverageBar(cov, withLabels = true) {
-    const total = cov.left + cov.center + cov.right || 1;
+    const unrated = cov.unrated || 0;
+    const total = cov.left + cov.center + cov.right + unrated || 1;
     const seg = (k) => (cov[k] ? `<span class="seg-${k}" style="width:${(cov[k] / total) * 100}%"></span>` : "");
-    return `<div class="cov"><div class="cov-bar">${seg("left")}${seg("center")}${seg("right")}</div>${
-      withLabels ? `<div class="cov-labels"><span>L ${cov.left}</span><span>C ${cov.center}</span><span>R ${cov.right}</span></div>` : ""
+    return `<div class="cov"><div class="cov-bar">${seg("left")}${seg("center")}${seg("right")}${seg("unrated")}</div>${
+      withLabels ? `<div class="cov-labels"><span>L ${cov.left}</span><span>C ${cov.center}</span><span>R ${cov.right}</span>${unrated ? `<span>Unrated ${unrated}</span>` : ""}</div>` : ""
     }</div>`;
   }
 
-  function storyCard(c) {
+  function storyCard(c, showRegions = false) {
     const lead = c.articles[0];
+    const where = showRegions ? esc((c.regions || []).join(", ")) : esc(c.topic);
     return `
       <a class="card story" href="#/story/${esc(c.id)}">
-        <div class="eyebrow">${esc(c.topic)} · ${c.sourceCount} source${c.sourceCount === 1 ? "" : "s"}</div>
+        <div class="eyebrow">${where} · ${c.sourceCount} source${c.sourceCount === 1 ? "" : "s"}</div>
         <h3>${esc(c.title)}</h3>
         <p>${esc(c.summary)}</p>
         <div class="chips">${leanTag(c.lean.label, c.lean.score)}${toneTag(c.sentiment)}</div>
@@ -144,7 +147,7 @@
 
   const explainer = `
     <section class="card explainer">
-      <p>Perspective describes how a story is framed, not whether it is true. Each article gets a lean estimate from its outlet’s published rating, adjusted by partisan phrases found in its text, plus a sentiment score for tone. These are automated estimates. <a href="#/bias">Read the method</a>.</p>
+      <p>Perspective describes how a story is framed, not whether it is true. Each article gets a lean estimate from its outlet’s published rating, adjusted by partisan phrases found in its text, plus a sentiment score for tone. Outlets without a confirmed rating, including most international ones, are marked unrated. These are automated estimates. <a href="#/bias">Read the method</a>.</p>
       <div class="spectrum"><div class="l">LEFT</div><div class="c">CENTER</div><div class="r">RIGHT</div></div>
     </section>`;
 
@@ -230,7 +233,7 @@
     const loaded = a.loaded.words.map((w) => `<span class="phrase phrase-loaded">${esc(w)}</span>`).join("");
     return `
       <article class="coverage-item">
-        <div class="meta"><b class="lean-${side(a.source.lean / 2)}">${esc(a.source.name)}</b> · ${esc(a.source.label)} · ${ago(a.published)}</div>
+        <div class="meta"><b class="lean-${sourceSide(a.source.lean)}">${esc(a.source.name)}</b> · ${esc(a.source.label)} · ${ago(a.published)}</div>
         <h3>${title}</h3>
         <p>${esc(a.summary)}</p>
         <div class="chips">${leanTag(a.bias.label, a.bias.score)}${toneTag(a.sentiment.compound)}</div>
@@ -242,15 +245,15 @@
   function story(id) {
     const c = clusters().find((x) => x.id === id);
     if (!c) return notFound();
-    const groups = { left: [], center: [], right: [] };
-    c.articles.forEach((a) => groups[side(a.source.lean / 2)].push(a));
+    const groups = { left: [], center: [], right: [], unrated: [] };
+    c.articles.forEach((a) => groups[sourceSide(a.source.lean)].push(a));
     const avgTone = (xs) => (xs.length ? xs.reduce((s, a) => s + a.sentiment.compound, 0) / xs.length : null);
     const lt = avgTone(groups.left);
     const rt = avgTone(groups.right);
     const toneCompare = lt != null && rt != null
       ? `<p class="small">Left rated outlets averaged ${signed(lt)}, right rated outlets ${signed(rt)}. ${Math.abs(lt - rt) >= 0.3 ? "That is a notable difference in tone." : "Their tone is broadly similar."}</p>`
       : `<p class="small">Tone comparison needs coverage from both sides.</p>`;
-    const marker = Math.round(((c.lean.score + 1) / 2) * 100);
+    const marker = c.lean.score == null ? null : Math.round(((c.lean.score + 1) / 2) * 100);
     const column = (key, name) => `
       <section class="side-col">
         <h2 class="side-head side-${key}">${name} <span>${groups[key].length}</span></h2>
@@ -277,21 +280,25 @@
           <div class="card stat">
             <div class="eyebrow">Coverage lean</div>
             <div class="stat-big lean-${side(c.lean.score)}">${esc(c.lean.label)}</div>
-            <div class="scale"><span class="scale-marker" style="left:${marker}%"></span></div>
-            <p class="small">Average of article estimates, from left (−1) to right (+1).</p>
+            ${marker == null ? `<p class="small">Not enough rated coverage or partisan phrases to estimate a lean.</p>` : `<div class="scale"><span class="scale-marker" style="left:${marker}%"></span></div>
+            <p class="small">Average of article estimates, from left (−1) to right (+1).</p>`}
           </div>
         </div>
-        <div class="sides">${column("left", "Left")}${column("center", "Center")}${column("right", "Right")}</div>
+        ${groups.left.length + groups.center.length + groups.right.length ? `<div class="sides">${column("left", "Left")}${column("center", "Center")}${column("right", "Right")}</div>` : ""}
+        ${groups.unrated.length ? `<section class="unrated-block">
+          <h2 class="side-head side-unrated">International and unrated outlets <span>${groups.unrated.length}</span></h2>
+          <div class="unrated-grid">${groups.unrated.map(articleRow).join("")}</div>
+        </section>` : ""}
         <p class="small method-note">Lean and tone are automated estimates. <a href="#/bias">How Parallax measures them</a>.</p>
       </article>`;
   }
 
   function latest() {
     const items = allArticles()
-      .filter((a) => state.side === "all" || side(a.source.lean / 2) === state.side)
+      .filter((a) => state.side === "all" || sourceSide(a.source.lean) === state.side)
       .sort((a, b) => (b.published || "").localeCompare(a.published || ""));
     const shown = items.slice(0, state.latestLimit);
-    const sides = [["all", "All"], ["left", "Left"], ["center", "Center"], ["right", "Right"]];
+    const sides = [["all", "All"], ["left", "Left"], ["center", "Center"], ["right", "Right"], ["unrated", "Unrated"]];
     app.innerHTML = `
       <div class="page-head"><h1>Latest news</h1>
         <div class="topic-chips">${sides.map(([k, n]) => `<button class="topic-chip ${state.side === k ? "active" : ""}" data-side="${k}">${n}</button>`).join("")}</div>
@@ -303,7 +310,7 @@
         <div class="card row">
           <time datetime="${esc(a.published)}">${ago(a.published)}</time>
           <div>
-            <div class="eyebrow"><b class="lean-${side(a.source.lean / 2)}">${esc(a.source.name)}</b> · ${esc(a.topic)}</div>
+            <div class="eyebrow"><b class="lean-${sourceSide(a.source.lean)}">${esc(a.source.name)}</b> · ${esc(a.topic)}</div>
             <h3>${link ? `<a href="${esc(link)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a>` : esc(a.title)}</h3>
             <p>${esc(a.summary)}</p>
             <div class="chips">${leanTag(a.bias.label, a.bias.score)}${toneTag(a.sentiment.compound)}
@@ -356,6 +363,29 @@
       <div class="cov-labels"><span>Extreme fear</span><span>Extreme greed</span></div></div>`;
   }
 
+  function marketHeadlines() {
+    const items = allArticles()
+      .filter((a) => a.source.kind === "markets")
+      .sort((a, b) => (b.published || "").localeCompare(a.published || ""));
+    if (!items.length) return "";
+    const day = items.filter((a) => a.published && Date.now() - Date.parse(a.published) < 864e5);
+    const tone = day.length ? day.reduce((s, a) => s + a.sentiment.compound, 0) / day.length : null;
+    const rows = items.slice(0, 10).map((a) => {
+      const link = safeUrl(a.link);
+      return `<li><span class="mh-time">${ago(a.published)}</span><span class="mh-src">${esc(a.source.name)}</span>
+        <span class="mh-title">${link ? `<a href="${esc(link)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a>` : esc(a.title)}</span>
+        <span class="tone tone-${toneClass(a.sentiment.compound)}">${signed(a.sentiment.compound)}</span></li>`;
+    }).join("");
+    return `
+      <div class="two-col reverse">
+        <div class="card stat"><div class="eyebrow">Market headlines · ${[...new Set(items.map((a) => a.source.name))].map(esc).join(", ")}</div><ul class="headlines">${rows}</ul></div>
+        <div class="card stat"><div class="eyebrow">Market news tone · 24h</div>
+          ${tone == null ? `<p class="empty">Not enough headlines.</p>` : `<div class="stat-big tone-${toneClass(tone)}">${signed(tone)}</div>
+          <div class="scale tone-scale"><span class="scale-marker" style="left:${Math.round(((tone + 1) / 2) * 100)}%"></span></div>
+          <p class="small">Average tone of ${day.length} market headlines. Tone measures wording, not where prices go next.</p>`}</div>
+      </div>`;
+  }
+
   function markets() {
     const quotes = state.markets?.quotes || [];
     const rows = quotes.map((q) => `<tr><td>${esc(q.label)}</td><td class="num">${fmt(q.price)}</td><td class="num ${dir(q.change)}">${signed(q.change)}</td><td class="num ${dir(q.changePct)}">${pct(q.changePct)}</td></tr>`).join("");
@@ -379,20 +409,53 @@
         ${fearGreedCard()}
         <div class="card stat"><div class="eyebrow">News tone by topic · ${state.news?.sample ? "sample" : "live feeds"}</div>${toneByTopic()}</div>
       </div>
+      ${marketHeadlines()}
       <h2 class="section-label">Markets and business coverage</h2>
       <div class="grid">${related.map(storyCard).join("") || `<p class="empty">No market stories right now.</p>`}</div>`;
   }
 
+  function world() {
+    const intl = clusters().filter((c) => (c.regions || []).some((r) => r !== "US") || c.topic === "World");
+    const counts = {};
+    intl.forEach((c) => (c.regions || []).forEach((r) => r !== "US" && (counts[r] = (counts[r] || 0) + 1)));
+    const regions = ["All", ...Object.keys(counts).sort((a, b) => counts[b] - counts[a])];
+    if (!regions.includes(state.region)) state.region = "All";
+    const list = state.region === "All" ? intl : intl.filter((c) => c.regions.includes(state.region));
+    const shown = list.slice(0, state.worldLimit);
+    app.innerHTML = `
+      <div class="page-head"><h1>World news</h1>
+        <div class="topic-chips">${regions.map((r) => `<button class="topic-chip ${state.region === r ? "active" : ""}" data-region="${esc(r)}">${esc(r)}${counts[r] ? ` <i>${counts[r]}</i>` : ""}</button>`).join("")}</div>
+      </div>
+      ${statusLine()}
+      ${list.length ? `<div class="top world-top">${heroCard(list[0])}</div>` : `<p class="empty">No international stories in this cycle.</p>`}
+      <div class="grid world-grid">${shown.slice(1).map((c) => storyCard(c, true)).join("")}</div>
+      ${list.length > shown.length ? `<button class="more-btn" id="more-world">More stories</button>` : ""}`;
+    app.querySelector(".topic-chips").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-region]");
+      if (!b) return;
+      state.region = b.dataset.region;
+      state.worldLimit = 24;
+      world();
+    });
+    document.getElementById("more-world")?.addEventListener("click", () => {
+      state.worldLimit += 24;
+      const y = window.scrollY;
+      world();
+      window.scrollTo(0, y);
+    });
+  }
+
   function bias() {
     const sources = state.news?.sources || [];
-    const srcRows = sources.map((s) => `<tr><td>${esc(s.name)}</td><td class="lean-${side(s.lean / 2)}">${esc(s.label)}</td><td class="num">${s.ok ? s.count : `<span class="down">offline</span>`}</td></tr>`).join("");
+    const srcRows = sources.map((s) => `<tr><td>${esc(s.name)}${s.kind === "markets" ? ` <span class="tag">markets</span>` : ""}</td><td>${esc(s.region)}</td><td class="lean-${sourceSide(s.lean)}">${esc(s.label)}</td><td class="num">${s.ok ? s.count : `<span class="down">offline</span>`}</td></tr>`).join("");
     app.innerHTML = `
       <div class="page-head"><h1>Understanding bias</h1></div>
       <div class="prose">
         <p>Every story involves choices. Which fact goes first, whose quote gets the most space and which words describe a policy all shape how a reader sees an event, even when every sentence is accurate. Parallax groups coverage of the same event from outlets across the spectrum so you can compare those choices side by side.</p>
         <h2>Source ratings</h2>
         <p>Each outlet starts from a published rating on a five point scale from left to right. The ratings follow the AllSides Media Bias Chart at the time they were added and can be changed in <code>server/sources.js</code>. Check <a href="https://www.allsides.com/media-bias/ratings" target="_blank" rel="noopener noreferrer">allsides.com</a> for current ratings.</p>
-        ${srcRows ? `<div class="card"><table class="table"><thead><tr><th>Source</th><th>Rating</th><th class="num">Articles now</th></tr></thead><tbody>${srcRows}</tbody></table></div>` : `<p class="small">Source status appears here when live feeds are running.</p>`}
+        <p>Outlets without a rating we could confirm are marked unrated. That covers most international outlets, because the US left to right scale maps poorly onto politics elsewhere. Their articles still count as coverage and appear on every story page. They only get a lean estimate when their text contains strong partisan phrases, never from a single weak one.</p>
+        ${srcRows ? `<div class="card scroll-x"><table class="table"><thead><tr><th>Source</th><th>Region</th><th>Rating</th><th class="num">Articles now</th></tr></thead><tbody>${srcRows}</tbody></table></div>` : `<p class="small">Source status appears here when live feeds are running.</p>`}
         <h2>Framing phrases</h2>
         <p>Some phrases are used far more by one side than the other, such as “undocumented immigrants” versus “illegal aliens” or “estate tax” versus “death tax”. Parallax scans each headline, summary and available article text for about seventy such phrases, an approach based on Gentzkow and Shapiro’s research on media slant. Matches can move an article up to halfway away from its outlet’s rating, and the phrases found are shown on every story page.</p>
         <h2>Tone</h2>
@@ -410,7 +473,7 @@
   }
 
   // ---------- routing and refresh ----------
-  const routes = { "": home, latest, markets, bias };
+  const routes = { "": home, latest, world, markets, bias };
   const parseHash = () => location.hash.replace(/^#\/?/, "").split("/");
 
   function render() {
