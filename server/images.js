@@ -91,8 +91,8 @@ function isPublicUrl(link) {
   }
 }
 
-function createImageFinder({ fetchPage = fetchHead } = {}) {
-  const cache = new Map();
+function createImageFinder({ fetchPage = fetchHead, saved = null } = {}) {
+  const cache = new Map(saved || []);
 
   async function find(link) {
     if (cache.has(link)) return cache.get(link);
@@ -124,7 +124,7 @@ function createImageFinder({ fetchPage = fetchHead } = {}) {
     await Promise.all(Array.from({ length: Math.min(CONCURRENCY, queue.length) }, worker));
   }
 
-  return { find, fill, cached: (link) => cache.get(link) };
+  return { find, fill, cached: (link) => cache.get(link), entries: () => [...cache] };
 }
 
 module.exports = { createImageFinder, extractImage, normalizeImage, isPublicUrl };

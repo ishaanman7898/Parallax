@@ -1,0 +1,17 @@
+// The Parallax website on Cloudflare Workers. Deploy with `npm run deploy:web`.
+{
+  "$schema": "https://unpkg.com/wrangler@4/config-schema.json",
+  "name": "parallax",
+  "account_id": "d02ac96518404ff3aba663e31bfdae28",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./src",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  // News editions, written by scripts/publish-news.js.
+  "kv_namespaces": [{ "binding": "NEWS", "id": "7182cb74d3944eeba5103a785cc60581" }],
+  "observability": { "enabled": true }
+}

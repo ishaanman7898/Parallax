@@ -201,4 +201,4 @@ function createNewsService({
   return getNews;
 }
 
-module.exports = { createNewsService, buildNews, fixtureFetcher };
+module.exports = { createNewsService, buildNews, fixtureFetcher, fetchText };

@@ -11,6 +11,8 @@
   "scripts": {
     "web": "node scripts/serve.js",
     "web:offline": "node scripts/serve.js --offline",
+    "deploy:web": "npx wrangler@4 deploy",
+    "publish:news": "node scripts/publish-news.js",
     "start": "electron .",
     "test": "node --test",
     "dist": "electron-builder",

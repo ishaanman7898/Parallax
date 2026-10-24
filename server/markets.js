@@ -96,4 +96,4 @@ function createMarketsService({ fetcher = process.env.PARALLAX_FIXTURES ? fixtur
   };
 }
 
-module.exports = { createMarketsService, parseChart, SYMBOLS };
+module.exports = { createMarketsService, buildMarkets, fetchJson, parseChart, SYMBOLS };

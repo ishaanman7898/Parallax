@@ -1,5 +1,5 @@
-const fs = require("fs");
 const vader = require("vader-sentiment");
+const { lexicon } = require("vader-sentiment/src/vader_lexicon.js");
 
 // VADER handles general language well but misses market vocabulary, so these
 // news and finance terms (VADER -4..4 scale) are folded into its raw score.
@@ -30,10 +30,7 @@ const LOADED = new Set([
   "staggering", "alarming", "blistering", "fiery", "heated", "rant", "tirade", "smear", "hoax", "scandal", "embarrassing"
 ]);
 
-const lexiconPath = require.resolve("vader-sentiment/vader_lexicon.txt");
-const VADER_WORDS = new Set(
-  fs.readFileSync(lexiconPath, "utf8").split("\n").map((line) => line.split("\t")[0]).filter(Boolean)
-);
+const VADER_WORDS = new Set(Object.keys(lexicon));
 
 const tokenize = (t) => t.toLowerCase().replace(/[‘’]/g, "'").match(/[a-z][a-z']*/g) || [];
 // Splits hyphenated compounds like "weaker-than-expected" so each word is scored.

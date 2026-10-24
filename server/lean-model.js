@@ -49,10 +49,12 @@ const sideOf = (x) => (x <= -0.2 ? -1 : x >= 0.2 ? 1 : 0);
 const clamp = (x) => Math.max(-1, Math.min(1, x));
 const round = (x, d = 2) => Math.round(x * 10 ** d) / 10 ** d;
 
-function createLeanModel({ dataDir = null, now = () => Date.now() } = {}) {
+// Evidence persists to dataDir when given. Without one, `saved` seeds it and entries() hands
+// it back for the caller to store, as the Cloudflare Worker does with KV.
+function createLeanModel({ dataDir = null, saved = null, now = () => Date.now() } = {}) {
   const file = dataDir ? path.join(dataDir, "lean-evidence.json") : null;
   // article id -> [outlet, left weight, right weight, time]
-  let evidence = new Map();
+  let evidence = new Map(saved || []);
   if (file) {
     try {
       evidence = new Map(JSON.parse(fs.readFileSync(file, "utf8")));
@@ -125,7 +127,7 @@ function createLeanModel({ dataDir = null, now = () => Date.now() } = {}) {
     return result;
   }
 
-  return { update, estimate, size: () => evidence.size };
+  return { update, estimate, size: () => evidence.size, entries: () => [...evidence] };
 }
 
 module.exports = { createLeanModel, correlation, fitLine };

@@ -2,6 +2,8 @@
 
 Parallax is a news reader that shows how the same story is covered across the political spectrum and around the world. It pulls live headlines from 88 outlets in the US, UK, Europe, Canada, Asia-Pacific, South Asia, the Middle East, Africa and Latin America, groups articles about the same event, and scores each one for lean, tone and loaded language. A live market panel streams stock and index prices from Yahoo Finance and crypto perpetuals from Hyperliquid. The same code runs as a website and as an Electron desktop app.
 
+**Website:** [parallax.ishman.workers.dev](https://parallax.ishman.workers.dev)
+
 Lean and tone are automated estimates, not fact checks. Nothing here is financial advice.
 
 ## Features
@@ -95,11 +97,18 @@ macOS builds need to run on a Mac. The app icon lives in `build/icon.png`, a 102
 
 ## Hosting the website
 
-For live news, deploy the Node server to any host that runs Node, such as Render, Railway or Fly.io, with `npm run web` as the start command and `HOST=0.0.0.0`. News feeds block browser requests from other sites, so live headlines need the server.
+The live site runs on Cloudflare Workers at [parallax.ishman.workers.dev](https://parallax.ishman.workers.dev). `worker/index.js` serves the `src` folder, fetches market quotes live and hands out the latest news edition from Workers KV. Analyzing an edition takes a few seconds of CPU, more than a free Worker may use, so `scripts/publish-news.js` builds it with the same code as the server and writes it to KV. The News workflow in `.github/workflows/news.yml` runs that script every 15 minutes. There is no price stream on the website, so stock prices refresh every minute instead of ticking.
 
-The `src` folder also works as a plain static site on GitHub Pages or Netlify. In that mode it shows sample stories and sample stock prices, but Hyperliquid crypto prices still stream live because the browser fetches them directly.
+```bash
+npm run deploy:web     # deploy the Worker and the site with wrangler
+npm run publish:news   # build and publish a news edition, needs CLOUDFLARE_API_TOKEN
+```
 
-[Render Node deploy guide](https://render.com/docs/deploy-node-express-app) and [GitHub Pages docs](https://docs.github.com/en/pages)
+The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret with Workers KV Storage edit access. Set it with `gh secret set CLOUDFLARE_API_TOKEN`.
+
+The Node server also runs on any host that runs Node, such as Render, Railway or Fly.io, with `npm run web` as the start command and `HOST=0.0.0.0`. The `src` folder on its own works as a static site that shows sample stories, with live Hyperliquid crypto prices because the browser fetches them directly.
+
+[Cloudflare Workers docs](https://developers.cloudflare.com/workers/), [Workers KV docs](https://developers.cloudflare.com/kv/) and [Render Node deploy guide](https://render.com/docs/deploy-node-express-app)
 
 ## Project structure
 
@@ -125,7 +134,8 @@ src/
   lightfall.js  WebGL light streaks behind the startup screen
   data.js       sample data used without a server
 electron/       desktop main process, server process and preload bridge
-scripts/        server launcher
+scripts/        server launcher and news publisher
+worker/         Cloudflare Worker for the website
 test/           unit tests and saved feed fixtures
 ```
 
