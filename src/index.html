@@ -75,9 +75,19 @@
   <main class="page" id="app"></main>
 
   <footer class="footer">
-    <span class="footer-logo">Parallax</span>
-    <span id="feed-status"></span>
-    <span>Headlines link to their publishers. Outlet ratings from AllSides and Media Bias/Fact Check, tone is an automated estimate. Market data from Yahoo Finance, Hyperliquid and alternative.me. Not financial advice.</span>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <a class="footer-logo" href="#/"><img src="assets/icon.svg" alt="" width="22" height="22">Parallax</a>
+        <nav class="footer-links" aria-label="More">
+          <a href="#/latest">Latest</a>
+          <a href="#/markets">Markets</a>
+          <a href="#/bias">How bias is measured</a>
+          <a href="#/settings">Settings</a>
+        </nav>
+        <span class="footer-status" id="feed-status"></span>
+      </div>
+      <p class="footer-note">Headlines link to their publishers. Outlet ratings from AllSides and Media Bias/Fact Check, tone is an automated estimate. Market data from Yahoo Finance, Hyperliquid and alternative.me. Not financial advice.</p>
+    </div>
   </footer>
 
   <script src="data.js"></script>

@@ -46,23 +46,24 @@
     return `<span class="sent" role="img" aria-label="Sentiment ${label}">${track}<span class="sent-label tone-${cls}">${label}</span></span>`;
   }
 
-  function coverageBar(cov, withLabels = true) {
+  // The counts behind a bar show in a tooltip on hover, keeping the bar itself clean.
+  function coverageBar(cov) {
     const unrated = cov.unrated || 0;
     const total = cov.left + cov.center + cov.right + unrated || 1;
     const seg = (k) => (cov[k] ? `<span class="seg-${k}" style="width:${(cov[k] / total) * 100}%"></span>` : "");
-    return `<span class="cov"><span class="cov-bar">${seg("left")}${seg("center")}${seg("right")}${seg("unrated")}</span>${
-      withLabels ? `<span class="cov-labels">L ${cov.left} · C ${cov.center} · R ${cov.right}${unrated ? ` · Unrated ${unrated}` : ""}</span>` : ""
-    }</span>`;
+    const tip = `Left ${cov.left} · Center ${cov.center} · Right ${cov.right}${unrated ? ` · Unrated ${unrated}` : ""}`;
+    return `<span class="cov" tabindex="0" role="img" aria-label="Coverage: ${tip}" data-tip="${tip}"><span class="cov-bar">${seg("left")}${seg("center")}${seg("right")}${seg("unrated")}</span></span>`;
   }
 
   // Share of a story's articles that read negative, neutral and positive, plus the average.
   function toneMix(articles) {
     const scores = articles.map((a) => a.sentiment.compound);
     const n = scores.length || 1;
-    const share = (cls) => (scores.filter((s) => toneClass(s) === cls).length / n) * 100;
+    const count = (cls) => scores.filter((s) => toneClass(s) === cls).length;
     const avg = scores.reduce((s, x) => s + x, 0) / n;
-    const seg = (cls) => (share(cls) ? `<span class="fill-${cls}" style="width:${share(cls)}%"></span>` : "");
-    return `<span class="cov"><span class="cov-bar" role="img" aria-label="Tone mix">${seg("neg")}${seg("neu")}${seg("pos")}</span><span class="tone-${toneClass(avg)}">avg ${signed(avg)}</span></span>`;
+    const seg = (cls) => (count(cls) ? `<span class="fill-${cls}" style="width:${(count(cls) / n) * 100}%"></span>` : "");
+    const tip = `Negative ${count("neg")} · Neutral ${count("neu")} · Positive ${count("pos")} · Average ${signed(avg)}`;
+    return `<span class="cov" tabindex="0" role="img" aria-label="Tone mix: ${tip}" data-tip="${tip}"><span class="cov-bar">${seg("neg")}${seg("neu")}${seg("pos")}</span></span>`;
   }
 
   const sourceRow = (source) =>

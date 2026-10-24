@@ -121,6 +121,7 @@
   let pulseTimer = null;
   let pulseAt = 0;
   function scheduleLive() {
+    if (document.hidden) return;
     if (!liveTimer) liveTimer = setTimeout(() => ((liveTimer = null), patchLive()), 400);
     if (!pulseTimer) pulseTimer = setTimeout(() => ((pulseTimer = null), refreshPulse()), Math.max(0, 5000 - (Date.now() - pulseAt)));
   }
@@ -144,6 +145,13 @@
     row.classList.toggle("at-end", row.scrollLeft + row.clientWidth >= row.scrollWidth - 2);
   }
   document.addEventListener("scroll", (e) => e.target.classList?.contains("pulse-chips") && fitPulseChips(false), true);
+
+  // Live ticks are skipped while the window is hidden or minimized, then caught up on return.
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) return;
+    patchLive();
+    refreshPulse();
+  });
 
   function onQuote(q) {
     const target = !state.markets?.sample && state.markets?.quotes?.find((x) => x.symbol === q.id);
@@ -920,7 +928,7 @@
     const dot = e.target.closest("[data-radar]");
     if (dot) showRadarSlide(Number(dot.dataset.radar));
   });
-  setInterval(() => !document.querySelector(".radar:hover") && showRadarSlide(state.radarSlide + 1), 5000);
+  setInterval(() => !document.hidden && !document.querySelector(".radar:hover") && showRadarSlide(state.radarSlide + 1), 5000);
 
   app.addEventListener("click", (e) => {
     const el = e.target.closest("[data-action]");
@@ -1090,6 +1098,8 @@
     streakCount: 3,
     backgroundGlow: 0.12,
     glow: 0.8,
+    // One pixel per CSS pixel: a quarter of the shading work on a 2x screen, barely visible on soft streaks.
+    dpr: 1,
     mouseInteraction: true,
     holdToWarp: true,
     intro: true

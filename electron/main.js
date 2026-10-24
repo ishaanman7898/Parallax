@@ -1,10 +1,10 @@
-const { app, BrowserWindow, shell, ipcMain } = require("electron");
+const { app, BrowserWindow, shell, ipcMain, utilityProcess } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const fs = require("fs");
 const path = require("path");
-const { start } = require("../server");
 
 let origin = null;
+let server = null;
 
 // Desktop only settings, kept next to the app's other data. Everything else lives in the page.
 const settingsFile = () => path.join(app.getPath("userData"), "settings.json");
@@ -34,12 +34,27 @@ function applyWindowMode(win, mode) {
   else win.unmaximize();
 }
 
-// Runs the same server as the website on a random local port, then loads it.
+// Starts the same server as the website, in a separate process on a random local port.
+function startServer() {
+  return new Promise((resolve, reject) => {
+    server = utilityProcess.fork(path.join(__dirname, "server-process.js"), [app.getPath("userData")], { serviceName: "Parallax server" });
+    server.once("message", (m) => (m.port ? resolve(m.port) : reject(new Error(m.error))));
+    server.once("exit", (code) => {
+      server = null;
+      origin = null;
+      reject(new Error(`server exited with code ${code}`));
+    });
+  });
+}
+
+function stopServer() {
+  server?.kill();
+  server = null;
+}
+
+// Loads the page from the local server, starting it first if needed.
 async function createWindow() {
-  if (!origin) {
-    const { port } = await start(0, "127.0.0.1", { dataDir: app.getPath("userData"), desktop: true });
-    origin = `http://127.0.0.1:${port}`;
-  }
+  if (!origin) origin = `http://127.0.0.1:${await startServer()}`;
 
   const win = new BrowserWindow({
     width: 1280,
@@ -51,7 +66,7 @@ async function createWindow() {
     title: "Parallax",
     icon: path.join(__dirname, "..", "build", "icon.png"),
     autoHideMenuBar: true,
-    webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true, preload: path.join(__dirname, "preload.js") }
+    webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true, spellcheck: false, preload: path.join(__dirname, "preload.js") }
   });
 
   // Shows the window at its launch size straight away, so the startup animation plays full size.
@@ -129,7 +144,14 @@ ipcMain.handle("app:set", (e, key, value) => {
 });
 ipcMain.handle("update:check", () => checkForUpdates());
 ipcMain.handle("update:download", () => autoUpdater.downloadUpdate().catch((err) => setUpdate({ status: "error", error: err.message })));
-ipcMain.handle("update:install", () => autoUpdater.quitAndInstall());
+// Answers the click first, stops the server so no process holds the app's files, then runs
+// the installer quietly and reopens the app when it finishes.
+ipcMain.handle("update:install", () => {
+  setImmediate(() => {
+    stopServer();
+    autoUpdater.quitAndInstall(true, true);
+  });
+});
 
 app.whenReady().then(() => {
   loadSettings();
@@ -139,6 +161,8 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
+
+app.on("before-quit", stopServer);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
