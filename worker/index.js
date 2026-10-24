@@ -27,6 +27,8 @@ export default {
         const news = await env.NEWS.get("news", "stream");
         return news ? new Response(news, { headers: HEADERS }) : json({ error: "no edition yet" }, 503);
       }
+      case "/api/edition":
+        return new Response((await env.NEWS.get("edition")) || "{}", { headers: HEADERS });
       case "/api/markets":
         try {
           return json(await getMarkets());
@@ -37,8 +39,8 @@ export default {
         return json({ phase: "ready", done: 1, total: 1, sources: SOURCES.length });
       case "/api/info":
         return json({ version, sources: SOURCES.length, desktop: false });
-      // Settings stay in the browser and there is no price stream on the website, so the
-      // page falls back to local storage and polling.
+      // Settings stay in the browser. Without a server stream the page streams Yahoo prices
+      // itself and polls /api/edition for new news.
       case "/api/prefs":
       case "/api/stream":
         return new Response(null, { status: 204 });

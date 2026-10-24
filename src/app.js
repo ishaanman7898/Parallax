@@ -1163,7 +1163,7 @@
     render();
     refreshNews().finally(finishSplash);
     refreshMarkets().then(() => {
-      if (state.markets && !state.markets.sample) openStream({ onQuote, onNews });
+      if (state.markets && !state.markets.sample) openStream({ onQuote, onNews, symbols: state.markets.quotes.map((q) => q.symbol) });
       startHyperliquid();
     });
     loadInfo().then((info) => (state.info = info));

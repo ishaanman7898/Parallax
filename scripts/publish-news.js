@@ -48,16 +48,19 @@ async function fillImages(news, finder) {
 
 async function main() {
   if (!token || !account) throw new Error("set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID");
-  const [evidence, images] = await Promise.all([getJson("lean-evidence"), getJson("images")]);
-  const leanModel = createLeanModel({ saved: evidence });
-  const finder = createImageFinder({ saved: images });
+  // Lean evidence and found images share one key, keeping each run to three KV writes, so a
+  // run every 5 minutes stays inside the free plan's 1,000 writes a day.
+  const saved = (await getJson("state")) || {};
+  const leanModel = createLeanModel({ saved: saved.evidence });
+  const finder = createImageFinder({ saved: saved.images });
   const news = await buildNews(fetchText, Date.now(), { leanModel });
   await fillImages(news, finder);
   // Keep the last good edition when every feed fails.
   if (!news.articleCount) throw new Error("no articles, keeping the previous edition");
   await put("news", JSON.stringify(news));
-  await put("lean-evidence", JSON.stringify(leanModel.entries()));
-  await put("images", JSON.stringify(finder.entries().slice(-MAX_IMAGES)));
+  // The small record pages poll to learn a new edition is out.
+  await put("edition", JSON.stringify({ updated: news.updated, articleCount: news.articleCount }));
+  await put("state", JSON.stringify({ evidence: leanModel.entries(), images: finder.entries().slice(-MAX_IMAGES) }));
   const online = news.sources.filter((s) => s.ok).length;
   console.log(`Published ${news.articleCount} articles in ${news.clusters.length} stories from ${online} of ${news.sources.length} sources`);
 }

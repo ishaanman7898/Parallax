@@ -1,9 +1,10 @@
 name: News
 
-# Publishes a fresh news edition to the website's KV store every 15 minutes.
+# Publishes a fresh news edition to the website's KV store every 5 minutes. GitHub runs
+# scheduled jobs on a best effort basis, so the gap is sometimes longer.
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 concurrency:

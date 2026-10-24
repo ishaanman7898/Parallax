@@ -97,7 +97,7 @@ macOS builds need to run on a Mac. The app icon lives in `build/icon.png`, a 102
 
 ## Hosting the website
 
-The live site runs on Cloudflare Workers at [parallax.ishman.workers.dev](https://parallax.ishman.workers.dev). `worker/index.js` serves the `src` folder, fetches market quotes live and hands out the latest news edition from Workers KV. Analyzing an edition takes a few seconds of CPU, more than a free Worker may use, so `scripts/publish-news.js` builds it with the same code as the server and writes it to KV. The News workflow in `.github/workflows/news.yml` runs that script every 15 minutes. There is no price stream on the website, so stock prices refresh every minute instead of ticking.
+The live site runs on Cloudflare Workers at [parallax.ishman.workers.dev](https://parallax.ishman.workers.dev). `worker/index.js` serves the `src` folder, fetches market quotes live and hands out the latest news edition from Workers KV. Analyzing an edition takes a few seconds of CPU, more than a free Worker may use, so `scripts/publish-news.js` builds it with the same code as the server and writes it to KV. The News workflow in `.github/workflows/news.yml` runs that script every 5 minutes, and open pages check a small `GET /api/edition` record every minute, then swap in or offer the new stories the same way the desktop app does. With no server stream, the page connects to the Yahoo Finance streamer itself, so prices tick live on the website too.
 
 ```bash
 npm run deploy:web     # deploy the Worker and the site with wrangler
