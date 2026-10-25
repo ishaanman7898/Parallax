@@ -17,7 +17,7 @@
   }
   const state = {
     news: null, markets: null, articles: [], byId: new Map(), coins: [], coinMap: new Map(), candles: new Map(),
-    radarSlide: 0, chart: null, chartHover: false,
+    radarSlide: 0, topicSlide: {}, chart: null, chartHover: false,
     pulse: "spx", asideSide: "all", side: "all", region: "All", pageN: 1,
     info: null, desktop: null, update: null, toastFor: null
   };
@@ -436,9 +436,9 @@
   function yourTopics() {
     if (!profile.topics.length) return "";
     const cols = profile.topics.map((key) => {
-      const items = topicItems(key, 3);
+      const items = topicItems(key, 5);
       return `<section class="panel topic-col">${panelTitle(topicHref(key), esc(Prefs.topicLabel(key)), "h3")}
-        <div class="topic-slides" data-topic-slideshow>${items.map((a, i) => `<div class="topic-slide${i === 0 ? " active" : ""}">${feedItem(a, style())}</div>`).join("") || `<p class="empty">Nothing in this cycle.</p>`}</div></section>`;
+        <div class="topic-slides" data-topic-slideshow="${esc(key)}">${items.map((a, i) => `<div class="topic-slide${i === (state.topicSlide[key] || 0) % items.length ? " active" : ""}">${feedItem(a, style())}</div>`).join("") || `<p class="empty">Nothing in this cycle.</p>`}</div></section>`;
     });
     return `
       <section class="section">
@@ -943,16 +943,23 @@
     if (dot) showRadarSlide(Number(dot.dataset.radar));
   });
   setInterval(() => !document.hidden && !document.querySelector(".radar:hover") && showRadarSlide(state.radarSlide + 1), 5000);
+  // Your topics cards slide the next article in from the right, pausing while hovered. The
+  // outgoing one slides off to the left, then waits off to the right for its next turn.
   setInterval(() => {
     if (document.hidden) return;
-    document.querySelectorAll("[data-topic-slideshow]").forEach((slideshow) => {
+    document.querySelectorAll("[data-topic-slideshow]:not(:hover)").forEach((slideshow) => {
       const slides = slideshow.querySelectorAll(".topic-slide");
       if (slides.length < 2) return;
       const active = [...slides].findIndex((slide) => slide.classList.contains("active"));
-      slides[active]?.classList.remove("active");
-      slides[(active + 1) % slides.length].classList.add("active");
+      const out = slides[active];
+      out?.classList.replace("active", "leaving");
+      setTimeout(() => out?.classList.remove("leaving"), 700);
+      const next = (active + 1) % slides.length;
+      slides[next].classList.add("active");
+      // Remembered so a re-render keeps the card on the same article.
+      state.topicSlide[slideshow.dataset.topicSlideshow] = next;
     });
-  }, 2000);
+  }, 6000);
 
   app.addEventListener("click", (e) => {
     const el = e.target.closest("[data-action]");

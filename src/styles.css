@@ -239,10 +239,13 @@ img:not(.broken) + .media-fallback { display: none; }
 .topic-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
 .topic-col { padding: 20px 24px 6px; }
 .topic-col .panel-title { font-size: 26px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
-.topic-slide { display: none; }
-.topic-slide.active { display: block; animation: topic-slide-in 0.3s ease-out; }
-@keyframes topic-slide-in { from { opacity: 0; transform: translateY(8px); } }
-@media (prefers-reduced-motion: reduce) { .topic-slide.active { animation: none; } }
+/* Slides share one grid cell, so the card keeps the height of its tallest article. */
+.topic-slides { display: grid; overflow: hidden; }
+.topic-slide { grid-area: 1 / 1; transform: translateX(100%); opacity: 0; visibility: hidden; pointer-events: none; }
+.topic-slide.active, .topic-slide.leaving { visibility: visible; transition: transform 0.6s ease, opacity 0.6s ease; }
+.topic-slide.active { transform: none; opacity: 1; pointer-events: auto; }
+.topic-slide.leaving { transform: translateX(-100%); }
+@media (prefers-reduced-motion: reduce) { .topic-slide.active, .topic-slide.leaving { transition: none; } }
 .list { padding: 4px 24px; }
 
 /* market pulse */

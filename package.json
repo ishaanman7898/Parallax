@@ -1,6 +1,6 @@
 {
   "name": "parallax",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "description": "A perspective aware news reader with live feeds, sentiment and bias analysis, for the web and desktop",
   "main": "electron/main.js",
   "license": "MIT",
