@@ -184,7 +184,8 @@ button { font: inherit; }
 
 /* source row and article items */
 .src { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.src-badge { width: 18px; height: 18px; border-radius: 4px; background: var(--text); color: #202124; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.src-badge { position: relative; width: 18px; height: 18px; border-radius: 4px; overflow: hidden; background: var(--text); color: #202124; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.src-badge img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #fff; }
 .meta { font-size: 13px; color: var(--muted); }
 .item { display: flex; gap: 16px; padding: 18px 0; }
 .item-body { flex: 1; min-width: 0; }
@@ -447,17 +448,14 @@ body.loading { overflow: hidden; }
 }
 
 /* footer */
-.footer { border-top: 1px solid #fff; padding: 36px 24px 28px; font-size: 12px; color: var(--dim); }
-.footer-inner { max-width: 1272px; margin: 0 auto; display: grid; gap: 22px; }
-.footer-top { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; }
-.footer-brand { display: grid; gap: 4px; }
-.footer-logo { display: inline-flex; align-items: center; gap: 8px; color: #fff; font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
-.footer-tagline { padding-left: 30px; color: var(--muted); font-size: 13px; }
-.footer-links { display: flex; flex-wrap: wrap; gap: 6px 22px; }
-.footer-links a { color: var(--muted); font-size: 13px; }
+.footer { border-top: 1px solid var(--line); padding: 14px 24px; font-size: 12px; color: var(--dim); }
+.footer-inner { max-width: 1272px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; }
+.footer-logo { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-size: 14px; font-weight: 500; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.footer-links a { color: var(--muted); }
 .footer-links a:hover { color: var(--text); }
-.footer-status { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; }
-.footer-note { margin: 0; padding-top: 16px; border-top: 1px solid #fff; line-height: 1.6; max-width: 960px; }
+.footer-status { margin-left: auto; }
+.footer-note { flex-basis: 100%; margin: 0; font-size: 11px; line-height: 1.5; }
 
 @media (max-width: 900px) {
   .analysis, .sides, .two-col, .two-col.reverse, .unrated-grid { grid-template-columns: 1fr; }

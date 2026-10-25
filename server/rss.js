@@ -70,6 +70,13 @@ function atomLink(link) {
   return decode(alt ? alt["@href"] || text(alt) : "");
 }
 
+// Some feeds (Investing.com) give "2026-10-25 02:48:34" with no zone. They mean UTC, but
+// Date reads that form as local time, which put those articles hours in the future.
+function parseDate(s) {
+  const bare = /^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2}(:\d{2}(\.\d+)?)?)$/.exec(s.trim());
+  return new Date(bare ? `${bare[1]}T${bare[2]}Z` : s);
+}
+
 // Parses RSS 2.0, RSS 1.0 (RDF) or Atom into a flat list of items.
 function parseFeed(xml) {
   const doc = parser.parse(xml);
@@ -79,7 +86,7 @@ function parseFeed(xml) {
     .map((item) => {
       const body = item["content:encoded"] ?? item.content;
       const summary = clean(text(item.description ?? item.summary));
-      const date = new Date(text(item.pubDate ?? item.published ?? item.updated ?? item["dc:date"]));
+      const date = parseDate(text(item.pubDate ?? item.published ?? item.updated ?? item["dc:date"]));
       return {
         title: clean(text(item.title)),
         link: isAtom ? atomLink(item.link) : decode(text(item.link).trim()),

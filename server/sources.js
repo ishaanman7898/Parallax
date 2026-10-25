@@ -7,6 +7,12 @@
 // from the phrase evidence model in lean-model.js once its validation is good enough.
 // Ratings change, so check https://www.allsides.com/media-bias/ratings and
 // https://mediabiasfactcheck.com and edit here.
+// The outlet's own domain, for its logo. Taken from the first feed's host without feed
+// subdomains, so only outlets whose feeds live elsewhere (Feedburner, Dow Jones) need a site.
+function feedSite(url) {
+  return new URL(url).hostname.replace(/^(www|feeds|rss|api|moxie|en)\./, "");
+}
+
 const SOURCES = [
   // US, left and lean left
   { id: "npr", name: "NPR", lean: -1, region: "US", feeds: ["https://feeds.npr.org/1001/rss.xml", "https://feeds.npr.org/1003/rss.xml", "https://feeds.npr.org/1004/rss.xml", "https://feeds.npr.org/1014/rss.xml"] },
@@ -35,7 +41,7 @@ const SOURCES = [
   { id: "nypost", name: "New York Post", lean: 2, region: "US", feeds: ["https://nypost.com/feed/"] },
   { id: "examiner", name: "Washington Examiner", lean: 1, region: "US", feeds: ["https://www.washingtonexaminer.com/feed"] },
   { id: "nationalreview", name: "National Review", lean: 1, region: "US", feeds: ["https://www.nationalreview.com/feed/"] },
-  { id: "breitbart", name: "Breitbart", lean: 2, region: "US", feeds: ["https://feeds.feedburner.com/breitbart"] },
+  { id: "breitbart", name: "Breitbart", site: "breitbart.com", lean: 2, region: "US", feeds: ["https://feeds.feedburner.com/breitbart"] },
   { id: "newsmax", name: "Newsmax", lean: 2, region: "US", feeds: ["https://www.newsmax.com/rss/Newsfront/16/"] },
   // Not on the current AllSides chart, so rated from Media Bias/Fact Check.
   { id: "dailycaller", name: "Daily Caller", lean: 2, ratedBy: "MBFC", region: "US", feeds: ["https://dailycaller.com/feed/"] },
@@ -54,6 +60,7 @@ const SOURCES = [
     name: "BBC News",
     lean: 0,
     region: "UK",
+    site: "bbc.com",
     feeds: ["https://feeds.bbci.co.uk/news/world/rss.xml", "https://feeds.bbci.co.uk/news/uk/rss.xml", "https://feeds.bbci.co.uk/news/business/rss.xml", "https://feeds.bbci.co.uk/news/technology/rss.xml"]
   },
   { id: "aljazeera", name: "Al Jazeera", lean: -1, region: "Middle East", feeds: ["https://www.aljazeera.com/xml/rss/all.xml"] },
@@ -95,7 +102,7 @@ const SOURCES = [
   // South Asia
   { id: "timesofindia", name: "The Times of India", lean: 1, ratedBy: "MBFC", region: "South Asia", feeds: ["https://timesofindia.indiatimes.com/rssfeedstopstories.cms"] },
   { id: "thehindu", name: "The Hindu", lean: -1, ratedBy: "MBFC", region: "South Asia", feeds: ["https://www.thehindu.com/news/international/feeder/default.rss"] },
-  { id: "ndtv", name: "NDTV", lean: 1, ratedBy: "MBFC", region: "South Asia", feeds: ["https://feeds.feedburner.com/ndtvnews-world-news"] },
+  { id: "ndtv", name: "NDTV", site: "ndtv.com", lean: 1, ratedBy: "MBFC", region: "South Asia", feeds: ["https://feeds.feedburner.com/ndtvnews-world-news"] },
 
   // Middle East
   { id: "timesofisrael", name: "The Times of Israel", lean: -1, ratedBy: "MBFC", region: "Middle East", feeds: ["https://www.timesofisrael.com/feed/"] },
@@ -115,19 +122,19 @@ const SOURCES = [
   { id: "techcrunch", nonpolitical: true, name: "TechCrunch", lean: null, region: "US", feeds: ["https://techcrunch.com/feed/"] },
   { id: "statnews", nonpolitical: true, name: "STAT", lean: null, region: "US", feeds: ["https://www.statnews.com/feed/"] },
   { id: "espn", nonpolitical: true, name: "ESPN", lean: null, region: "US", feeds: ["https://www.espn.com/espn/rss/news"] },
-  { id: "bbcsport", nonpolitical: true, name: "BBC Sport", lean: null, region: "UK", feeds: ["https://feeds.bbci.co.uk/sport/rss.xml"] },
+  { id: "bbcsport", nonpolitical: true, name: "BBC Sport", site: "bbc.com", lean: null, region: "UK", feeds: ["https://feeds.bbci.co.uk/sport/rss.xml"] },
   { id: "variety", nonpolitical: true, name: "Variety", lean: null, region: "US", feeds: ["https://variety.com/feed/"] },
 
   // Market news
-  { id: "marketwatch", name: "MarketWatch", lean: 0, region: "US", kind: "markets", feeds: ["https://feeds.content.dowjones.io/public/rss/mw_topstories"] },
-  { id: "wsj", name: "The Wall Street Journal", lean: 1, ratedBy: "MBFC", region: "US", kind: "markets", feeds: ["https://feeds.content.dowjones.io/public/rss/RSSMarketsMain", "https://feeds.content.dowjones.io/public/rss/RSSWorldNews"] },
+  { id: "marketwatch", name: "MarketWatch", site: "marketwatch.com", lean: 0, region: "US", kind: "markets", feeds: ["https://feeds.content.dowjones.io/public/rss/mw_topstories"] },
+  { id: "wsj", name: "The Wall Street Journal", site: "wsj.com", lean: 1, ratedBy: "MBFC", region: "US", kind: "markets", feeds: ["https://feeds.content.dowjones.io/public/rss/RSSMarketsMain", "https://feeds.content.dowjones.io/public/rss/RSSWorldNews"] },
   { id: "bloomberg", name: "Bloomberg", lean: 0, region: "US", kind: "markets", feeds: ["https://feeds.bloomberg.com/markets/news.rss"] },
   { id: "cnbc", name: "CNBC", lean: -1, region: "US", kind: "markets", feeds: ["https://www.cnbc.com/id/20409666/device/rss/rss.html", "https://www.cnbc.com/id/100727362/device/rss/rss.html"] },
   { id: "fortune", name: "Fortune", lean: 1, ratedBy: "MBFC", region: "US", kind: "markets", feeds: ["https://fortune.com/feed/"] },
   { id: "investing", nonpolitical: true, name: "Investing.com", lean: null, region: "US", kind: "markets", feeds: ["https://www.investing.com/rss/news_25.rss"] },
   { id: "coindesk", nonpolitical: true, name: "CoinDesk", lean: null, region: "US", kind: "markets", feeds: ["https://www.coindesk.com/arc/outboundfeeds/rss/"] },
   { id: "cointelegraph", nonpolitical: true, name: "Cointelegraph", lean: null, region: "US", kind: "markets", feeds: ["https://cointelegraph.com/rss"] }
-].map((s) => ({ kind: "news", ...s }));
+].map((s) => ({ kind: "news", ...s, site: s.site || feedSite(s.feeds[0]) }));
 
 const LEAN_LABELS = { "-2": "Left", "-1": "Lean left", "0": "Center", "1": "Lean right", "2": "Right" };
 const leanLabelFor = (lean) => (lean == null ? "Unrated" : LEAN_LABELS[lean]);

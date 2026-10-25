@@ -450,6 +450,13 @@
       </section>`;
   }
 
+  // The newest article from each story across every feed, so the home page always opens on
+  // what just came in.
+  function justIn(n, exclude) {
+    const stories = new Set(exclude);
+    return [...state.articles].sort(byNewest).filter((a) => !stories.has(a.cluster.id) && stories.add(a.cluster.id)).slice(0, n);
+  }
+
   // ---------- views ----------
   function home() {
     const list = clusters();
@@ -458,6 +465,8 @@
       return;
     }
     const top = list.slice(0, 3);
+    const shown = top.map((c) => c.id);
+    const fresh = justIn(8, shown);
     app.innerHTML = `
       <div class="home-top">
         <section class="panel top-stories">
@@ -467,9 +476,14 @@
         <aside class="side">${pulseCard()}${latestCard()}${toneCard()}</aside>
       </div>
       <section class="section">
+        <h2 class="section-title"><a href="#/latest">Just in ›</a></h2>
+        <p class="section-sub">The newest headlines from every feed, updated with each edition</p>
+        ${feedGrid(fresh)}
+      </section>
+      <section class="section">
         <h2 class="section-title"><a href="#/foryou">For you ›</a></h2>
         <p class="section-sub">${forYouNote()} <a class="help" href="#/settings" aria-label="How For you works">${icons.help}</a></p>
-        ${feedGrid(forYouItems(8, new Set(top.map((c) => c.id))))}
+        ${feedGrid(forYouItems(8, new Set([...shown, ...fresh.map((a) => a.cluster.id)])))}
       </section>
       ${yourTopics()}`;
   }
@@ -1014,6 +1028,8 @@
         pill.disabled = true;
         const latest = await loadNews();
         applyNews(latest.sample ? queued : latest);
+        // New stories land at the top, so take the reader there to see them.
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
       document.body.appendChild(pill);
     }

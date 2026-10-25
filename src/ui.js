@@ -66,8 +66,11 @@
     return `<span class="cov" tabindex="0" role="img" aria-label="Tone mix: ${tip}" data-tip="${tip}"><span class="cov-bar">${seg("neg")}${seg("neu")}${seg("pos")}</span></span>`;
   }
 
+  // Outlet logos come from Twenty's open favicon service, with the initial behind them in
+  // case a logo is missing or fails to load.
+  const logo = (source) => (source.site ? `<img src="https://twenty-icons.com/${encodeURIComponent(source.site)}/64" alt="" loading="lazy" referrerpolicy="no-referrer">` : "");
   const sourceRow = (source) =>
-    `<div class="src"><span class="src-badge" aria-hidden="true">${esc(initial(source.name))}</span><span>${esc(source.name)}</span></div>`;
+    `<div class="src"><span class="src-badge" aria-hidden="true">${logo(source)}<b>${esc(initial(source.name))}</b></span><span>${esc(source.name)}</span></div>`;
 
   const initial = (name) => String(name || "?").replace(/^The /, "")[0];
 

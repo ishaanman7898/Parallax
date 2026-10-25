@@ -43,6 +43,16 @@ test("parses WordPress feeds", () => {
   }
 });
 
+test("reads dates without a time zone as UTC", () => {
+  const xml = `<rss><channel>
+    <item><title>Bare</title><link>https://example.com/a</link><pubDate>2026-10-25 02:48:34</pubDate></item>
+    <item><title>Zoned</title><link>https://example.com/b</link><pubDate>Sun, 25 Oct 2026 02:48:34 +0100</pubDate></item>
+  </channel></rss>`;
+  const [bare, zoned] = parseFeed(xml);
+  assert.strictEqual(bare.published, "2026-10-25T02:48:34.000Z");
+  assert.strictEqual(zoned.published, "2026-10-25T01:48:34.000Z");
+});
+
 test("builds clustered news from fixtures", async () => {
   const news = await buildNews(fixtureFetcher(path.join(__dirname, "fixtures")), NOW);
   assert.equal(news.sources.filter((s) => s.ok).length, 7);

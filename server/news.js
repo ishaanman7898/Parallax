@@ -40,7 +40,7 @@ function describeSource(source, estimate) {
   const lean = estimated ? estimate.lean : source.lean;
   const label = source.nonpolitical ? "Nonpolitical" : estimated ? `${leanLabel(lean / 2)} (est.)` : leanLabelFor(source.lean);
   const ratedBy = source.lean != null ? source.ratedBy || "AllSides" : estimated ? "Phrase model" : null;
-  return { id: source.id, name: source.name, lean, rated: source.lean != null, ratedBy, estimated, nonpolitical: !!source.nonpolitical, label, region: source.region, kind: source.kind };
+  return { id: source.id, name: source.name, lean, rated: source.lean != null, ratedBy, estimated, nonpolitical: !!source.nonpolitical, label, region: source.region, kind: source.kind, site: source.site };
 }
 
 const phraseWeight = (found, dict) => found.reduce((s, p) => s + dict[p], 0);
