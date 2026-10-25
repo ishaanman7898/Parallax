@@ -9,7 +9,7 @@
 // https://mediabiasfactcheck.com and edit here.
 const SOURCES = [
   // US, left and lean left
-  { id: "npr", name: "NPR", lean: -1, region: "US", feeds: ["https://feeds.npr.org/1001/rss.xml", "https://feeds.npr.org/1004/rss.xml", "https://feeds.npr.org/1014/rss.xml"] },
+  { id: "npr", name: "NPR", lean: -1, region: "US", feeds: ["https://feeds.npr.org/1001/rss.xml", "https://feeds.npr.org/1003/rss.xml", "https://feeds.npr.org/1004/rss.xml", "https://feeds.npr.org/1014/rss.xml"] },
   { id: "nyt", name: "The New York Times", lean: -1, region: "US", feeds: ["https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml", "https://rss.nytimes.com/services/xml/rss/nyt/World.xml", "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"] },
   { id: "vox", name: "Vox", lean: -2, region: "US", feeds: ["https://www.vox.com/rss/index.xml"] },
   { id: "nbc", name: "NBC News", lean: -1, region: "US", feeds: ["https://feeds.nbcnews.com/nbcnews/public/news"] },
@@ -45,7 +45,7 @@ const SOURCES = [
   { id: "dispatch", name: "The Dispatch", lean: 1, ratedBy: "MBFC", region: "US", feeds: ["https://thedispatch.com/feed/"] },
   { id: "freepress", name: "The Free Press", lean: 1, ratedBy: "MBFC", region: "US", feeds: ["https://www.thefp.com/feed"] },
   { id: "atlantic", name: "The Atlantic", lean: -1, ratedBy: "MBFC", region: "US", feeds: ["https://www.theatlantic.com/feed/all/"] },
-  { id: "pbs", name: "PBS News", lean: -1, ratedBy: "MBFC", region: "US", feeds: ["https://www.pbs.org/newshour/feeds/rss/headlines"] },
+  { id: "pbs", name: "PBS News", lean: -1, ratedBy: "MBFC", region: "US", feeds: ["https://www.pbs.org/newshour/feeds/rss/headlines", "https://www.pbs.org/newshour/feeds/rss/politics"] },
   { id: "semafor", name: "Semafor", lean: 0, ratedBy: "MBFC", region: "US", feeds: ["https://www.semafor.com/rss.xml"] },
 
   // International broadcasters and wires
@@ -54,7 +54,7 @@ const SOURCES = [
     name: "BBC News",
     lean: 0,
     region: "UK",
-    feeds: ["https://feeds.bbci.co.uk/news/world/rss.xml", "https://feeds.bbci.co.uk/news/business/rss.xml", "https://feeds.bbci.co.uk/news/technology/rss.xml"]
+    feeds: ["https://feeds.bbci.co.uk/news/world/rss.xml", "https://feeds.bbci.co.uk/news/uk/rss.xml", "https://feeds.bbci.co.uk/news/business/rss.xml", "https://feeds.bbci.co.uk/news/technology/rss.xml"]
   },
   { id: "aljazeera", name: "Al Jazeera", lean: -1, region: "Middle East", feeds: ["https://www.aljazeera.com/xml/rss/all.xml"] },
   { id: "dw", name: "DW", lean: -1, ratedBy: "MBFC", region: "Europe", feeds: ["https://rss.dw.com/rdf/rss-en-top"] },
@@ -65,12 +65,12 @@ const SOURCES = [
   { id: "upi", name: "UPI", lean: 0, ratedBy: "MBFC", region: "US", feeds: ["https://rss.upi.com/news/tn_int.rss"] },
 
   // UK and Europe
-  { id: "guardian", name: "The Guardian", lean: -1, ratedBy: "MBFC", region: "UK", feeds: ["https://www.theguardian.com/world/rss", "https://www.theguardian.com/us-news/rss"] },
+  { id: "guardian", name: "The Guardian", lean: -1, ratedBy: "MBFC", region: "UK", feeds: ["https://www.theguardian.com/world/rss", "https://www.theguardian.com/us-news/rss", "https://www.theguardian.com/politics/rss", "https://www.theguardian.com/uk-news/rss"] },
   { id: "independent", name: "The Independent", lean: -1, ratedBy: "MBFC", region: "UK", feeds: ["https://www.independent.co.uk/news/world/rss"] },
   { id: "dailymail", name: "Daily Mail", lean: 1, region: "UK", feeds: ["https://www.dailymail.co.uk/news/index.rss"] },
   { id: "telegraph", name: "The Telegraph", lean: 2, ratedBy: "MBFC", region: "UK", feeds: ["https://www.telegraph.co.uk/rss.xml"] },
   { id: "ft", name: "Financial Times", lean: 0, ratedBy: "MBFC", region: "UK", feeds: ["https://www.ft.com/world?format=rss"] },
-  { id: "lemonde", name: "Le Monde", lean: -1, ratedBy: "MBFC", region: "Europe", feeds: ["https://www.lemonde.fr/en/international/rss_full.xml"] },
+  { id: "lemonde", name: "Le Monde", lean: -1, ratedBy: "MBFC", region: "Europe", feeds: ["https://www.lemonde.fr/en/international/rss_full.xml", "https://www.lemonde.fr/en/europe/rss_full.xml", "https://www.lemonde.fr/en/economy/rss_full.xml", "https://www.lemonde.fr/en/climate-change/rss_full.xml"] },
   { id: "irishtimes", name: "The Irish Times", lean: -1, ratedBy: "MBFC", region: "Europe", feeds: ["https://www.irishtimes.com/arc/outboundfeeds/feed-world/?outputType=xml"] },
   { id: "kyivindependent", name: "The Kyiv Independent", lean: -1, ratedBy: "MBFC", region: "Europe", feeds: ["https://kyivindependent.com/news-archive/rss/"] },
   { id: "euobserver", name: "EUobserver", lean: null, region: "Europe", feeds: ["https://euobserver.com/feed/"] },

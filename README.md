@@ -4,6 +4,8 @@ Parallax is a news reader that shows how the same story is covered across the po
 
 **Website:** [parallax.ishman.workers.dev](https://parallax.ishman.workers.dev)
 
+**Download the Windows app:** [Get the latest Parallax installer](https://github.com/ishaanman7898/Parallax/releases/latest)
+
 Lean and tone are automated estimates, not fact checks. Nothing here is financial advice.
 
 ## Features

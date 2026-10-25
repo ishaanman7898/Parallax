@@ -1086,7 +1086,7 @@
 
   // ---------- startup ----------
   // The startup screen stays up until the first live news arrives, showing feed progress
-  // from the server, then hands over to the page. It plays at least once through.
+  // from the server, then hands over to the page after a two-second minimum.
   const splash = document.getElementById("splash");
   const splashStart = performance.now();
   let splashDone = !profile.splash;
@@ -1137,7 +1137,7 @@
         splash.classList.add("off");
         stopSplashLight();
       }, 1000);
-    }, Math.max(0, 2800 - (performance.now() - splashStart)));
+    }, Math.max(0, 2000 - (performance.now() - splashStart)));
   }
 
   async function start() {

@@ -415,7 +415,7 @@ code { font-family: var(--mono); font-size: 0.9em; color: var(--text); }
 .lightfall-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .splash-light { position: absolute; inset: 0; }
 /* a dark card under the logo and text keeps the falling light from running through them */
-.splash-inner { position: relative; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 36px 56px 30px; background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px; box-shadow: 0 24px 80px 24px rgba(0, 0, 0, 0.85); overflow: hidden; }
+.splash-inner { position: relative; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 36px 56px 30px; background: #000; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px; box-shadow: 0 24px 80px 24px #000; overflow: hidden; }
 .splash-logo { width: 200px; height: 200px; overflow: visible; }
 .sp-circle { transform-box: fill-box; transform-origin: center; }
 .sp-l { animation: sp-in-l 1.1s cubic-bezier(0.2, 0.9, 0.2, 1) both; }
@@ -433,7 +433,7 @@ code { font-family: var(--mono); font-size: 0.9em; color: var(--text); }
 .splash-word span:nth-child(7) { animation-delay: 1.06s; } .splash-word span:nth-child(8) { animation-delay: 1.12s; }
 @keyframes sp-letter { to { opacity: 1; transform: none; } }
 .splash-bar { width: 220px; height: 3px; border-radius: 2px; background: #1f2023; overflow: hidden; opacity: 0; animation: sp-fade 0.4s ease 1.2s forwards; }
-.splash-bar i { display: block; height: 100%; width: 4%; background: linear-gradient(90deg, var(--left), var(--center), var(--right)); transition: width 0.35s ease; }
+.splash-bar i { display: block; height: 100%; width: 4%; background: #fff; transition: width 0.35s ease; }
 .splash-status { font-size: 13px; color: var(--dim); min-height: 18px; opacity: 0; animation: sp-fade 0.4s ease 1.3s forwards; }
 .splash.done { opacity: 0; visibility: hidden; pointer-events: none; }
 .splash.done .splash-word, .splash.done .splash-bar, .splash.done .splash-status { transition: opacity 0.3s; opacity: 0; }
