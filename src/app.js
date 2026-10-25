@@ -79,7 +79,7 @@
     // Same instruments as before: update in place so the scroll does not jump back.
     if (keys === tickerKeys) return patchLive();
     tickerKeys = keys;
-    const note = state.markets?.sample ? "/ SAMPLE PRICES" : `<span class="dot live"></span> LIVE · YAHOO FINANCE · HYPERLIQUID`;
+    const note = state.markets?.sample ? "/ SAMPLE PRICES" : "";
     const html =
       items.map((t) => {
         const v = liveValue(t.key) || {};
