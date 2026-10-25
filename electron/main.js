@@ -1,4 +1,4 @@
-const { app, BrowserWindow, shell, ipcMain, utilityProcess } = require("electron");
+const { app, BrowserWindow, dialog, shell, ipcMain, utilityProcess } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const fs = require("fs");
 const path = require("path");
@@ -155,7 +155,11 @@ ipcMain.handle("update:install", () => {
 
 app.whenReady().then(() => {
   loadSettings();
-  createWindow();
+  // Without a server there is no page to show, so say why and quit instead of hanging with no window.
+  createWindow().catch((err) => {
+    dialog.showErrorBox("Parallax could not start", err.message);
+    app.quit();
+  });
   setupUpdates();
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
