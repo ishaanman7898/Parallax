@@ -438,7 +438,7 @@
     const cols = profile.topics.map((key) => {
       const items = topicItems(key, 3);
       return `<section class="panel topic-col">${panelTitle(topicHref(key), esc(Prefs.topicLabel(key)), "h3")}
-        <div class="stack">${items.map((a) => feedItem(a, style())).join("") || `<p class="empty">Nothing in this cycle.</p>`}</div></section>`;
+        <div class="topic-slides" data-topic-slideshow>${items.map((a, i) => `<div class="topic-slide${i === 0 ? " active" : ""}">${feedItem(a, style())}</div>`).join("") || `<p class="empty">Nothing in this cycle.</p>`}</div></section>`;
     });
     return `
       <section class="section">
@@ -929,6 +929,16 @@
     if (dot) showRadarSlide(Number(dot.dataset.radar));
   });
   setInterval(() => !document.hidden && !document.querySelector(".radar:hover") && showRadarSlide(state.radarSlide + 1), 5000);
+  setInterval(() => {
+    if (document.hidden) return;
+    document.querySelectorAll("[data-topic-slideshow]").forEach((slideshow) => {
+      const slides = slideshow.querySelectorAll(".topic-slide");
+      if (slides.length < 2) return;
+      const active = [...slides].findIndex((slide) => slide.classList.contains("active"));
+      slides[active]?.classList.remove("active");
+      slides[(active + 1) % slides.length].classList.add("active");
+    });
+  }, 2000);
 
   app.addEventListener("click", (e) => {
     const el = e.target.closest("[data-action]");
@@ -999,14 +1009,16 @@
     if (!pill) {
       pill = document.createElement("button");
       pill.className = "news-pill";
-      pill.addEventListener("click", () => {
-        applyNews(pill.news);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+      pill.addEventListener("click", async () => {
+        const queued = pill.news;
+        pill.disabled = true;
+        const latest = await loadNews();
+        applyNews(latest.sample ? queued : latest);
       });
       document.body.appendChild(pill);
     }
     pill.news = news;
-    pill.textContent = `↑ ${fresh} new ${fresh === 1 ? "story" : "stories"}`;
+    pill.textContent = `${fresh} new ${fresh === 1 ? "story" : "stories"}`;
   }
 
   async function refreshMarkets() {
